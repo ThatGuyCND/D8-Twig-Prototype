@@ -1,0 +1,3 @@
+/system/_cache/*
+!/system/_cache/.gitkeep
+.DS_Store
