@@ -33,7 +33,7 @@ class Session {
 		}
 		
 		// check if a user cookie is set
-		
+
 		if ( $this->retrieve( $this->user_cookie_name ) )
 		{
 			$this->userdata = $this->retrieve( $this->user_cookie_name );
@@ -65,7 +65,7 @@ class Session {
 	
 	public function retrieve( $key )
 	{
-		return isset($_COOKIE[$this->cookie_prefix . $key]) ? json_decode($_COOKIE[$this->cookie_prefix . $key]) : NULL;
+		return isset($_COOKIE[$this->cookie_prefix . $key]) ? json_decode(rawurldecode($_COOKIE[$this->cookie_prefix . $key])) : NULL;
 	}
 	
 	public function clear( $key )
