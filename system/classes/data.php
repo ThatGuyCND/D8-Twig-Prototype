@@ -77,6 +77,7 @@ class Data {
 		$row = 1;
 		$data_array = array();
 		$headers = array();
+		$id_col = FALSE;
 		if ( ( $handle = fopen($path, "r") ) !== FALSE )
 		{
 		    while (($data = fgetcsv($handle, 0, Config::get('csv_delimiter'), Config::get('csv_enclosure'), Config::get('csv_escape') )) !== FALSE)
@@ -85,6 +86,7 @@ class Data {
 				if ( $row == 1 && $has_headers )
 				{
 					$headers = $data; // set headers
+					$id_col = array_search(Config::get('csv_id_header'), $headers );
 				}
 				elseif ( $has_headers )
 				{
@@ -93,7 +95,14 @@ class Data {
 					{
 						$row_data[$headers[$i]] = $data[$i];
 					}
-					$data_array[] = $row_data;
+					if ( $id_col !== FALSE )
+					{
+						$data_array[$data[$id_col]] = $row_data;
+					}
+					else
+					{
+						$data_array[] = $row_data;
+					}
 				}
 				else
 				{

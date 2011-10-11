@@ -20,5 +20,6 @@ return array(
 	'csv_delimiter'			=> ',',
 	'csv_enclosure'			=> '"',
 	'csv_escape'			=> '\\',
+	'csv_id_header'			=> 'id',
 	
 );
