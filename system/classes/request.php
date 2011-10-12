@@ -29,7 +29,17 @@ class Request {
         }
         catch( Exception $e )
         {
-            $this->show_404();
+			// TODO: use differnet Exception subclasses to distinguish different errors
+			switch ( $e->getMessage() )
+			{
+				case '404':
+					$this->show_404();
+				break;
+				
+				default:
+					$this->display_error( $e );
+				break;
+			}
         }
     }
 	
@@ -105,5 +115,11 @@ class Request {
 		// otherwise fall back to a generic error message
 		$this->response = '<h1>404 Error</h1><p>The page you were looking for could not be found.</p>';
     }
+
+	protected function display_error( $e )
+	{
+		// TODO: Nicer error printing
+		echo $e->getMessage();
+	}
 		
 }

@@ -74,52 +74,66 @@ class Data {
 
 	protected function parse_csv( $path )
 	{
-		$row = 1;
-		$data_array = array();
-		$headers = array();
-		$id_col = FALSE;
-		if ( ( $handle = fopen($path, "r") ) !== FALSE )
+		try
 		{
-		    while (($data = fgetcsv($handle, 0, Config::get('csv_delimiter'), Config::get('csv_enclosure'), Config::get('csv_escape') )) !== FALSE)
+			$row = 1;
+			$data_array = array();
+			$headers = array();
+			$id_col = FALSE;
+			if ( ( $handle = fopen($path, "r") ) !== FALSE )
 			{
-				$has_headers = Config::get('csv_headers');
-				if ( $row == 1 && $has_headers )
+			    while (($data = fgetcsv($handle, 0, Config::get('csv_delimiter'), Config::get('csv_enclosure'), Config::get('csv_escape') )) !== FALSE)
 				{
-					$headers = $data; // set headers
-					$id_col = array_search(Config::get('csv_id_header'), $headers );
-				}
-				elseif ( $has_headers )
-				{
-					$row_data = array();
-					for ( $i = 0; $i < count( $data ); $i++ )
+					$has_headers = Config::get('csv_headers');
+					if ( $row == 1 && $has_headers )
 					{
-						$row_data[$headers[$i]] = $data[$i];
+						$headers = $data; // set headers
+						$id_col = array_search(Config::get('csv_id_header'), $headers );
 					}
-					if ( $id_col !== FALSE )
+					elseif ( $has_headers )
 					{
-						$data_array[$data[$id_col]] = $row_data;
+						$row_data = array();
+						for ( $i = 0; $i < count( $data ); $i++ )
+						{
+							$row_data[$headers[$i]] = $data[$i];
+						}
+						if ( $id_col !== FALSE )
+						{
+							$data_array[$data[$id_col]] = $row_data;
+						}
+						else
+						{
+							$data_array[] = $row_data;
+						}
 					}
 					else
 					{
-						$data_array[] = $row_data;
+						$data_array[] = $data;
 					}
-				}
-				else
-				{
-					$data_array[] = $data;
-				}
-				$row++;
-		    }
-		    fclose($handle);
+					$row++;
+			    }
+			    fclose($handle);
+			}
+			return $data_array;
 		}
-		return $data_array;
+		catch( Exception $e )
+		{
+            throw new Exception('CSV data format error in ' . $path);
+		}
 	}
 	
 	protected function parse_yml( $path )
 	{
-		$yaml = new sfYamlParser();
-		$data = $yaml->parse(file_get_contents($path));
-		return $data;
+		try
+		{
+			$yaml = new sfYamlParser();
+			$data = $yaml->parse(file_get_contents($path));
+			return $data;	
+		}
+		catch( Exception $e )
+		{
+            throw new Exception('Yaml data format error in ' . $path);
+		}
 	}
     
 }

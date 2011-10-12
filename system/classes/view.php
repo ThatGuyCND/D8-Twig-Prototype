@@ -37,9 +37,17 @@ class View {
 	}
     
 	public function render()
-	{		
-		$template = $this->twig->loadTemplate($this->path);
-		return $template->render( $this->data );
+	{	
+		try
+		{
+			$template = $this->twig->loadTemplate($this->path);
+			return $template->render( $this->data );			
+		}
+		catch( Exception $e )
+		{
+			// TODO: More helpful/granualar error messages
+			throw new Exception( 'Error rendering template ' . $this->path );
+		}	
 	}
 
 }
