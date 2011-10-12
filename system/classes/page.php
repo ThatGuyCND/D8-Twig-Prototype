@@ -44,7 +44,7 @@ class Page {
 
     public function exists()
     {
-		return file_exists( SITE_PATH . $this->path );
+		return !!$this->path;
     }
 
     public function get_path()
