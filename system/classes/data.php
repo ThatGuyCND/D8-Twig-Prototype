@@ -38,25 +38,31 @@ class Data {
         return $this->data;
     }
 
-    public function find( $filename, $key )
+    public function find( $filename, $key=NULL )
     {
 		$datafiles = glob( DATA_PATH . $filename . '.*' );
 		$this->retrieve( $datafiles[0], DATA_CACHE ); // may be a few with other extensions. Just grab the first one.
 		
-		$keys = explode( '.', trim( $key, '.') );
 		$data = $this->data[$filename];
-		foreach ( $keys as $thekey )
+		
+		if (  !empty($key) )
 		{
-			if ( isset( $data[$thekey] ) )
+			$keys = explode( '.', trim( $key, '.') );
+
+			foreach ( $keys as $thekey )
 			{
-				$data = $data[$thekey];
-			}
-			else
-			{
-				$data = NULL;
-				break;
+				if ( isset( $data[$thekey] ) )
+				{
+					$data = $data[$thekey];
+				}
+				else
+				{
+					$data = NULL;
+					break;
+				}
 			}
 		}
+
         return $data;
     }
 

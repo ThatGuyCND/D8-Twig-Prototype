@@ -20,11 +20,18 @@ class Request {
     public function execute()
     {
         try
-        {	
-            $this->get_page();
-			$this->load_data();
-			$this->handle_session();
-			$this->render();
+        {
+			if ( $this->uri->segment_1 == '__data' )
+			{
+				$this->json_data();
+			}
+			else
+			{
+	            $this->get_page();
+				$this->load_data();
+				$this->handle_session();
+				$this->render();
+			}
         }
         catch( Exception $e )
         {
@@ -82,6 +89,23 @@ class Request {
 	{
 		$this->view->set_path( $this->page->get_path() );	
 		$this->response = $this->view->render();
+	}
+	
+	protected function json_data()
+	{
+		if ( $this->uri->segment_2 )
+		{
+			$parts = $this->uri->segments();
+			$file = $parts[1];
+			$data = Data::instance();
+			
+			unset($parts[0]);
+			unset($parts[1]);
+			
+			$result = $data->find($file, implode('.', array_values($parts)) );
+
+			$this->response = $result === NULL ? '' : json_encode($result);
+		}
 	}
 	
 	protected function show_404()
