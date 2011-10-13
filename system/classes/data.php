@@ -69,7 +69,21 @@ class Data {
 
     public function find( $filename, $key )
     {
-        return isset( $this->data[$filename][$key] ) ? $this->data[$filename][$key] : NULL;
+		$keys = explode( '.', trim( $key, '.') );
+		$data = $this->data[$filename];
+		foreach ( $keys as $thekey )
+		{
+			if ( isset( $data[$thekey] ) )
+			{
+				$data = $data[$thekey];
+			}
+			else
+			{
+				$data = NULL;
+				break;
+			}
+		}
+        return $data;
     }
 
 	protected function parse_csv( $path )
