@@ -31,36 +31,7 @@ class Data {
 		{
 			foreach( $datafiles as $file )
 			{
-				$parts = pathinfo( $file );
-				$file_mtime = filemtime( $file );
-				
-				$cache_file = $cache_path . $parts['filename'] . '.cache';
-				
-				// TODO: Extract caching into standalone class?
-				if ( file_exists( $cache_file ) && $file_mtime < filemtime( $cache_file ) )
-				{
-					// cached version is newer, use that
-					$this->data[$parts['filename']] = unserialize( file_get_contents( $cache_file ) );
-				}
-				else
-				{
-					// no cache or cache is outdated
-					$parser = 'parse_' . $parts['extension'];
-					
-					if ( method_exists( $this, $parser ) )
-					{
-						$this->data[$parts['filename']] = $this->$parser( $file );
-					}
-				}
-			}
-			
-			if ( $cache_path )
-			{
-				// save to cache
-				foreach( $this->data as $name => $data )
-				{
-					file_put_contents( $cache_path . $name . '.cache', serialize($data) );
-				}
+				$this->retrieve( $file, $cache_path );
 			}
 		}
 		
@@ -69,6 +40,9 @@ class Data {
 
     public function find( $filename, $key )
     {
+		$datafiles = glob( DATA_PATH . $filename . '.*' );
+		$this->retrieve( $datafiles[0], DATA_CACHE ); // may be a few with other extensions. Just grab the first one.
+		
 		$keys = explode( '.', trim( $key, '.') );
 		$data = $this->data[$filename];
 		foreach ( $keys as $thekey )
@@ -85,6 +59,45 @@ class Data {
 		}
         return $data;
     }
+
+	protected function retrieve( $file, $cache_path )
+	{
+		if ( ! isset($this->data[$file]) )
+		{
+			$parts = pathinfo( $file );
+			$file_mtime = filemtime( $file );
+			$file_retrieved = FALSE;
+		
+			if ( $cache_path )
+			{
+				$cache_file = $cache_path . $parts['filename'] . '.cache';
+			
+				// TODO: Extract caching into standalone class?
+				if (  file_exists( $cache_file ) and $file_mtime < filemtime( $cache_file ) )
+				{
+					// cached version is newer, use that
+					$this->data[$parts['filename']] = unserialize( file_get_contents( $cache_file ) );
+					$file_retrieved = TRUE;
+				}
+			}
+		
+			if ( $file_retrieved === FALSE )
+			{
+				// no cache or cache is outdated
+				$parser = 'parse_' . $parts['extension'];
+			
+				if ( method_exists( $this, $parser ) )
+				{
+					$this->data[$parts['filename']] = $this->$parser( $file );
+				}
+			
+				if ( $cache_path )
+				{
+					file_put_contents( $cache_path . $parts['filename'] . '.cache', serialize($this->data[$parts['filename']]) );
+				}
+			}
+		}
+	} 
 
 	protected function parse_csv( $path )
 	{
