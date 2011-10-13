@@ -46,11 +46,11 @@ class Data {
 				{
 					// no cache or cache is outdated
 					$parser = 'parse_' . $parts['extension'];
-				
+					
 					if ( method_exists( $this, $parser ) )
 					{
 						$this->data[$parts['filename']] = $this->$parser( $file );
-					}					
+					}
 				}
 			}
 			

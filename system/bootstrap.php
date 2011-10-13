@@ -13,6 +13,7 @@ define('PAGES_PATH', SITE_PATH.'pages'.DS);
 define('LAYOUTS_PATH', SITE_PATH.'layouts'.DS);
 
 define('PT_COMPONENTS_PATH', SYSTEM_PATH.'assets/components'.DS);
+define('PT_VIEWS_PATH', SYSTEM_PATH.'views'.DS);
 
 require_once SYSTEM_PATH . '/vendor/Twig/Autoloader.php';
 require_once SYSTEM_PATH . '/vendor/Yaml/sfYamlParser.php';

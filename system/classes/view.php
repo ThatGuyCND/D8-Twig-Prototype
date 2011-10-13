@@ -12,7 +12,7 @@ class View {
   
    	public function __construct()
 	{
-		$loader = new Twig_Loader_Filesystem( array( SITE_PATH, PT_COMPONENTS_PATH ) );
+		$loader = new Twig_Loader_Filesystem( array( SITE_PATH, PT_COMPONENTS_PATH, PT_VIEWS_PATH ) );
 		$this->twig = new Twig_Environment($loader, array(
            	'debug'       	=> Config::get('debug'),
            	'auto_reload' 	=> Config::get('auto_reload'),
@@ -33,7 +33,7 @@ class View {
 	
 	public function add_data( $name, $data )
 	{
-		$this->data[$key] = $data;
+		$this->data[$name] = $data;
 	}
     
 	public function render()

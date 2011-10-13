@@ -20,11 +20,10 @@ class Request {
     public function execute()
     {
         try
-        {
+        {	
             $this->get_page();
 			$this->load_data();
 			$this->handle_session();
-			$this->get_notes();
 			$this->render();
         }
         catch( Exception $e )
@@ -79,11 +78,6 @@ class Request {
 		$this->view->add_global( 'user', $session->userdata() );
 	}
 	
-	protected function get_notes()
-	{
-		// TODO Add ability to specify notes for loading into the page
-	}
-	
 	protected function render()
 	{
 		$this->view->set_path( $this->page->get_path() );	
@@ -111,15 +105,17 @@ class Request {
 			    // ...
 			}
         }
-
-		// otherwise fall back to a generic error message
-		$this->response = '<h1>404 Error</h1><p>The page you were looking for could not be found.</p>';
+		
+		$this->view->set_path('PT/404.html');
+		$this->response = $this->view->render();
     }
 
 	protected function display_error( $e )
 	{
 		// TODO: Nicer error printing
-		echo $e->getMessage();
+		$this->view->add_data('message', $e->getMessage());
+		$this->view->set_path('PT/error.html');
+		$this->response = $this->view->render();
 	}
 		
 }
