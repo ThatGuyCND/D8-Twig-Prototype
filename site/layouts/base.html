@@ -2,11 +2,9 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	
-	<script src="/system/assets/js/jquery-1.6.4.min.js"></script>
-	<script src="/system/assets/js/jquery.cookie.js"></script>
-	<script src="/system/assets/js/pronto.js"></script>
-	
+		
+	<link rel="stylesheet" href="/system/assets/css/pronto.css" media="all">
+		
 	<title>Prontotype</title>
 </head>
 <body>
@@ -16,6 +14,28 @@
 <p>Default content</p>
 
 {% endblock content %}
+
+<div>
+	<p><a href="#" class="notes-on">Notes On</a> | <a href="#" class="notes-off">Notes Off</a> </p>
+	
+</div>
+
+<script src="/system/assets/js/jquery-1.6.4.min.js"></script>
+<script src="/system/assets/js/jquery.cookie.js"></script>
+<script src="/system/assets/js/pronto.js"></script>
+
+<script>
+	var notes = new PT.notes();
+	
+	$('.notes-on').click(function(){
+		notes.showNotes();
+		return false;
+	});
+	$('.notes-off').click(function(){
+		notes.hideNotes();
+		return false;
+	});
+</script>
 
 </body>	
 </html>

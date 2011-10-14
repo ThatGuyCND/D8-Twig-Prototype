@@ -13,7 +13,7 @@ return array(
 	'login_trigger'			=> 'login',
 	'logout_trigger'        => 'logout',
 	
-	'cookie_prefix'        	=> 'prototype_',
+	'cookie_prefix'        	=> 'prontotype_',
 	'cookie_lifetime'      	=> 60*60*24*7, // 1 week
 	
 	'csv_headers'			=> TRUE,

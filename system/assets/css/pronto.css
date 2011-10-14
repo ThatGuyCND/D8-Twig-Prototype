@@ -1,0 +1,27 @@
+.prontotype-note {
+    position: absolute;
+    border: 1px solid #FCE879;
+    background: #FFFAE0;
+    padding: 10px;
+    display: none;
+    max-width: 300px;
+    font-family: serif;
+    font-style: italic;
+    color: #847000;
+    font-size: 15px;
+    line-height: 1.3;
+    box-shadow: 1px 1px 2px #CCC;
+}
+
+.prontotype-highlight-note {
+    outline: 1px dashed #FF9900;
+    position: relative;
+}
+
+.prontotype-highlight-note:after {
+    content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAADsAAAA7ABJ8QPrQAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAACtSURBVDiN7dIrjoJBEIXR02R4JATPHjAotoSa9RAMq8CDQBFmA+N4TQIGBQKGh/ibgCLdwXJNdXX1/VLpqnDt63tDpRjXmOKS4Dljhs0zYIUxTgmAE0ZYwle87KCNSgKgim+UnwEhFlIUULsnpRcPk/QBPKaQooNi4a6KSUA9p4MfTBSLtMMRvzkd7NFEK+ZbDHMAZfzH8xKD0PWXA4AG5uiFrh15n1jHAtO7GW63ZyK1ijXZVwAAAABJRU5ErkJggg==);
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    opacity: 0.8;
+}
