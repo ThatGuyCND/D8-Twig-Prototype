@@ -1,8 +1,8 @@
 <?php defined('SYSTEM_PATH') or exit('No direct script access allowed');
 
-// session handling, uses unencrypted cookies so that they can be read via JS as well
+// session/persistent storage handling, uses unencrypted cookies so that they can be read via JS as well
 
-class Session {
+class Store {
 	
 	protected $cookie_prefix = '';
 	
@@ -33,16 +33,16 @@ class Session {
 		}
 		
 		// check if a user cookie is set
-
-		if ( $this->retrieve( $this->user_cookie_name ) )
+		$user = $this->get( $this->user_cookie_name );
+		if ( $user )
 		{
-			$this->userdata = $this->retrieve( $this->user_cookie_name );
+			$this->userdata = $user;
 		}
     }
 
 	public function login( $user_id )
 	{
-		$this->store( $this->user_cookie_name, $this->get_user_details( $user_id ) );
+		$this->set( $this->user_cookie_name, $this->get_user_details( $user_id ) );
 	}
 	
 	public function logout()
@@ -55,7 +55,7 @@ class Session {
         return $this->userdata;
     }
 	
-	public function store( $key, $value )
+	public function set( $key, $value )
 	{
 		// raw url encode and set raw cookie used here to prevent issues with spaces encoded as '+'
 		$value = rawurlencode(json_encode($value));
@@ -63,7 +63,7 @@ class Session {
 		$_COOKIE[$this->cookie_prefix . $key] = $value;
 	}
 	
-	public function retrieve( $key )
+	public function get( $key )
 	{
 		return isset($_COOKIE[$this->cookie_prefix . $key]) ? json_decode(rawurldecode($_COOKIE[$this->cookie_prefix . $key])) : NULL;
 	}

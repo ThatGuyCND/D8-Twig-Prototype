@@ -79,10 +79,10 @@ class Request {
 	
 	protected function handle_session()
 	{
-		$session = new Session();
-		$session->set_state();
-		$this->view->add_global( 'session', $session );
-		$this->view->add_global( 'user', $session->userdata() );
+		$store = new Store();
+		$store->set_state();
+		$this->view->add_global( 'store', $store );
+		$this->view->add_global( 'user', $store->userdata() );
 	}
 	
 	protected function render()

@@ -9,25 +9,25 @@
         
     };
     
-    // PT.session : Basic session (cookie) storage, integrates with PHP session storage
+    // PT.store : Basic (cookie) storage, integrates with data stored in JSON cookies via PHP
     
-    PT.session = function() {
+    PT.store = function() {
         this.cookiePrefix = PT.SETTINGS.prefix;
         this.cookieExpiration = PT.SETTINGS.cookieExpiration; 
     };
     
-    PT.session.prototype.store = function( key, val ) {
+    PT.store.prototype.set = function( key, val ) {
         $.cookie(this.cookiePrefix + key, JSON.stringify(val), { expires : this.cookieExpiration, path : '/' });
     };
     
-    PT.session.prototype.retrieve = function( key ) {
+    PT.store.prototype.get = function( key ) {
         var cookie = $.cookie( this.cookiePrefix + key );
         if ( cookie !== null && cookie !== '' ){
             return JSON.parse( cookie );
         }
     };
     
-    PT.session.prototype.clear = function( key ) {
+    PT.store.prototype.clear = function( key ) {
         $.cookie(this.cookiePrefix + key, null);
     };
     
@@ -154,7 +154,7 @@
         var pre = PT.SETTINGS.prefix,
             self = this;   
         this.toolbar = $('<div class="' + pre + 'toolbar ' + pre + 'loading' + '"></div>');             
-        this.session = new PT.session();
+        this.store = new PT.store();
         this.notes = new PT.notes(function(){
             self.toolbar.removeClass(pre + 'loading');
             self._addNotesTools();
