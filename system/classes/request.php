@@ -5,15 +5,20 @@ class Request {
 	public $uri;
 	
 	protected $page;
-	
-	protected $notes;
+
+	protected $view;
+		
+	protected $store;
 	
 	protected $response = '';
+	
+	protected $user_cookie_name = 'user';
 	
     public function __construct()
     {
 		$this->view = new View();
 		$this->uri = new URI();
+		$this->store = new Store();
 		$this->view->add_global( 'url', $this->uri );
     }
     
@@ -68,27 +73,52 @@ class Request {
 	protected function load_data()
 	{
 		// first load GET data etc
-		
 		$this->view->add_global( 'get', $_GET );
 		
 		// then grab any data from the data directory
-		
 		$data = Data::instance();
 		$this->view->add_global( 'data', $data->load_all( DATA_PATH, DATA_CACHE ) );
 	}
 	
 	protected function handle_session()
-	{
-		$store = new Store();
-		$store->set_state();
-		$this->view->add_global( 'store', $store );
-		$this->view->add_global( 'user', $store->userdata() );
+	{				
+		$lit = Config::get('login_trigger');
+		$lot = Config::get('logout_trigger');
+		
+		if ( isset( $_REQUEST[$lit] ) )
+		{
+			// login
+			$user_details = $this->get_user_details( $_REQUEST[$lit] );
+			if ( $user_details ) $this->store->set( $this->user_cookie_name, $user_details );
+		}
+		elseif ( isset( $_REQUEST[$lot] ) )
+		{
+			// logout
+			$this->store->clear( $this->user_cookie_name );
+		}
+		
+		$user = $this->store->get( $this->user_cookie_name ); // grab the user, if set.
+		
+		$this->view->add_global( 'store', $this->store );
+		$this->view->add_global( 'user', $user );
 	}
 	
 	protected function render()
 	{
 		$this->view->set_path( $this->page->get_path() );	
 		$this->response = $this->view->render();
+	}
+	
+	// trys to find a user's details with a specific id. If not found it just returns the ID.
+	protected function get_user_details( $user_id )
+	{
+		if ( ! empty($user_id) )
+		{
+			$data = Data::instance();
+			$user = $data->find('users', $user_id);
+			return $user ? $user : array( 'id' => $user_id );			
+		}
+		return NULL;
 	}
 	
 	protected function json_data()
@@ -103,7 +133,7 @@ class Request {
 			unset($parts[1]);
 			
 			$result = $data->find($file, implode('.', array_values($parts)) );
-
+			
 			$this->response = $result === NULL ? '' : json_encode($result);
 		}
 	}
