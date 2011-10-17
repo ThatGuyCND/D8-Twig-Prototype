@@ -12,7 +12,7 @@ class Session {
     
     public function __construct()
     {
-        $this->cookie_prefix = Config::get('cookie_prefix');
+        $this->cookie_prefix = Config::get('prefix');
     }
 
     public function set_state()

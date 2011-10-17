@@ -4,19 +4,27 @@
 	<meta charset="utf-8">
 		
 	<link rel="stylesheet" href="/system/assets/css/pronto.css" media="all">
+	
+	<style>
+		#content {
+			max-width: 900px;
+			margin: 20px auto;
+			border: 1px solid #CCC;
+			padding: 30px;
+		}
+	</style>
 		
 	<title>Prontotype</title>
 </head>
 <body>
 	
-{% block content %}
+<div id="content">
+	
+	{% block content %}
 
-<p>Default content</p>
+	<p>Default content</p>
 
-{% endblock content %}
-
-<div>
-	<p><a href="#" class="notes-on">Notes On</a> | <a href="#" class="notes-off">Notes Off</a> </p>
+	{% endblock content %}
 	
 </div>
 
@@ -25,16 +33,7 @@
 <script src="/system/assets/js/pronto.js"></script>
 
 <script>
-	var notes = new PT.notes();
-	
-	$('.notes-on').click(function(){
-		notes.showNotes();
-		return false;
-	});
-	$('.notes-off').click(function(){
-		notes.hideNotes();
-		return false;
-	});
+	var toolbar = new PT.toolbar();
 </script>
 
 </body>	

@@ -5,8 +5,6 @@ return array(
 	'login_trigger'            	=> 'login',
 	'logout_trigger'            => 'logout',
 	
-	'cookie_prefix'        		=> 'prototype_',
-	
 	'caching'		            => TRUE,
 
 );

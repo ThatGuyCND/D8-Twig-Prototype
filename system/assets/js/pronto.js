@@ -2,12 +2,18 @@
     
     PT = jQuery({}); // so we can bind/trigger events off here if needed
     
+    PT.SETTINGS = {
+        
+        prefix : 'prontotype-',
+        cookieExpiration : 7 // 7 days
+        
+    };
+    
     // PT.session : Basic session (cookie) storage, integrates with PHP session storage
     
-    PT.session = function( cookiePrefix, cookieExpiration ) {
-        
-        this.cookiePrefix = cookiePrefix || 'prontotype_';
-        this.cookieExpiration = cookieExpiration || 7; // 7 days
+    PT.session = function() {
+        this.cookiePrefix = PT.SETTINGS.prefix;
+        this.cookieExpiration = PT.SETTINGS.cookieExpiration; 
     };
     
     PT.session.prototype.store = function( key, val ) {
@@ -28,14 +34,14 @@
     
     // PT.notes : Retrieves notes from the server and attaches them to the appropriate element via the data-note attribute
     
-    PT.notes = function( notesfile, classPrefix, callback ) {
+    PT.notes = function( callback, notesfile ) {
         
         var self = this,
             callback = callback || function(){},
             body = $('body');
             
         this.notesfile = notesfile || 'notes';
-        this.classPrefix = classPrefix || 'prontotype-';
+        this.classPrefix = PT.SETTINGS.prefix;
         this.notes = {};
         this.noted = jQuery({});
         this.notesOn = false;
@@ -142,4 +148,39 @@
         return notes;
     };
     
+    // PT Toolbar: 
+    
+    PT.toolbar = function(){
+        var pre = PT.SETTINGS.prefix,
+            self = this;   
+        this.toolbar = $('<div class="' + pre + 'toolbar ' + pre + 'loading' + '"></div>');             
+        this.session = new PT.session();
+        this.notes = new PT.notes(function(){
+            self.toolbar.removeClass(pre + 'loading');
+            self._addNotesTools();
+        });
+        $('body').append(this.toolbar);
+    };
+    
+    PT.toolbar.prototype._addNotesTools = function() {
+        
+        var off, on,
+            section = $('<div class="'+PT.SETTINGS.prefix + 'section'+'"></div>'),
+            self = this;
+        
+        off = $('<a href="#">Show notes</a>').bind('click', function(){
+            self.notes.showNotes();
+            return false;
+        });
+        
+        on = $('<a href="#">Hide notes</a>').bind('click', function(){
+            self.notes.hideNotes();
+            return false;
+        });
+        
+        section.append(off).append(on);
+        this.toolbar.append(section);
+    };
+
+
 })( this, jQuery );
