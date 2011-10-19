@@ -1,8 +1,14 @@
-{% import "PT/forms.html" as pt_forms %}
+{% import "PT/forms.html" as form %}
 {% extends "layouts/base.html" %}
 
 {% block content %}
 
-<h1>Form components</h1>
+{{ form.input('A text input', 'password') }}
+
+{{ form.input('A text input', 'checkbox') }}
+
+{{ form.textarea('', 'hello') }}
+
+{{ form.checkbox('A text input') }}
 
 {% endblock content %}
