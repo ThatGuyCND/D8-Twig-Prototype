@@ -5,12 +5,15 @@ class Config {
     public static $items = array();
    
     public static function load()
-    {       
-        $app_config = require( SYSTEM_PATH.'config.php' );
+    {   
+		$yaml = new sfYamlParser();
+		
+		$app_config = $yaml->parse(file_get_contents(SYSTEM_PATH.'config.yml'));
         
-        if ( file_exists( DOCROOT.'config.php' ) )
+        if ( file_exists( DOCROOT.'config.yml' ) )
         {
-            $user_config = require( DOCROOT.'config.php' );
+            $user_config = $yaml->parse(file_get_contents(DOCROOT.'config.yml'));
+			$user_config = $user_config ? $user_config : array();
             self::$items = array_merge( $app_config, $user_config );
         }
         else

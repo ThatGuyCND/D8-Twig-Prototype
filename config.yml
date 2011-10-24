@@ -1,0 +1,20 @@
+# user configuration overrides
+
+auto_reload	: true
+charset: utf-8
+file_extension: html
+index_file: index.php
+
+caching: true
+
+login_trigger: login
+logout_trigger: logout
+
+prefix: prontotype-
+cookie_lifetime: 604800 # 1 week
+
+csv_headers: true
+csv_delimiter: ','
+csv_enclosure: '"'
+csv_escape: \
+csv_id_header: id
