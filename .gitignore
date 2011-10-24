@@ -2,3 +2,4 @@
 !/system/_cache/.gitkeep
 .DS_Store
 _site/
+.htaccess
