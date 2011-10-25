@@ -4,8 +4,39 @@
 
 {% block content %}
 
-<h1>Oh dear! Something's gone very wrong.</h1>
+<div id="notice" class="block error">
 
-<p>The computer says: "{{ message }}"</p>
+	<h1>Oh dear! Something's gone wrong.</h1>
+
+	<p class="error-detail">The computer says: "{{ exception.message }}"</p>
+	
+	{% if not debug_on %}<p class="to-note">Remember you can always enable debugging in the configuration file if you need more information on this error.</p>{% endif %}
+	
+</div>
+
+{% if debug_on %}
+<div id="stacktrace" class="block">
+	
+	<h2>A stack trace for you geeks:</h2>
+	
+	<ol>
+		<li>
+			<h3>{{ exception.getFile }} <span>(Line {{ exception.getLine }})</span></h3>
+			<div class="source">
+				{{ error_code|raw }}
+			</div>			
+		</li>
+		{% for trace in exception.getTrace %}
+		<li>
+			<h3>{{ trace.file }} <span>(Line {{ trace.line }})</span></h3>
+			<div class="source">
+				{{ trace_code[loop.index0]|raw }}
+			</div>
+		</li>	
+		{% endfor %}
+	</ol>
+	
+</div>
+{% endif %}
 
 {% endblock content %}

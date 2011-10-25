@@ -52,8 +52,14 @@ class View {
 		}
 		catch( Exception $e )
 		{
-			// TODO: More helpful/granualar error messages
-			throw new Exception( 'Error rendering template ' . $this->path );
+			if ( Config::get('debug') )
+			{
+				throw $e;
+			}
+			else
+			{
+				throw new Exception( 'Error rendering template ' . $this->path );	
+			}
 		}	
 	}
 

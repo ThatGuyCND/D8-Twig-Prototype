@@ -162,11 +162,26 @@ class Request {
 	}
 
 	protected function display_error( $e )
-	{
-		// TODO: Nicer error printing
-		$this->view->add_data('message', $e->getMessage());
+	{	
+		$this->view->add_data('exception', $e);
+		
+		if ( Config::get('debug') )
+		{	
+			$this->view->add_data('debug_on', true);
+			
+			$this->view->add_data('error_code', Helpers::get_highlighted_source($e->getFile(), $e->getLine(), 10));
+		
+			$trace_code = array();
+			foreach( $e->getTrace() as $trace )
+			{
+				$trace_code[] = Helpers::get_highlighted_source($trace['file'], $trace['line'], 6);
+			}
+		
+			$this->view->add_data('trace_code', $trace_code);
+		}
+		
 		$this->view->set_path('PT/error.html');
 		$this->response = $this->view->render();
 	}
-		
+
 }

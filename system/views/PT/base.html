@@ -3,47 +3,16 @@
 <head>
 	<meta charset="utf-8">
 	
-	<style>
-		
-		body {
-			font-family: sans-serif;
-			padding: 20px;
-			color: #333;
-			font-size: 15px;
-			line-height: 1.4;
-		}
-		
-		#notice {
-			border: 1px solid #CCC;
-			background: #EEE;
-			padding: 20px;
-		}
-		
-		h1 {
-			font-size: 18px;
-			font-weight: bold;
-			margin-top: 0;
-			margin-bottom: 10px;
-		}
-		
-		p {
-			margin-bottom: 0;
-			margin-top: 10px;
-			font-style: italic;
-			font-family: Georgia;
-			color: #777;
-		}
-	</style>
+	<link rel="stylesheet" href="/system/assets/css/system.css" media="all">
 	
 	<title>{{ title }}</title>
 </head>
 <body>
+		
+	{% block content %}{% endblock content %}
 	
-	<div id="notice">
-		
-		{% block content %}{% endblock content %}
-		
-	</div>
+	<script src="/system/assets/js/jquery-1.6.4.min.js"></script>
+	<script src="/system/assets/js/system.js"></script>
 	
 </body>	
 </html>
