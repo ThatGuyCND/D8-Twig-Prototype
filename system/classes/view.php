@@ -19,6 +19,13 @@ class View {
            	'charset'     	=> Config::get('charset'),
 			'cache'			=> TEMPLATE_CACHE,
 		));
+		
+		$this->twig->addExtension(new Twig_Extensions_Extension_Text());
+		
+		if ( Config::get('debug') )
+		{
+			$this->twig->addExtension(new Twig_Extensions_Extension_Debug());	
+		}
 	}
 	
 	public function set_path( $path )
