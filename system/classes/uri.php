@@ -48,6 +48,11 @@ class URI {
 		return $this->segments;
 	}
 	
+	public function get()
+	{
+		return $_GET;
+	}
+	
 	public function last_segment()
 	{
 		$num = count($this->segments);

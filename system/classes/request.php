@@ -72,10 +72,7 @@ class Request {
 
 	protected function load_data()
 	{
-		// first load GET data etc
-		$this->view->add_global( 'get', $_GET );
-		
-		// then grab any data from the data directory
+		// grab any data from the data directory
 		$data = Data::instance();
 		$this->view->add_global( 'data', $data->load_all( DATA_PATH, DATA_CACHE ) );
 	}
