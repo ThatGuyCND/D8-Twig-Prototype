@@ -14,32 +14,32 @@ class Request {
 	
 	protected $user_cookie_name = 'user';
 	
-    public function __construct()
-    {
+	public function __construct()
+	{
 		$this->view = new View();
 		$this->uri = new URI();
 		$this->store = new Store();
 		$this->view->add_global( 'url', $this->uri );
-    }
-    
-    public function execute()
-    {
-        try
-        {
+	}
+	
+	public function execute()
+	{
+		try
+		{
 			if ( $this->uri->segment_1 == '__data' )
 			{
 				$this->json_data();
 			}
 			else
 			{
-	            $this->get_page();
+				$this->get_page();
 				$this->load_data();
 				$this->handle_session();
 				$this->render();
 			}
-        }
-        catch( Exception $e )
-        {
+		}
+		catch( Exception $e )
+		{
 			// TODO: use differnet Exception subclasses to distinguish different errors
 			switch ( $e->getMessage() )
 			{
@@ -51,24 +51,24 @@ class Request {
 					$this->display_error( $e );
 				break;
 			}
-        }
-    }
+		}
+	}
 	
 	public function response()
 	{
 		return $this->response;
 	}
 	
-    protected function get_page()
-    {
-        $this->page = new Page($this->uri);
+	protected function get_page()
+	{
+		$this->page = new Page($this->uri);
 
-        if ( ! $this->page->exists() )
-        {
-            // can't find anything, throw a 404 error.
-            throw new Exception('404');
-        }
-    }
+		if ( ! $this->page->exists() )
+		{
+			// can't find anything, throw a 404 error.
+			throw new Exception('404');
+		}
+	}
 
 	protected function load_data()
 	{
@@ -139,30 +139,30 @@ class Request {
 	}
 	
 	protected function show_404()
-    {
-        header('HTTP/1.0 404 Not Found');
-        
-        // if there is a 404 content page, display that.
+	{
+		header('HTTP/1.0 404 Not Found');
+		
+		// if there is a 404 content page, display that.
 
 		$page = new Page( new URI('404') );
 
-        if ( $page->exists() )
-        {
+		if ( $page->exists() )
+		{
 			try
 			{
-				$this->view->set_path( $page->get_path() );	
+				$this->view->set_path( $page->get_path() ); 
 				$this->response = $this->view->render();
 				return;
 			}
 			catch( Exception $e )
 			{
-			    // ...
+				// ...
 			}
-        }
+		}
 		
 		$this->view->set_path('PT/404.html');
 		$this->response = $this->view->render();
-    }
+	}
 
 	protected function display_error( $e )
 	{
