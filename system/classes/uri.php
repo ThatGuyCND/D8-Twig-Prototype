@@ -53,6 +53,19 @@ class URI {
 		return $_GET;
 	}
 	
+	public function querystring( $pairs = NULL )
+	{
+		$get = $_GET;
+		if ( !empty($pairs) )
+		{
+			foreach ( $pairs as $name => $value )
+			{
+				$get[$name] = $value;
+			}
+		}
+		return http_build_query($get);
+	}
+	
 	public function last_segment()
 	{
 		$num = count($this->segments);
