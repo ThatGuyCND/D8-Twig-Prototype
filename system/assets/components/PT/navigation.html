@@ -1,0 +1,40 @@
+{% macro nav( opts, page_tree ) %}
+
+{% if not page_tree %}{% set page_tree = pages.get_all %}{% endif %}
+
+<{{ opts.list_type|default('ul') }}>
+
+	{% for item in page_tree %}
+	
+	{% if item.name != '404' %}
+
+		{% if item.name == 'index' and opts.hide_index and item.level != 1 %}
+	
+		{% else %}
+		
+		<li{% if '/' ~ url.string == item.link_url %} class="current"{% endif %}>
+		{% if item.type == 'directory' %}
+
+			{% if not item.has_index %}
+				{{ item.nice_name }}
+			{% else %}
+				<a href="{{ item.link_url }}">{{ item.nice_name }}</a>
+			{% endif %}
+			
+			{{ _self.nav( opts, item.children ) }}
+
+		{%  else %}
+	
+		<a href="{{ item.link_url }}">{{ item.nice_name }}</a>
+		
+		{% endif %}
+		</li>
+		{% endif %}
+	
+	{% endif %}
+	
+	{% endfor %}
+	
+</{{ opts.list_type|default('ul') }}>
+
+{% endmacro %}
