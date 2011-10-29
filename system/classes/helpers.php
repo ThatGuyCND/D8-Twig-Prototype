@@ -4,7 +4,7 @@ Class Helpers {
 	
 	public static function get_highlighted_source($fileName, $lineNumber, $showLines)
 	{
-		$lines = file_get_contents($fileName);
+		$lines = @file_get_contents($fileName);
 		$lines = highlight_string($lines, true);
 		$lines = explode("<br />", $lines);
 
@@ -29,6 +29,23 @@ Class Helpers {
 		}
 
 		return $html;
+	}
+
+	public static function title_case( $title )
+	{ 
+		$smallwordsarray = array('of','a','the','and','an','or','nor','but','is','if','then','else','when','at','from','by','on','off','for','in','out','over','to','into','with');
+		
+		$words = explode(' ', $title); 
+		foreach ($words as $key => $word) 
+		{ 
+			if ($key == 0 or !in_array($word, $smallwordsarray))
+			{
+				$words[$key] = ucwords(strtolower($word)); 
+			}
+		}
+		
+		$newtitle = implode(' ', $words); 
+		return $newtitle; 
 	}
 
 }

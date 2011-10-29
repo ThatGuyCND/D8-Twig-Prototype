@@ -1,18 +1,19 @@
-auto_reload	: true
-charset: utf-8
-file_extension: html
-index_file: index.php
-
-caching: true
-
 login_trigger: login
 logout_trigger: logout
 
 prefix: prontotype-
 cookie_lifetime: 604800 # 1 week
 
+debug : false
+auto_reload	: true
+caching: true
+charset: utf-8
+
 csv_headers: true
-csv_delimiter: ',' 
+csv_delimiter: ','
 csv_enclosure: '"'
 csv_escape: \
 csv_id_header: id
+
+homepage_nicename: Home
+index_nicename: Overview

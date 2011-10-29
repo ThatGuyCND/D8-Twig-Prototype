@@ -4,7 +4,7 @@ class Request {
 	
 	public $uri;
 	
-	protected $page;
+	protected $page_path;
 
 	protected $view;
 		
@@ -19,7 +19,9 @@ class Request {
 		$this->view = new View();
 		$this->uri = new URI();
 		$this->store = new Store();
+		$this->pages = new Pages();
 		$this->view->add_global( 'url', $this->uri );
+		$this->view->add_global( 'pages', $this->pages );
 	}
 	
 	public function execute()
@@ -32,7 +34,7 @@ class Request {
 			}
 			else
 			{
-				$this->get_page();
+				$this->get_page_path();
 				$this->load_data();
 				$this->handle_session();
 				$this->render();
@@ -59,14 +61,19 @@ class Request {
 		return $this->response;
 	}
 	
-	protected function get_page()
+	protected function get_page_path()
 	{
-		$this->page = new Page($this->uri);
 
-		if ( ! $this->page->exists() )
+		$page = $this->pages->get_by_path( $this->uri->string() );
+				
+		if ( ! $page )
 		{
 			// can't find anything, throw a 404 error.
 			throw new Exception('404');
+		}
+		else
+		{
+			$this->page_path = $page['template_path'];
 		}
 	}
 
@@ -102,7 +109,7 @@ class Request {
 	
 	protected function render()
 	{
-		$this->view->set_path( $this->page->get_path() );	
+		$this->view->set_path( $this->page_path );	
 		$this->response = $this->view->render();
 	}
 	
@@ -141,13 +148,13 @@ class Request {
 		
 		// if there is a 404 content page, display that.
 
-		$page = new Page( new URI('404') );
-
-		if ( $page->exists() )
+		$page = $this->pages->get_by_path( '404' );
+		
+		if ( $page )
 		{
 			try
 			{
-				$this->view->set_path( $page->get_path() ); 
+				$this->view->set_path( $page['template_path'] );
 				$this->response = $this->view->render();
 				return;
 			}

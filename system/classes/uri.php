@@ -88,10 +88,10 @@ class URI {
 		header('Location: '. $url);
 		exit();
 	}
-	
+		
 	protected function detect()
 	{
-		$index_file = Config::get('index_file');
+		$index_file = 'index.php';
 		
 		self::$uri_prefix = empty($index_file) ? $index_file : '';
 		
@@ -117,7 +117,7 @@ class URI {
 				throw new Exception('The URI cannot be detected.');
 			}
 		}
-
+		
 		return $uri;
 	}
 
