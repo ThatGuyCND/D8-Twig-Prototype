@@ -22,6 +22,7 @@ class Request {
 		$this->pages = new Pages();
 		$this->view->add_global( 'url', $this->uri );
 		$this->view->add_global( 'pages', $this->pages );
+		$this->view->add_global( 'data', Data::instance() );
 	}
 	
 	public function execute()
@@ -35,7 +36,6 @@ class Request {
 			else
 			{
 				$this->get_page_path();
-				$this->load_data();
 				$this->handle_session();
 				$this->render();
 			}
@@ -75,12 +75,6 @@ class Request {
 		{
 			$this->page_path = $page['template_path'];
 		}
-	}
-
-	protected function load_data()
-	{
-		// grab any data from the data directory
-		$this->view->add_global( 'data', Data::instance() );
 	}
 	
 	protected function handle_session()
