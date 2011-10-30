@@ -40,6 +40,12 @@ class Data {
 	{
 		return $this->$name ? TRUE : FALSE;
 	}
+	
+	// convenience function - for use when templates need to load data from a file whose name they won't know until runtime
+	public function get( $file )
+	{
+		return $this->$file;
+	}
 
     public function find( $path )
     {
