@@ -113,9 +113,9 @@ class Data {
 					
 		// no cache or cache is outdated
 
-		if ( isset($this->extensions_map[$parts['extension']]))
+		if ( isset($this->extensions_map[strtolower($parts['extension'])]))
 		{
-			$parser = 'parse_' . $this->extensions_map[$parts['extension']];
+			$parser = 'parse_' . $this->extensions_map[strtolower($parts['extension'])];
 			
 			if ( method_exists( $this, $parser ) )
 			{
