@@ -80,8 +80,7 @@ class Request {
 	protected function load_data()
 	{
 		// grab any data from the data directory
-		$data = Data::instance();
-		$this->view->add_global( 'data', $data->load_all( DATA_PATH, DATA_CACHE ) );
+		$this->view->add_global( 'data', Data::instance() );
 	}
 	
 	protected function handle_session()
@@ -119,7 +118,7 @@ class Request {
 		if ( ! empty($user_id) )
 		{
 			$data = Data::instance();
-			$user = $data->find('users', $user_id);
+			$user = $data->find('users.'. $user_id);
 			return $user ? $user : array( 'id' => $user_id );			
 		}
 		return NULL;
@@ -135,8 +134,8 @@ class Request {
 			
 			unset($parts[0]);
 			unset($parts[1]);
-			
-			$result = $data->find($file, implode('.', array_values($parts)) );
+
+			$result = $data->find($file . implode('.', array_values($parts)) );
 			
 			$this->response = $result === NULL ? '' : json_encode($result);
 		}

@@ -4,6 +4,12 @@ class Data {
 	
 	protected $data = array();
 	
+	protected $extensions_map = array(
+		'csv'  => 'csv',
+		'yml'  => 'yml',
+		'yaml' => 'yml',
+	);
+	
 	protected static $instance;
 	
 	public static function instance()
@@ -18,91 +24,110 @@ class Data {
     
     protected function __construct()
     {
-        /// nothing to see here!
+        /// Nothing to see here! Class is acting as a singleton.
     }
 
-    public function load_all( $data_path, $cache_path = NULL )
-    {
-		// grab data from the data dir or data cache as appropriate
-		
-		$datafiles = glob( DATA_PATH . '*' );
-		
-		if ( count( $datafiles ) )
+	public function __get( $name )
+	{
+		if ( ! isset( $this->data[$name] ) )
 		{
-			foreach( $datafiles as $file )
-			{
-				$this->retrieve( $file, $cache_path );
-			}
+			$this->data[$name] = $this->load( $name );
 		}
-		
-        return $this->data;
-    }
+		return $this->data[$name];
+	}
+	
+	public function __isset( $name )
+	{
+		return $this->$name ? TRUE : FALSE;
+	}
 
-    public function find( $filename, $key=NULL )
+    public function find( $path )
     {
-		$datafiles = glob( DATA_PATH . $filename . '.*' );
-		$this->retrieve( $datafiles[0], DATA_CACHE ); // may be a few with other extensions. Just grab the first one.
-		
-		$data = $this->data[$filename];
-		
-		if (  !empty($key) )
-		{
-			$keys = explode( '.', trim( $key, '.') );
+		$pathparts = explode( '.', trim( $path, '.') );
+				
+		$data = $this->{$pathparts[0]};
 
-			foreach ( $keys as $thekey )
+		unset($pathparts[0]);
+		$pathparts = array_values($pathparts);
+
+		if ( count( $pathparts) )
+		{
+			foreach ( $pathparts as $key )
 			{
-				if ( isset( $data[$thekey] ) )
+				if ( isset( $data[$key] ) )
 				{
-					$data = $data[$thekey];
+					$data = $data[$key];
 				}
 				else
 				{
 					$data = NULL;
 					break;
 				}
-			}
+			}			
 		}
 
         return $data;
     }
 
-	protected function retrieve( $file, $cache_path )
+	protected function load( $name )
 	{
-		if ( ! isset($this->data[$file]) )
+		$data = array();
+		$datafiles = glob( DATA_PATH . $name . '.*' );
+
+		if ( count( $datafiles ) )
 		{
-			$parts = pathinfo( $file );
-			$file_mtime = filemtime( $file );
-			$file_retrieved = FALSE;
-		
-			if ( $cache_path )
+			foreach( $datafiles as $file )
 			{
-				$cache_file = $cache_path . $parts['filename'] . '.cache';
-			
-				// TODO: Extract caching into standalone class?
-				if (  file_exists( $cache_file ) and $file_mtime < filemtime( $cache_file ) )
+				// if there are multiple files with the same name but different extensions, merge the contents of them together
+				$filedata = $this->retrieve( $file );
+				if ( $filedata )
 				{
-					// cached version is newer, use that
-					$this->data[$parts['filename']] = unserialize( file_get_contents( $cache_file ) );
-					$file_retrieved = TRUE;
-				}
-			}
-		
-			if ( $file_retrieved === FALSE )
-			{
-				// no cache or cache is outdated
-				$parser = 'parse_' . $parts['extension'];
-			
-				if ( method_exists( $this, $parser ) )
-				{
-					$this->data[$parts['filename']] = $this->$parser( $file );
-				}
-			
-				if ( $cache_path )
-				{
-					file_put_contents( $cache_path . $parts['filename'] . '.cache', serialize($this->data[$parts['filename']]) );
+					$data = array_merge( $data, $filedata );	
 				}
 			}
 		}
+		else
+		{
+			$data = NULL;
+		}
+		return $data;
+	}
+
+	protected function retrieve( $file )
+	{
+		$parts = pathinfo( $file );
+		$file_mtime = filemtime( $file );
+		$data = array();
+		
+		if ( DATA_CACHE )
+		{
+			$cache_file = DATA_CACHE . $parts['filename'] . '.cache';
+
+			// TODO: Extract caching into standalone class?
+			if (  file_exists( $cache_file ) and $file_mtime < filemtime( $cache_file ) )
+			{
+				// cached version is newer, use that
+				return unserialize( file_get_contents( $cache_file ) );
+			}
+		}
+					
+		// no cache or cache is outdated
+
+		if ( isset($this->extensions_map[$parts['extension']]))
+		{
+			$parser = 'parse_' . $this->extensions_map[$parts['extension']];
+			
+			if ( method_exists( $this, $parser ) )
+			{
+				$data = $this->$parser( $file );
+			}
+	
+			if ( DATA_CACHE )
+			{
+				file_put_contents( DATA_CACHE . $parts['filename'] . '.cache', serialize($data) );
+			}
+		}
+		return $data;
 	} 
 
 	protected function parse_csv( $path )
