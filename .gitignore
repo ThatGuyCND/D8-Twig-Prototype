@@ -3,3 +3,5 @@
 .DS_Store
 _site/
 .htaccess
+/public/*
+!/public/robots.txt
