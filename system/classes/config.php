@@ -24,9 +24,9 @@ class Config {
     
     public static function get( $item, $default = NULL )
     {
-        if ( isset(static::$items[$item]) )
+        if ( isset(self::$items[$item]) )
 		{
-			return static::$items[$item];
+			return self::$items[$item];
 		}
 
 		return $default;
