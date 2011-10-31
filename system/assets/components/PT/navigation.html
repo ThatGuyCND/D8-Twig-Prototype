@@ -12,19 +12,14 @@
 	
 		<li{% if item.is_current or item.is_parent %} class="{% if item.is_current %}current {% endif %}{% if item.is_parent %}parent{% endif %}"{% endif %}>
 		{% if item.type == 'directory' %}
-
 			{% if not item.has_index %}
 				{{ item.nice_name }}
 			{% else %}
 				<a href="{{ item.nice_url }}">{{ item.nice_name }}</a>
 			{% endif %}
-			
 			{{ _self.page_tree( opts, item.children ) }}
-
 		{%  else %}
-	
-		<a href="{{ item.nice_url }}">{{ item.nice_name }}</a>
-		
+			<a href="{{ item.nice_url }}">{{ item.nice_name }}</a>
 		{% endif %}
 		</li>
 		{% endif %}

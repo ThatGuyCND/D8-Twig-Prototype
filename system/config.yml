@@ -18,4 +18,4 @@ csv_id_header: id
 homepage_nicename: Home
 index_nicename: Overview
 
-short_url_prefix: p
+short_url_trigger: p

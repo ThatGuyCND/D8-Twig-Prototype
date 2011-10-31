@@ -83,9 +83,9 @@ class URI {
 		return $this->uri;
 	}
 	
-	public function redirect( $url )
+	public function redirect( $url, $status = 302 )
 	{
-		header('Location: '. $url);
+		header('Location: '. $url, TRUE, $status );
 		exit();
 	}
 		

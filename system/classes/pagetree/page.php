@@ -58,7 +58,7 @@ Class Pagetree_Page {
 		if ( ! empty( $filename_info['id'] ) )
 		{
 			$this->id = $filename_info['id'];
-			$this->short_url = Config::get('short_url_prefix') . '/' . $this->id;
+			$this->short_url = Config::get('short_url_trigger') . '/' . $this->id;
 		}
 		
 		$this->name = $filename_info['route_name'];

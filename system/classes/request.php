@@ -33,6 +33,18 @@ class Request {
 			{
 				$this->json_data();
 			}
+			elseif ( $this->uri->segment_1 == Config::get('short_url_trigger' ) && $this->uri->segment_2 )
+			{
+				$page = $this->pages->get_by_id( $this->uri->segment_2 );
+				if ( $page )
+				{
+					$this->uri->redirect( $page->nice_url, 301 );
+				}
+				else
+				{
+					throw new Exception('404');
+				}
+			}
 			else
 			{
 				$this->get_page_path();
