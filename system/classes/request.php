@@ -63,7 +63,6 @@ class Request {
 	
 	protected function get_page_path()
 	{
-
 		$page = $this->pages->get_by_path( $this->uri->string() );
 				
 		if ( ! $page )
