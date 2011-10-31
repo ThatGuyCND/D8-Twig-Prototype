@@ -73,7 +73,7 @@ class Request {
 		}
 		else
 		{
-			$this->page_path = $page['template_path'];
+			$this->page_path = $page->fs_path;
 		}
 	}
 	
@@ -147,7 +147,7 @@ class Request {
 		{
 			try
 			{
-				$this->view->set_path( $page['template_path'] );
+				$this->view->set_path( $page->fs_path );
 				$this->response = $this->view->render();
 				return;
 			}

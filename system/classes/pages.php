@@ -6,7 +6,7 @@ Class Pages {
 	
 	function __construct()
 	{
-		$this->router = Router::instance();
+		$this->router = Pagetree::instance();
 	}
 	
 	function get_by_id( $id )

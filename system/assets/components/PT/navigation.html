@@ -1,4 +1,4 @@
-{% macro nav( opts, page_tree ) %}
+{% macro page_tree( opts, page_tree ) %}
 
 {% if not page_tree %}{% set page_tree = pages.get_all %}{% endif %}
 
@@ -12,20 +12,22 @@
 	
 		{% else %}
 		
-		<li{% if '/' ~ url.string == item.link_url %} class="current"{% endif %}>
+		{% set class = _self._page_tree_item_class( item ) %}
+		
+		<li{% if class %} class="{{ class }}"{% endif %}>
 		{% if item.type == 'directory' %}
 
 			{% if not item.has_index %}
 				{{ item.nice_name }}
 			{% else %}
-				<a href="{{ item.link_url }}">{{ item.nice_name }}</a>
+				<a href="{{ item.nice_url }}">{{ item.nice_name }}</a>
 			{% endif %}
 			
 			{{ _self.nav( opts, item.children ) }}
 
 		{%  else %}
 	
-		<a href="{{ item.link_url }}">{{ item.nice_name }}</a>
+		<a href="{{ item.nice_url }}">{{ item.nice_name }}</a>
 		
 		{% endif %}
 		</li>
@@ -36,5 +38,12 @@
 	{% endfor %}
 	
 </{{ opts.list_type|default('ul') }}>
+
+{% endmacro %}
+
+
+{% macro _page_tree_item_class( item ) %}
+
+{% if '/' ~ url.string == item.link_url %} current{% endif %}
 
 {% endmacro %}
