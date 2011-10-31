@@ -8,5 +8,6 @@ RewriteRule ^(.*)$ /public/$1 [L]
 # otherwise run everything else through index.php 
 RewriteCond %{REQUEST_URI} !index.php
 RewriteCond %{REQUEST_URI} !/public/(.*)
+RewriteCond %{REQUEST_URI} !/system/assets/(.*)
 RewriteCond %{DOCUMENT_ROOT}public/$1 !-f
 RewriteRule ^(.*)$ /index.php/$1 [L]
