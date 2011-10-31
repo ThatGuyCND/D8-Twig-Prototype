@@ -17,10 +17,37 @@ Class Pagetree_Directory {
 	public $children;
 	
 	public $has_index;
+	
+	public $type = 'directory';
 		
 	function __construct( $path )
 	{
 		$this->build_data( $path );
+	}
+	
+	public function is_parent()
+	{
+		$uri = new URI();
+		$uri_segments = $uri->segments();
+		$page_segments = explode( '/', trim($this->nice_url, '/') );
+		
+		$num_uri_segments = count( $uri_segments );
+		$num_page_segments = count( $page_segments );
+		
+		if ( $num_page_segments > $num_uri_segments )
+		{
+			return false; // cant be a parent as the page has more segments
+		}
+		
+		for ( $i = 0; $i < $num_page_segments; $i++ )
+		{
+			if ( $uri_segments[$i] !== $page_segments[$i] )
+			{
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	protected function build_data( $path )
@@ -43,7 +70,7 @@ Class Pagetree_Directory {
 	public function add_children( $children )
 	{
 		$this->children = $children;
-		
+
 		$this->has_index = false;
 		foreach( $children as $child )
 		{

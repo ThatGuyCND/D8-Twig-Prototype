@@ -8,13 +8,9 @@
 	
 	{% if item.name != '404' %}
 
-		{% if item.name == 'index' and opts.hide_index and item.level != 1 %}
+		{% if not (item.name == 'index' and opts.hide_index and item.level != 1) %}
 	
-		{% else %}
-		
-		{% set class = _self._page_tree_item_class( item ) %}
-		
-		<li{% if class %} class="{{ class }}"{% endif %}>
+		<li{% if item.is_current or item.is_parent %} class="{% if item.is_current %}current {% endif %}{% if item.is_parent %}parent{% endif %}"{% endif %}>
 		{% if item.type == 'directory' %}
 
 			{% if not item.has_index %}
@@ -23,7 +19,7 @@
 				<a href="{{ item.nice_url }}">{{ item.nice_name }}</a>
 			{% endif %}
 			
-			{{ _self.nav( opts, item.children ) }}
+			{{ _self.page_tree( opts, item.children ) }}
 
 		{%  else %}
 	
@@ -38,12 +34,5 @@
 	{% endfor %}
 	
 </{{ opts.list_type|default('ul') }}>
-
-{% endmacro %}
-
-
-{% macro _page_tree_item_class( item ) %}
-
-{% if '/' ~ url.string == item.link_url %} current{% endif %}
 
 {% endmacro %}

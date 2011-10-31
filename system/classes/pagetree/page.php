@@ -16,6 +16,8 @@ Class Pagetree_Page {
 	
 	public $nice_name;
 	
+	public $type = 'page';
+	
 	protected $name_format_regex = '/^((\d)*[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)\.html$/';
 	
 	function __construct( $path )
@@ -23,6 +25,12 @@ Class Pagetree_Page {
 		$this->build_data( $path );
 	}
 	
+	public function is_current()
+	{
+		$uri = new URI();
+		return ( trim($this->nice_url,'/') == trim( $uri->string(),'/') );
+	}
+		
 	protected function build_data( $path )
 	{
 		$pages_path = rtrim(PAGES_PATH, DS);
