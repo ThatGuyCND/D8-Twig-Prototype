@@ -6,14 +6,14 @@ logout_trigger: logout
 prefix: prontotype-
 cookie_lifetime: 604800 # 1 week
 
-debug : true
+debug : false
 auto_reload	: true
 caching: true
 charset: utf-8
 
 csv_headers: true
-csv_delimiter: ','
-csv_enclosure: '"'
+csv_delimiter: ,
+csv_enclosure: \"
 csv_escape: \
 csv_id_header: id
 

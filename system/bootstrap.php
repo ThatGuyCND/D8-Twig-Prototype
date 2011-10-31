@@ -8,11 +8,11 @@ define('SYSTEM_PATH', realpath($system_dir).DS);
 define('DATA_PATH', realpath($data_dir).DS);
 define('SITE_PATH', realpath($site_dir).DS);
 
-define('COMPONENTS_PATH', SITE_PATH.'components'.DS);
+define('COMPONENTS_PATH', SITE_PATH.'macros'.DS);
 define('PAGES_PATH', SITE_PATH.'pages'.DS);
 define('LAYOUTS_PATH', SITE_PATH.'layouts'.DS);
 
-define('PT_COMPONENTS_PATH', SYSTEM_PATH.'assets/components'.DS);
+define('PT_COMPONENTS_PATH', SYSTEM_PATH.'assets/macros'.DS);
 define('PT_VIEWS_PATH', SYSTEM_PATH.'views'.DS);
 
 require_once SYSTEM_PATH . '/vendor/Twig/Twig/Autoloader.php';

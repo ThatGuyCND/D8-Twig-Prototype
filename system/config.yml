@@ -10,8 +10,8 @@ caching: true
 charset: utf-8
 
 csv_headers: true
-csv_delimiter: ','
-csv_enclosure: '"'
+csv_delimiter: ,
+csv_enclosure: \"
 csv_escape: \
 csv_id_header: id
 
