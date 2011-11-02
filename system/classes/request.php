@@ -30,7 +30,7 @@ class Request {
 	{
 		try
 		{
-			if ( $this->uri->segment_1 == '__data' )
+			if ( $this->uri->segment_1 == Config::get('json_data_trigger' ) )
 			{
 				// json data request
 				$this->json_data();

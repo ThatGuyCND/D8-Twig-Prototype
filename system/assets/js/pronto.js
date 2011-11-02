@@ -5,8 +5,8 @@
 	PT.SETTINGS = {
 		
 		prefix : 'prontotype-',
-		cookieExpiration : 604800,
-		json_data_trigger : '__data'
+		cookieLifetime : 604800,
+		jsonDataTrigger : '__data'
 		
 	};
 	
@@ -18,11 +18,11 @@
 	
 	PT.store = function() {
 		this.cookiePrefix = PT.SETTINGS.prefix;
-		this.cookieExpiration = PT.SETTINGS.cookieExpiration / 24*60*60;
+		this.cookieLifetime = PT.SETTINGS.cookieLifetime / 24*60*60;
 	};
 	
 	PT.store.prototype.set = function( key, val ) {
-		$.cookie(this.cookiePrefix + key, JSON.stringify(val), { expires : this.cookieExpiration, path : '/' });
+		$.cookie(this.cookiePrefix + key, JSON.stringify(val), { expires : this.cookieLifetime, path : '/' });
 	};
 	
 	PT.store.prototype.get = function( key ) {
@@ -55,7 +55,7 @@
 			'class' : this.classPrefix + 'note'
 		});
 		
-		$.getJSON('/__data/' + this.notesfile + '/', function( data ){
+		$.getJSON('/' + PT.SETTINGS.jsonDataTrigger + '/' + this.notesfile + '/', function( data ){
 			self.notes = data;
 			self.noted.each(function(){
 				self._makeNotable( $(this) );

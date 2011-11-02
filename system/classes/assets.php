@@ -88,8 +88,8 @@ Class Assets {
 		{
 			$config  = '{';
 			$config .= '"prefix" : "' . Config::get('prefix') . '", ';
-			$config .= '"cookie_lifetime" : "' . Config::get('cookie_lifetime') . '", ';
-			$config .= '"json_data_trigger" : "' . Config::get('json_data_trigger') . '"';
+			$config .= '"cookieLifetime" : "' . Config::get('cookie_lifetime') . '", ';
+			$config .= '"jsonDataTrigger" : "' . Config::get('json_data_trigger') . '"';
 			$config .= '}';
 			$output_files[] = '<script>PT.configure(' . $config . ');</script>';
 		}
