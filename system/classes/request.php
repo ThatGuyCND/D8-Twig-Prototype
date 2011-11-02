@@ -23,6 +23,7 @@ class Request {
 		$this->view->add_global( 'url', $this->uri );
 		$this->view->add_global( 'pages', $this->pages );
 		$this->view->add_global( 'data', Data::instance() );
+		$this->view->add_global( 'assets', new Assets() );
 	}
 	
 	public function execute()
@@ -31,10 +32,12 @@ class Request {
 		{
 			if ( $this->uri->segment_1 == '__data' )
 			{
+				// json data request
 				$this->json_data();
 			}
 			elseif ( $this->uri->segment_1 == Config::get('short_url_trigger' ) && $this->uri->segment_2 )
 			{
+				// short url request
 				$page = $this->pages->get_by_id( $this->uri->segment_2 );
 				if ( $page )
 				{
@@ -47,6 +50,7 @@ class Request {
 			}
 			else
 			{
+				// regular page request
 				$this->get_page_path();
 				$this->handle_session();
 				$this->render();

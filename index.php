@@ -6,6 +6,8 @@ $data_dir        = 'data';
 
 $site_dir     = 'site';
 
+$public_dir     = 'public';
+
 ///////////////
 
 define('DS', DIRECTORY_SEPARATOR);

@@ -18,6 +18,7 @@ class Prontotype {
 
 			$template_cache = CACHE_PATH . 'templates' . DS;
 			$data_cache = CACHE_PATH . 'data' . DS;
+			$asset_cache = CACHE_PATH . 'assets' . DS;
 
 			if ( ! file_exists( $template_cache ) and ( ! @mkdir( $template_cache ) or ! @chmod( $template_cache, 0771 ) ) )
 			{
@@ -28,14 +29,21 @@ class Prontotype {
 			{
 				$data_cache = NULL;		
 			}
+			
+			if ( ! file_exists( $asset_cache ) and ( ! @mkdir( $asset_cache ) or ! @chmod( $asset_cache, 0771 ) ) )
+			{
+				$asset_cache = NULL;		
+			}
 
 			define('TEMPLATE_CACHE', $template_cache);
 			define('DATA_CACHE', $data_cache);
+			define('ASSET_CACHE', $asset_cache);
 		}
 		else
 		{
 			define('TEMPLATE_CACHE', NULL);
 			define('DATA_CACHE', NULL);
+			define('ASSET_CACHE', NULL);
 		}
     }
     

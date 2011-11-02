@@ -18,6 +18,7 @@ class View {
            	'auto_reload' 	=> Config::get('auto_reload'),
            	'charset'     	=> Config::get('charset'),
 			'cache'			=> TEMPLATE_CACHE,
+			'autoescape'	=> false,
 		));
 		
 		$this->twig->addExtension(new Twig_Extensions_Extension_Text());

@@ -48,6 +48,24 @@ class URI {
 		return $this->segments;
 	}
 	
+	public function base()
+	{
+	   	$scheme = isset($_SERVER['https']) ? 'https' : 'http';
+
+	  	$hostname = $_SERVER['SERVER_NAME'];
+	  	$port = $_SERVER['SERVER_PORT'];
+
+		if ( ($port == '80' && $scheme == 'http') or ($port == '443' && $scheme == 'https') )
+		{
+		    $base = $scheme . '://' . $hostname . '/';
+		}
+		else
+		{
+		    $base = $scheme . '://' . $hostname . ':' . $port . '/';
+		}
+		return $base;
+	}
+	
 	public function get()
 	{
 		return $_GET;

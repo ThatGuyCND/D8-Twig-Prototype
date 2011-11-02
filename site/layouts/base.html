@@ -3,6 +3,10 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	
+	{{ assets.link('/assets/css/main.less') }}
+	
+	{{ assets.pronto }}
 		
 	<link rel="stylesheet" href="/system/assets/css/pronto.css" media="all">
 	
@@ -34,10 +38,6 @@
 	{% endblock content %}
 	
 </div>
-
-<script src="/system/assets/js/jquery-1.6.4.min.js"></script>
-<script src="/system/assets/js/jquery.cookie.js"></script>
-<script src="/system/assets/js/pronto.js"></script>
 
 <script>
 	var toolbar = new PT.toolbar();

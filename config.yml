@@ -6,8 +6,8 @@ logout_trigger: logout
 prefix: prontotype-
 cookie_lifetime: 604800 # 1 week
 
-debug : false
-auto_reload	: true
+debug: false
+auto_reload: true
 caching: true
 charset: utf-8
 
@@ -21,4 +21,6 @@ homepage_nicename: Home
 index_nicename: Overview
 
 short_url_trigger: p
+json_data_trigger: __data
 
+xhtml_tags: false
