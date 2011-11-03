@@ -223,18 +223,21 @@
 	
 	PT.toolbar = function(){
 		var pre = PT.SETTINGS.prefix,
-			self = this;   
-		this.toolbar = $('<div id="' + pre + 'toolbar" class="' + pre + 'loading"></div>');				
-		this.store = new PT.store();
-		this.notes = new PT.notes(function(){
-			self._addNotesTools();
-			self.users = new PT.users(function(){
-				self.toolbar.removeClass(pre + 'loading');
-				self._addUserTools();
+			self = this;  
+		
+		$(function(){
+			self.toolbar = $('<div id="' + pre + 'toolbar" class="' + pre + 'loading"></div>');				
+			self.store = new PT.store();
+			self.notes = new PT.notes(function(){
+				self._addNotesTools();
+				self.users = new PT.users(function(){
+					self.toolbar.removeClass(pre + 'loading');
+					self._addUserTools();
+				});
 			});
+		
+			$('body').append(self.toolbar);			
 		});
-
-		$('body').append(this.toolbar);
 	};
 	
 	PT.toolbar.prototype._addNotesTools = function() {
@@ -264,8 +267,8 @@
 				userMenu = $('<select id="' + PT.SETTINGS.prefix + 'user-select">');
 				userMenu.append('<option value="">--</option>');
 				
-				$.each(this.users.users, function( username, details ){
-					var sel = '<option value="' + username + '">' + username;
+				$.each(this.users.users, function( loginName, details ){
+					var sel = '<option value="' + loginName + '">' + details.username;
 					if ( details.role !== undefined ) sel = sel + ' (' + details.role + ')';
 					sel = sel + '</option>';
 					userMenu.append(sel);

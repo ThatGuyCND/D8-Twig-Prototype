@@ -4,44 +4,35 @@
 <head>
 	<meta charset="utf-8">
 	
-	{{ assets.link('/assets/css/main.less') }}
+	<style>
+		
+	</style>
 	
 	{{ assets.pronto }}
-		
-	<link rel="stylesheet" href="/system/assets/css/pronto.css" media="all">
 	
-	<style>
-		#content {
-			max-width: 900px;
-			margin: 20px auto;
-			border: 1px solid #CCC;
-			padding: 30px;
-		}
-	</style>
-		
-	<title>Prontotype</title>
+	<script>var toolbar = new PT.toolbar();</script>
+	
+	<title>Prontotype Example Site</title>
 </head>
 <body>
 	
-<div id="header">
+	<div id="header">
 	
-	{{ nav.page_tree( { 'hide_index': false } ) }}
+	{{ nav.page_tree( { 'hide_index': false, 'id' : 'asdasd', 'class' : 'asd' } ) }}
 	
-</div>
+	</div>
 	
-<div id="content">
+	<div id="content">
 	
-	{% block content %}
-
-	<p>Default content</p>
-
-	{% endblock content %}
+	{% block content %}{% endblock content %}
 	
-</div>
-
-<script>
-	var toolbar = new PT.toolbar();
-</script>
-
+	</div>
+	
+	<div id="footer">
+		
+		<p>Powered by <a href="http://prontotype.allmarkedup.com">Prontotype</a></p>
+		
+	</div>
+	
 </body>	
 </html>

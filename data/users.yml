@@ -1,4 +1,9 @@
-bob:
-    username: bob
-    name: Bob Builder
+user:
+    username: user-example
+    name: Edward Xample
     role: user
+    
+admin:
+    username: admin-example
+    name: Ellie Xample
+    role: admin

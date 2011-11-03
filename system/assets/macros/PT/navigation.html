@@ -2,7 +2,7 @@
 
 {% if not page_tree %}{% set page_tree = pages.get_all %}{% endif %}
 
-<{{ opts.list_type|default('ul') }}>
+<{{ opts.list_type|default('ul') }}{% if opts.id %} id="{{ opts.id }}"{% endif %}{% if opts.class %} class="{{ opts.class }}"{% endif %}>
 
 	{% for item in page_tree %}
 	
