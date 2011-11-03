@@ -224,7 +224,7 @@
 	PT.toolbar = function(){
 		var pre = PT.SETTINGS.prefix,
 			self = this;   
-		this.toolbar = $('<div class="' + pre + 'toolbar ' + pre + 'loading' + '"></div>');				
+		this.toolbar = $('<div id="' + pre + 'toolbar" class="' + pre + 'loading"></div>');				
 		this.store = new PT.store();
 		this.notes = new PT.notes(function(){
 			self._addNotesTools();
