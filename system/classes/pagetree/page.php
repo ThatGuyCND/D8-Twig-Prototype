@@ -18,6 +18,8 @@ Class Pagetree_Page {
 	
 	public $type = 'page';
 	
+	public $level;
+	
 	protected $name_format_regex = '/^((\d)*[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)\.html$/';
 	
 	function __construct( $path )

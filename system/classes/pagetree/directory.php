@@ -19,6 +19,8 @@ Class Pagetree_Directory {
 	public $has_index;
 	
 	public $type = 'directory';
+	
+	public $level;
 		
 	function __construct( $path )
 	{
@@ -54,14 +56,16 @@ Class Pagetree_Directory {
 	{
 		$pages_path = rtrim(PAGES_PATH, DS);
 		$dir_path = str_replace(array($pages_path), '', $path);
-		$level = count(explode('/',$dir_path));
+		
+		$this->level = count(explode('/',$dir_path)) -1;
+
 		$route_dir_path = preg_replace( Pagetree::$folder_format_regex, '/', $dir_path );
 		$dir_path = '/pages' . $dir_path;
 		
 		$segments = explode( DS, trim($route_dir_path, DS) );
 		
 		$this->name = end($segments);
-		
+
 		$this->fs_path = $dir_path;
 		
 		$this->nice_name = Helpers::title_case(str_replace(array('_','-'), ' ', $this->name));

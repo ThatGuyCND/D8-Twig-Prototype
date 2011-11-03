@@ -17,7 +17,11 @@
 			{% else %}
 				<a href="{{ item.nice_url }}">{{ item.nice_name }}</a>
 			{% endif %}
+			{% if item.level < opts.depth  %}
 			{{ _self.page_tree( opts, item.children ) }}
+			{% elseif not opts.depth %}
+			{{ _self.page_tree( opts, item.children ) }}
+			{% endif %}
 		{%  else %}
 			<a href="{{ item.nice_url }}">{{ item.nice_name }}</a>
 		{% endif %}
