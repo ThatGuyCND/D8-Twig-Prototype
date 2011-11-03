@@ -271,8 +271,6 @@
 					userMenu.append(sel);
 				});
 				
-				userMenu.append('<option value="logout">[logout]</option>');
-				
 				userMenu.bind('change', function(){
 					var val = $(this).find(':selected').attr('value');
 					if ( val !== '' ) {
