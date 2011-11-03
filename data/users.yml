@@ -1,3 +1,4 @@
 bob:
-    name: 'Bob Builder'
-    role: 'user'
+    username: bob
+    name: Bob Builder
+    role: user

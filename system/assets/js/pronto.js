@@ -3,15 +3,47 @@
 	PT = jQuery({}); // so we can bind/trigger events off here if needed
 	
 	PT.SETTINGS = {
-		
 		prefix : 'prontotype-',
 		cookieLifetime : 604800,
 		jsonDataTrigger : '__data'
-		
 	};
 	
 	PT.configure = function( config ){
 		$.extend(PT.SETTINGS, config);
+	};
+	
+	PT.helpers = {
+		
+		makeQs : function( qs, params ) {
+		
+			var qsPairs = qs.replace('?','').split('&'),
+				numPairs = qsPairs.length,
+				qsParams = {},
+				newQs = [];
+			
+			// build object of param key/val paris
+			for( var i = 0; i < numPairs; i++ ) {
+				if ( qsPairs[i] !== '' ) {
+					var parts = qsPairs[i].split('=');
+					if ( parts[1] === undefined ) parts[1] = '';
+					qsParams[parts[0]] = parts[1];
+				}
+			}
+			
+			$.each( params, function( key, val ){
+				if ( qsParams[key] === undefined ) {
+					if ( val !== null ) newQs.push(key + '=' + val );
+				}
+				delete qsParams[key];
+			});
+			
+			$.each( qsParams, function( key, val ){
+				newQs.push(key + '=' + val );
+			});
+
+			return newQs.join('&');
+		}
+		
 	};
 	
 	// PT.store : Basic (cookie) storage, integrates with data stored in JSON cookies via PHP
@@ -48,6 +80,7 @@
 		this.notesfile = notesfile || 'notes';
 		this.classPrefix = PT.SETTINGS.prefix;
 		this.notes = {};
+		this.store = new PT.store();
 		this.noted = jQuery({});
 		this.notesOn = false;
 		this.noted = $('[data-note]');
@@ -60,20 +93,33 @@
 			self.noted.each(function(){
 				self._makeNotable( $(this) );
 			});
+			if ( self.store.get('show-notes') === true ) {
+				self.showNotes();
+			}
 			callback();
 		});
 		
 		body.append(this.noteEl);
 	};
 	
-	PT.notes.prototype.showNotes = function( el ) {
+	PT.notes.prototype.showNotes = function() {
 		this.highlightNotes(true);
 		this.notesOn = true;
+		this.store.set('show-notes', true);
 	};
 	
-	PT.notes.prototype.hideNotes = function( el ) {
+	PT.notes.prototype.hideNotes = function() {
 		this.highlightNotes(false);
 		this.notesOn = false;
+		this.store.set('show-notes', false);
+	};
+	
+	PT.notes.prototype.toggleNotes = function() {
+		if ( this.notesOn ) {
+			this.hideNotes();
+		} else {
+			this.showNotes();
+		}
 	};
 	
 	PT.notes.prototype.highlightNotes = function( turnOn ) {
@@ -153,7 +199,27 @@
 		return notes;
 	};
 	
-	// PT Toolbar: 
+	// PT.users : Grab the users from the users file.
+	
+	PT.users = function( callback, usersfile ) {
+		
+		var self = this,
+			callback = callback || function(){},
+			body = $('body');
+			
+		this.usersfile = usersfile || 'users';
+		this.classPrefix = PT.SETTINGS.prefix;
+		this.users = {};
+		this.store = new PT.store();
+		this.currentUser = this.store.get('user');
+		
+		$.getJSON('/' + PT.SETTINGS.jsonDataTrigger + '/' + this.usersfile + '/', function( data ){
+			self.users = data;
+			callback();
+		});
+	};
+	
+	// PT Toolbar: Wrapper to pull together some of the tools into an easy to use package
 	
 	PT.toolbar = function(){
 		var pre = PT.SETTINGS.prefix,
@@ -161,30 +227,76 @@
 		this.toolbar = $('<div class="' + pre + 'toolbar ' + pre + 'loading' + '"></div>');				
 		this.store = new PT.store();
 		this.notes = new PT.notes(function(){
-			self.toolbar.removeClass(pre + 'loading');
 			self._addNotesTools();
+			self.users = new PT.users(function(){
+				self.toolbar.removeClass(pre + 'loading');
+				self._addUserTools();
+			});
 		});
+
 		$('body').append(this.toolbar);
 	};
 	
 	PT.toolbar.prototype._addNotesTools = function() {
+		var toggle,
+			section = $('<div class="'+PT.SETTINGS.prefix + 'section'+'"></div>'),
+			self = this,
+			checked = self.store.get('show-notes') === true ? ' checked' : '';
+
+			toggle = $('<input type="checkbox" id="' + PT.SETTINGS.prefix + 'notes-toggle" ' + checked + '>').bind('change', function(){
+				self.notes.toggleNotes();
+				return false;
+			});
 		
-		var off, on,
+		section.append(toggle).append('<label for="' + PT.SETTINGS.prefix + 'notes-toggle">Show notes</label>');
+		this.toolbar.append(section);
+	};
+	
+	PT.toolbar.prototype._addUserTools = function() {
+		var userMenu,
 			section = $('<div class="'+PT.SETTINGS.prefix + 'section'+'"></div>'),
 			self = this;
 		
-		off = $('<a href="#">Show notes</a>').bind('click', function(){
-			self.notes.showNotes();
-			return false;
-		});
-		
-		on = $('<a href="#">Hide notes</a>').bind('click', function(){
-			self.notes.hideNotes();
-			return false;
-		});
-		
-		section.append(off).append(on);
-		this.toolbar.append(section);
+		if ( ! $.isEmptyObject(this.users.users) )
+		{
+			if ( self.users.currentUser === undefined ) {
+				// logged out 
+				userMenu = $('<select id="' + PT.SETTINGS.prefix + 'user-select">');
+				userMenu.append('<option value="">--</option>');
+				
+				$.each(this.users.users, function( username, details ){
+					var sel = '<option value="' + username + '">' + username;
+					if ( details.role !== undefined ) sel = sel + ' (' + details.role + ')';
+					sel = sel + '</option>';
+					userMenu.append(sel);
+				});
+				
+				userMenu.bind('change', function(){
+					var val = $(this).find(':selected').attr('value');
+					if ( val !== '' ) {
+						window.location.search = PT.helpers.makeQs(window.location.search, {'login':val, 'logout':null});
+					}
+					return false;
+				});
+				
+				section.append('<label for="' + PT.SETTINGS.prefix + 'user-select">Login as user:</label>').append(userMenu);
+				
+			} else {
+				// logged in
+				userMenu = $('<span>Logged in as <strong>' + self.users.currentUser.username + '</strong> (' + self.users.currentUser.role + ')' + ' <a href="#">Log out</a></span>');
+				userMenu.find('a').bind('click', function(){
+					window.location.search = PT.helpers.makeQs(window.location.search, {'logout':1, 'login':null});
+					return false;
+				});
+				section.append(userMenu);
+			}
+
+			if ( self.users.currentUser !== undefined ) {
+				userMenu.append('<option value="logout">[logout]</option>');
+			}
+				
+			this.toolbar.append(section);			
+		}
 	};
 
 
