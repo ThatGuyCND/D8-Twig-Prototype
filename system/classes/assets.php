@@ -176,7 +176,7 @@ Class Assets {
 				{
 					if ( Config::get('debug') )
 					{
-						throw new Exception('Fatal error when compiling LESS file: '.$ex->getMessage());
+						throw new Exception('Fatal error when compiling LESS file: ' . $e->getMessage());
 					}
 					else
 					{
