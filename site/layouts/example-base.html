@@ -1,0 +1,41 @@
+{% import "PT/navigation.html" as nav %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	
+	{{ assets.link('example.css') }}
+	
+	<title>Prontotype Example Site</title>
+</head>
+<body>
+	
+	<div id="header" class="section">
+		
+		<h1><a href="/">Prontotype</a></h1>
+		
+		<div class="nav" data-note="global.main_nav">
+			
+			{{ nav.page_tree( { 'depth': 1 } ) }}
+			
+		</div>
+	
+	</div>
+	
+	<div id="content" class="section">
+	
+	{% block content %}{% endblock content %}
+	
+	</div>
+	
+	<div id="footer" class="section">
+		
+		<p>Powered by <a href="http://prontotype.it">Prontotype</a>. </p>
+		
+	</div>
+	
+	{{ assets.pronto({ 'depth':1 }) }}
+	<script>new PT.toolbar(['notes', 'users']);</script>
+	
+</body>	
+</html>

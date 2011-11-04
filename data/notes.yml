@@ -1,5 +1,5 @@
 homepage:
-    content: This is a note that should appear in relation the content parapgraph on the homepage
-    
-about:
-    title: this is linked to the title
+    content: 
+
+global:
+    main_nav: This navigation is generated using one of the build in macros. You can also define your own macros to easily make reusable, dynamic content blocks 

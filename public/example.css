@@ -1,0 +1,142 @@
+/* Example CSS file for styling the default Prontotype pages. Delete at will!! */
+
+/* @group Base styles */
+
+body {
+	font-family: sans-serif;
+	font-size: 15px;
+	color: #555;
+	margin: 0;
+	padding: 0 5%;
+	background: #EDEDED;
+	line-height: 1.3;
+	border-top: 4px solid #333;
+}
+
+p {
+	margin: 0 0 1.0em 0;
+}
+
+p.lede {
+	font-size: 18px;
+	color: #888;
+}
+
+a {
+	color: #E66F05;
+}
+
+.section {
+	max-width: 900px;
+	margin: 0 auto;
+}
+
+/* @end Base styles */
+
+/* @group Navigation */
+
+.nav {
+	
+}
+
+.nav ul {
+	margin: 0 -10px 0 0;
+	padding: 0;
+	text-align: right;
+}
+
+.nav li {
+	display: inline-block;
+	border-right: 1px solid #CCC;
+	line-height: 1;
+	padding-left: 10px;
+}
+
+.nav li:last-child {
+	border-right: 0;
+}
+
+.nav a {
+	display: inline-block;
+	margin-right: 15px;
+	text-decoration: none;
+}
+
+.nav a:hover {
+	text-decoration: underline;
+}
+
+.nav .current > a {
+	color: #666;
+	text-decoration: none;
+}
+
+/* @end Navigation */
+
+/* @group Header */
+
+#header {
+	margin-bottom: 20px;
+	overflow: hidden;
+	padding: 25px 20px 0 20px;
+}
+
+#header h1 {
+	width: 30%;
+	float: left;
+	margin: 0;
+	color: #333;
+	font-size: 24px;
+	text-shadow: 1px 1px 1px #FFF;
+}
+
+#header h1 a {
+	color: #333;
+	text-decoration: none;
+}
+
+#header .nav {
+	width: 70%;
+	float: right;
+	margin-top: 4px;
+}
+
+/* @end Header */
+
+/* @group Content */
+
+#content {
+	background: #FFF;
+	padding: 30px 20px;
+	border: 1px solid #DDD;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	box-shadow: 0px 1px 2px #DDD;
+}
+
+#content h2 {
+	font-size: 20px;
+	color: #333;
+	margin: 0 0 0.8em 0;
+}
+
+/* @end Content */
+
+/* @group Footer */
+
+#footer {
+	padding: 15px 20px 10px 20px;
+	font-size: 12px;
+	color: #999;
+	text-align: center;
+}
+
+#footer a {
+	color: #999;
+}
+
+/* @end Footer */
+
+
+
