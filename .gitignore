@@ -5,3 +5,4 @@ _site/
 .htaccess
 /public/*
 !/public/robots.txt
+!/public/example.css

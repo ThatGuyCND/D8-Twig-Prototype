@@ -1,0 +1,17 @@
+{% import "PT/forms.html" as form %}
+{% extends "layouts/example-base.html" %}
+
+{% block content %}
+
+<h1>{{ page.nice_name }}</h1>
+
+
+{{ form.input('A text input', 'password') }}
+
+{{ form.input('A text input', 'checkbox') }}
+
+{{ form.textarea('', 'hello') }}
+
+{{ form.checkbox('A text input') }}
+
+{% endblock content %}
