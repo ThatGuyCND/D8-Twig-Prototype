@@ -4,6 +4,34 @@
 
 	<h2>Pages and Layouts</h2>
 	
+	<p>Adding a file with a <code>.html</code> extension to the <code>/site/pages</code> directory create a page in your prototype. You can obviously organise these into folders as you would a normal site, and Prontotype will make sure that that are routed to using the pages directory as the 'web root'.</p>
 	
+	<p>For instance, a file at <code>/site/pages/about/company.html</code> will be accessible via the URL <code>http://example.com/about/company</code></p>
+	
+	<p>You can also define <strong>layouts</strong> in the <code>/site/layouts</code> directory that your pages can inhertit from. These layouts define <strong>blocks</strong> that are replaced by content in your page files. See the <a href="{{ data.examples.docs_url }}">documentation</a> for more information on how this works.</p>
+	
+	<h3>Ordering pages</h3>
+	
+	<p>To keep your files ordered nicely in your directories (and to control order that they are output from things like the navigation <a href="/macros-examples">macros</a>), you can also prefix the filename with a number followed by a dash, underscore or full stop (period). This ordering information will not show up in the URL.</p>
+	
+	<p>So using the above example again, but including some ordering information, a file at <code>/site/pages/about/<strong>1-</strong>company.html</code> will still be accessible at <code>http://example.com/about/company</code> and will be the first file in the 'about' section.</p>
+	
+	<h3>Page IDs</h3>
+	
+	<p>Lastly, you can give pages unique IDs, and use these to build links to pages so that if you move the pages around (which happens a lot when prototyping!) you won't have to update all your links.</p>
+	
+	<p>You can give a page and ID by adding an alphanumeric string (underscores and dashes are ok in there too) surrounded by square brackets into the filename. You can also follow this by a dash, underscore or full stop (period) to help seperate it from the rest of the filename, of you wish.</p>
+	
+	<p>The ID string, like the ordering prefix, will not show up in the URL. So a page at <code>/site/pages/about/<strong>[c123]-</strong>company.html</code> will have a page ID of <code>c123</code> and will be shown at the URL <code>http://example.com/about/company</code></p>
+	
+	<p>Once your page has an ID, you can always print it's current URL into your template by using:</p>
 
+	<p><code>{% raw %}{{ pages.get_by_id('PAGE-ID').url }}{% endraw %}</code></p>
+	
+	<p>Where <code>PAGE-ID</code> is the ID of the page you are interested in.</p>
+	
+	<h3>Bringing it all togther</h3>
+	
+	<p>You can of course mix ordering with pages ids - so combining the examples above we would have a page that sits at <code>/site/pages/about/<strong>1-[c123]-</strong>company.html</code> which is found at the URL <code>http://example.com/about/company</code>, is the first page in the 'about' section and has a page ID of <code>c123</code></p>
+	
 {% endblock content %}

@@ -31,6 +31,11 @@ a {
 	margin: 0 auto;
 }
 
+p code {
+	background: #fcf8df;
+	
+}
+
 /* @end Base styles */
 
 /* @group Forms */
@@ -71,7 +76,7 @@ textarea {
 
 /* @end Forms */
 
-/* @group Lists */
+/* @group Files */
 
 #files {
 	background: #F7F7F7;
@@ -98,7 +103,7 @@ textarea {
 	font-size: 13px;
 }
 
-/* @end Lists */
+/* @end Files */
 
 /* @group Examples */
 
@@ -128,7 +133,8 @@ textarea {
 }
 
 .example .code pre {
-	background: #EEE;
+	background: #F7F7F7;
+	border: 1px solid #DDD;
 	color: #222;
 	font-family: monospace;
 	font-size: 13px;
