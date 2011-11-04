@@ -1,5 +1,7 @@
 homepage:
-    content: 
+    content: The contents of this area are defined in the page file. The rest of the layout is defined seperately in a master layout file so it can be shared between pages. 
 
 global:
-    main_nav: This navigation is generated using one of the build in macros. You can also define your own macros to easily make reusable, dynamic content blocks 
+    main_nav: This navigation is generated using one of the build in macros. You can also define your own macros to easily make reusable, dynamic content blocks
+    
+    user_bar: The content of this bar will change depending on who is logged in.

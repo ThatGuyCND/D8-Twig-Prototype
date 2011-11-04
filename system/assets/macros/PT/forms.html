@@ -1,3 +1,13 @@
+{% macro form_open( action, method ) %}
+<form action="{{ action }}" method="{{ method|default('post') }}">
+{% endmacro %}
+
+
+{% macro form_close() %}
+<form action="forms_submit" method="post" accept-charset="utf-8">
+{% endmacro %}
+
+
 {% macro label( label, opts ) %}
 <label{% if opts.id %} for="{{ opts.id }}"{% endif %}>{{ label|default('Input label') }}</label>
 {% endmacro %}
@@ -61,7 +71,7 @@
 
 {% else %}
 
-<div class="container">
+<div class="container type-{{ type }}">
 	
 {% if not attrs %}{% set attrs = {} %}{% endif %}
 {% if not attrs.id %}{% set attrs = attrs|merge({ 'id': 'id' ~ _pt_randid }) %}{% endif %}

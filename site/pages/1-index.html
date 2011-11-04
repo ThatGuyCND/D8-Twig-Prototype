@@ -1,0 +1,45 @@
+{% extends "layouts/example-base.html" %}
+
+{% block content %}
+
+<div data-note="homepage.content">
+	
+	<h2>Getting Started with Prontotype</h2>
+	
+	<p class="lede">Prontotype is set up and ready for you to get prototyping!</p>
+
+	<p>We've included a few example pages and files to help you understand a little bit more about how Prontotype works. You can go ahead and delete or replace them as soon as you are ready.</p>
+		
+	<div id="files">
+		
+		<h3>Example files we've included:</h3>
+		
+		<ul>
+			<li>/data/example.yml</li>
+			<li>/public/example.css</li>
+			<li>/site/layouts/example-base.html</li>
+			<li>/pages/1-index.html</li>
+			<li>/pages/2-macros.html</li>
+			<li>/pages/3-data.html</li>
+			<li>/pages/4-more.html</li>
+			<li>/pages/4-more.html</li>
+			<li>/pages/5-404.html</li>
+		</ul>
+		
+	</div>
+	
+	<p>There is also some example data in <code>/data/users.yml</code> and <code>/data/notes.yml</code> which you can clear out, but it's best to leave the files themselves there as they are used internally by the system.<p>
+	
+	<h3>The Prontotype toolbar</h3>
+	
+	<p>For the example site the Prontotype toolbar has been enabled - you should see it down in the bottom right had side of your browser window.</p>
+	
+	<p>Try toggling the notes view or logging in as one of the users (defined in the <code>/data/users.yml</code> file) to get a feel for how some of the more dynamic aspects of Prontotype can work.</p>
+	
+	<h3>Learn More&hellip;</h3>
+	
+	<p>The pages in this example site don't by any means show you everything that you can do with Prontotype. You should check out the <a href="{{ data.example.docs_url }}">full documentation</a> to learn more about working with user logins, available template tags, LessCSS support and more.</p>
+	
+</div>
+
+{% endblock content %}
