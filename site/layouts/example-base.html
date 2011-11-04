@@ -10,13 +10,31 @@
 </head>
 <body>
 	
+	{% if user %}
+		
+	<div id="userbar">
+		
+		<div class="section" data-note="global.user_bar">
+			
+			{% if user.role == 'user' %}
+			<p>Logged in as {{ user.name }}. <a href="#">Manage your account</a> or <a href="?{{ config.logout_trigger }}">log out</a></p>
+			{% elseif user.role == 'admin' %}
+			<p>Welcome back {{ user.name }}. You can access your <a href="#">admin panel here</a>.</p>
+			{% endif %}
+			
+		</div>
+				
+	</div>
+	
+	{% endif %}
+	
 	<div id="header" class="section">
 		
 		<h1><a href="/">Prontotype</a></h1>
 		
-		<div class="nav" data-note="global.main_nav">
+		<div class="nav">
 			
-			{{ nav.page_tree( { 'depth': 1 } ) }}
+			{{ nav.page_tree( { 'depth': 1, 'note' : 'global.main_nav' } ) }}
 			
 		</div>
 	
@@ -30,7 +48,7 @@
 	
 	<div id="footer" class="section">
 		
-		<p>Powered by <a href="http://prontotype.it">Prontotype</a>. </p>
+		<p>Powered by <a href="{{ data.example.site_url }}">Prontotype</a>. </p>
 		
 	</div>
 	
