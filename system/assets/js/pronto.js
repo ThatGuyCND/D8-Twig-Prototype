@@ -221,23 +221,48 @@
 	
 	// PT Toolbar: Wrapper to pull together some of the tools into an easy to use package
 	
-	PT.toolbar = function(){
+	PT.toolbar = function( tools ){
 		var pre = PT.SETTINGS.prefix,
-			self = this;  
+			self = this;
+			
+		this.tools = tools || ['notes', 'users'];
+		this.loadingCount = 0;
+		this.toolSections = {};
 		
 		$(function(){
-			self.toolbar = $('<div id="' + pre + 'toolbar" class="' + pre + 'loading"></div>');				
+			self.toolbar = $('<div id="' + pre + 'toolbar" class="' + pre + 'loading"></div>');
 			self.store = new PT.store();
-			self.notes = new PT.notes(function(){
-				self._addNotesTools();
-				self.users = new PT.users(function(){
-					self.toolbar.removeClass(pre + 'loading');
-					self._addUserTools();
+			
+			if ( $.inArray('notes', self.tools ) !== false ) {
+				self.loadingCount++;
+				self.notes = new PT.notes(function(){
+			
+					self._addNotesTools();
+					self._finishedLoading();
 				});
-			});
-		
-			$('body').append(self.toolbar);			
+			}
+			
+			if ( $.inArray('users', self.tools ) !== false ) {
+				self.loadingCount++;
+				self.users = new PT.users(function(){
+					self._addUserTools();
+					self._finishedLoading();
+				});
+			}
+			
+			$('body').append(self.toolbar);
 		});
+	};
+	
+	PT.toolbar.prototype._finishedLoading = function() {
+		var self = this;
+		this.loadingCount--;
+		if ( this.loadingCount === 0 ) {
+			this.toolbar.removeClass(PT.SETTINGS.prefix + 'loading');
+			$.each( this.tools, function( index, value ){
+				self.toolbar.append(self.toolSections[value]);
+			});
+		}
 	};
 	
 	PT.toolbar.prototype._addNotesTools = function() {
@@ -252,7 +277,7 @@
 			});
 		
 		section.append(toggle).append('<label for="' + PT.SETTINGS.prefix + 'notes-toggle">Show notes</label>');
-		this.toolbar.append(section);
+		this.toolSections['notes'] = section;
 	};
 	
 	PT.toolbar.prototype._addUserTools = function() {
@@ -294,7 +319,7 @@
 				section.append(userMenu);
 			}
 				
-			this.toolbar.append(section);			
+			this.toolSections['users'] = section;
 		}
 	};
 
