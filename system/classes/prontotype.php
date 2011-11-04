@@ -2,7 +2,7 @@
 
 class Prontotype {
     
-    public static $version = '0.1';
+    public static $version = '0.1.0';
     
     public static function start()
     {
