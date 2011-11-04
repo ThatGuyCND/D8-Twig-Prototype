@@ -1,4 +1,4 @@
-<?php
+<?php defined('SYSTEM_PATH') or exit('No direct script access allowed');
 
 Class Pagetree_Directory {
 	

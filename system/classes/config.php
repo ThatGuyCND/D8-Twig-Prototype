@@ -31,6 +31,11 @@ class Config {
 
 		return $default;
     }
+
+	public static function get_all()
+	{
+		return self::$items;
+	}
     
 }
 

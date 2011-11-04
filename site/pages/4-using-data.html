@@ -1,0 +1,15 @@
+{% extends "layouts/example-base.html" %}
+
+{% block content %}
+
+	<h2>Using data in your Prototype</h2>
+	
+	<p>Prontotype makes it really easy to define data and then use it throughout your prototype. If you create a new YAML or CSV file in the <code>/data</code> directory then the data contained in it will then be available in your templates for you to use.</p>
+	
+	<p>So, for example, if you have a file called <code>/data/posts.yml</code> which defined a number of posts that each have a title, you could do something like this to display the title of the first one:</p>
+
+	<p><code>{% raw %}{{ data.posts[0].title }}{% endraw %}</code></p>
+	
+	<p>For more information on data formatting and using template tags to access your data from within your pages you should check out the <a href="{{ data.example.docs_url }}">full documentation</a>.</p>
+	
+{% endblock content %}
