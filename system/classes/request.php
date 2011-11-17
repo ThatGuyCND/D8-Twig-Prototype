@@ -25,6 +25,7 @@ class Request {
 		$this->view->add_global( 'data', Data::instance() );
 		$this->view->add_global( 'assets', new Assets() );
 		$this->view->add_global( 'config', Config::get_all() );
+		$this->view->add_global( 'utils', new Utils() );
 	}
 	
 	public function execute()
