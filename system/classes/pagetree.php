@@ -97,7 +97,7 @@ Class Pagetree {
 					$this->id_map[$item->id] = $item;
 				}
 			}
-			else
+			elseif ( $iterator->hasChildren() )
 			{
 				$item = new Pagetree_Directory( $file->getPathname() );
 				
