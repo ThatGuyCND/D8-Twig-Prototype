@@ -62,6 +62,7 @@
 		if ( cookie !== null && cookie !== '' ){
 			return JSON.parse( cookie );
 		}
+		return null;
 	};
 	
 	PT.store.prototype.clear = function( key ) {
