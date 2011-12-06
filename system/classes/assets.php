@@ -64,7 +64,7 @@ Class Assets {
 			{
 				$file = array( 
 					'extension' => 'css',
-					'url'       => str_replace( DOCROOT, $this->uri->base(), PT_ASSETS_PATH . $css_file ),
+					'url'       => str_ireplace( DOCROOT, $this->uri->base(), PT_ASSETS_PATH . $css_file ),
 					'opts'      => $this->asset_defaults['css']
 				);
 				$output_files[] = $this->build_el( $file );
@@ -77,7 +77,7 @@ Class Assets {
 			{
 				$file = array( 
 					'extension' => 'js',
-					'url'       => str_replace( DOCROOT, $this->uri->base(), PT_ASSETS_PATH . $js_file ),
+					'url'       => str_ireplace( DOCROOT, $this->uri->base(), PT_ASSETS_PATH . $js_file ),
 					'opts'      => $this->asset_defaults['js']
 				);
 				$output_files[] = $this->build_el( $file );
@@ -131,7 +131,7 @@ Class Assets {
 			
 			if ( $item['output_path'] )
 			{
-				$item['url'] = str_replace( DOCROOT, $this->uri->base(), $item['output_path'] );
+				$item['url'] = str_ireplace( DOCROOT, $this->uri->base(), $item['output_path'] );
 				return $item;	
 			}
 		}
@@ -141,6 +141,7 @@ Class Assets {
 	
 	protected function build_el( $item )
 	{
+
 		switch ( $item['extension'] )
 		{
 			case 'less':
