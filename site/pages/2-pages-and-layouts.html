@@ -25,12 +25,12 @@
 	<p>The ID string, like the ordering prefix, will not show up in the URL. So a page at <code>/site/pages/about/<strong>[c123]-</strong>company.html</code> will have a page ID of <code>c123</code> and will be shown at the URL <code>http://example.com/about/company</code></p>
 	
 	<p>Once your page has an ID, you can always print it's current URL into your template by using:</p>
-
-	<p><code>{% raw %}{{ pages.get_by_id('PAGE-ID').url }}{% endraw %}</code></p>
+	
+	<p><code>{% raw %}{{ pages.link('PAGE-ID') }}{% endraw %}</code></p>
 	
 	<p>Where <code>PAGE-ID</code> is the ID of the page you are interested in.</p>
 	
-	<h3>Bringing it all togther</h3>
+	<h3>Bringing it all together</h3>
 	
 	<p>You can of course mix ordering with pages ids - so combining the examples above we would have a page that sits at <code>/site/pages/about/<strong>1-[c123]-</strong>company.html</code> which is found at the URL <code>http://example.com/about/company</code>, is the first page in the 'about' section and has a page ID of <code>c123</code></p>
 	
