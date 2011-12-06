@@ -39,6 +39,7 @@
     font-family: sans-serif !important;
 	border-radius: 3px !important;
 	line-height: 1 !important;
+	z-index: 10000;
 }
 
 #prontotype-toolbar.prontotype-loading {
