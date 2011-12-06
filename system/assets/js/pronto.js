@@ -287,7 +287,7 @@
 		
 		if ( ! $.isEmptyObject(this.users.users) )
 		{
-			if ( self.users.currentUser === undefined ) {
+			if ( self.users.currentUser === undefined || ! self.users.currentUser ) {
 				// logged out 
 				userMenu = $('<select id="' + PT.SETTINGS.prefix + 'user-select">');
 				userMenu.append('<option value="">--</option>');
