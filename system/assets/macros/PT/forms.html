@@ -56,7 +56,7 @@
 	
 	{% else %}
 	
-	<input type="{{ type }}"{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>
+	<input type="{{ type|default('text') }}"{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>
 
 	{% endif %}
 
@@ -71,10 +71,10 @@
 
 {% else %}
 
-<div class="container type-{{ type }}">
+<div class="container type-{{ type|default('text') }}">
 	
 {% if not attrs %}{% set attrs = {} %}{% endif %}
-{% if not attrs.id %}{% set attrs = attrs|merge({ 'id': 'id' ~ _pt_randid }) %}{% endif %}
+{% if not attrs.id %}{% set attrs = attrs|merge({ 'id': 'id' ~ utils.random(0,99999) }) %}{% endif %}
 	
 {% if type == 'checkbox' or type == 'radio'  %}
 			
@@ -93,5 +93,4 @@
 {% endif %}
 
 {% endmacro %}
-
 
