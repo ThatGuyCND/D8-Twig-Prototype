@@ -31,6 +31,13 @@ Class Pages {
 		return $this->page_tree->page_from_url($path);
 	}
 	
+	function link( $id )
+	{
+		$page = @$this->get_by_id($id);
+		if ( $page ) return $page->nice_url;
+		return '#';
+	}
+	
 	function get_all()
 	{
 		return $this->page_tree->get_page_tree();
