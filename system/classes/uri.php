@@ -66,6 +66,7 @@ class URI {
 		return $base;
 	}
 	
+	// deprecated as of v0.1.2, use request variable in templates to access GET and POST data
 	public function get()
 	{
 		return $_GET;

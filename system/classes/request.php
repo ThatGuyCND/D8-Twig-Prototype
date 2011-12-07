@@ -20,6 +20,7 @@ class Request {
 		$this->uri = new URI();
 		$this->store = new Store();
 		$this->pages = new Pages();
+		$this->view->add_global( 'request', $this->get_request_data() );
 		$this->view->add_global( 'url', $this->uri );
 		$this->view->add_global( 'pages', $this->pages );
 		$this->view->add_global( 'data', Data::instance() );
@@ -77,6 +78,17 @@ class Request {
 	public function response()
 	{
 		return $this->response;
+	}
+	
+	protected function get_request_data()
+	{
+	    // TODO: Do we want to sanitize this in any way?
+	    return array(
+	       'post' => $_POST,
+	       'get' => $_GET,
+	       'cookie' => $_COOKIE,
+	       'request' => $_REQUEST
+	    );
 	}
 	
 	protected function get_page_path()
