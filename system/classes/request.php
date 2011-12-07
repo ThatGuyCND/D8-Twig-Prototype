@@ -10,6 +10,8 @@ class Request {
 		
 	public $store;
 	
+	public $pages;
+	
 	protected $response = '';
 	
 	protected $user_cookie_name = 'user';
