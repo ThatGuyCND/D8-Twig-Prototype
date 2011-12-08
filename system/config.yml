@@ -4,6 +4,8 @@ logout_trigger: logout
 prefix: prontotype-
 cookie_lifetime: 604800 # 1 week
 
+extensions:
+
 debug: false
 auto_reload: true
 caching: true

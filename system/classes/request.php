@@ -12,7 +12,9 @@ class Request {
 	
 	public $pages;
 	
-	protected $response = '';
+	public $response = '';
+	
+	protected $extension_manager;
 	
 	protected $user_cookie_name = 'user';
 	
@@ -28,7 +30,8 @@ class Request {
 		$this->view->add_global( 'assets', new Assets() );
 		$this->view->add_global( 'config', Config::get_all() );
 		$this->view->add_global( 'utils', new Utils() );
-		$this->load_actions();
+		$this->extension_manager = Extension_manager::instance();
+		$this->view->add_global( 'actions', $this->extension_manager->get_actions() );
 	}
 	
 	public function execute()
@@ -79,6 +82,7 @@ class Request {
 	
 	public function response()
 	{
+		$this->extension_manager->run_hook('before_display', array( $this ));
 		return $this->response;
 	}
 	
@@ -120,25 +124,9 @@ class Request {
 		$this->view->add_global( 'user', $user );
 	}
 	
-	protected function load_actions()
-	{
-	    $actions = array();
-		$action_files = glob(ACTIONS_PATH . '*.php');
-		foreach( $action_files as $action_file )
-		{
-			$parts = pathinfo($action_file);
-			$class_name = ucwords($parts['filename']) . '_actions';
-			include_once($action_file);
-			if ( class_exists($class_name) )
-			{
-			    $actions[strtolower($parts['filename'])] = new $class_name( $this );
-			}
-		}
-		$this->view->add_global( 'actions', $actions );
-	}
-	
 	protected function render()
 	{
+		$this->extension_manager->run_hook('before_render', array( $this ));
 		$this->view->set_path( $this->page_path );	
 		$this->response = $this->view->render();
 	}
@@ -150,7 +138,7 @@ class Request {
 		{
 			$data = Data::instance();
 			$user = $data->find('users.'. $user_id);
-			return $user ? $user : array( 'id' => $user_id );			
+			return $user ? $user : array( 'id' => $user_id );
 		}
 		return NULL;
 	}
