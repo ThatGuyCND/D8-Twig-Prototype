@@ -68,14 +68,14 @@ Class Extension_manager {
 		}
 	}
 	
-	public function get_actions()
+	public function get_actions( $request )
 	{
 		$actions = array();
 		if ( count( $this->extensions) )
 		{
 			foreach( $this->extensions as $extension )
 			{
-				$actions[strtolower(str_replace('_extension','',$extension))] = new $extension();
+				$actions[strtolower(str_replace('_extension','',$extension))] = new $extension( $request );
 			}
 		}
 		return $actions;

@@ -31,7 +31,7 @@ class Request {
 		$this->view->add_global( 'config', Config::get_all() );
 		$this->view->add_global( 'utils', new Utils() );
 		$this->extension_manager = Extension_manager::instance();
-		$this->view->add_global( 'actions', $this->extension_manager->get_actions() );
+		$this->view->add_global( 'actions', $this->extension_manager->get_actions( $this ) );
 	}
 	
 	public function execute()

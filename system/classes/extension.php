@@ -1,10 +1,19 @@
 <?php defined('SYSTEM_PATH') or exit('No direct script access allowed');
 
 Class Extension {
+	
+	public function __construct( $request = NULL )
+	{
+		if ( $request )
+		{
+			$this->request = $request;
+		}
+	}
 		
 	public function __call( $name, $args )
 	{
 		$method = 'action_' . $name;
+		
 		if ( method_exists($this, $method ))
 		{
 			return call_user_func_array(array($this, $method), $args);
