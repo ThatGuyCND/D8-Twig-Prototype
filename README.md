@@ -1,12 +1,12 @@
 Prontotype
 ==========
 
-Prontotype is a lightweight, server-side framework to help you quickly build data-driven, interactive prototypes.
+Prontotype is a lightweight, server-side framework to help you quickly build interactive, data-driven HTML prototypes.
 
 Prontotype lets you:
 --------------------
 
-* Quickly build linked, multi-page prototypes with 'realistic' URLs
+* Quickly build linked, multi-page HTML prototypes with 'realistic' URLs
 * Define reusable chunks of HTML to make prototype-wide updates quick and easy
 * Separate your layouts from your content using powerful template inheritance
 * Mock-up everything from simple login behaviours to complex role-based authentication scenarios

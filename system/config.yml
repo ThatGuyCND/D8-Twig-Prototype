@@ -22,5 +22,6 @@ index_nicename: Overview
 
 short_url_trigger: p
 json_data_trigger: __data
+compiled_css_trigger: __css
 
 xhtml_tags: false

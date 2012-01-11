@@ -12,6 +12,8 @@ class Request {
 	
 	public $pages;
 	
+	public $assets;
+	
 	public $response = '';
 	
 	protected $extension_manager;
@@ -24,11 +26,12 @@ class Request {
 		$this->uri = new URI();
 		$this->store = new Store();
 		$this->pages = new Pages();
+		$this->assets = new Assets();
 		$this->view->add_global( 'request', $this->get_request_data() );
 		$this->view->add_global( 'url', $this->uri );
 		$this->view->add_global( 'pages', $this->pages );
 		$this->view->add_global( 'data', Data::instance() );
-		$this->view->add_global( 'assets', new Assets() );
+		$this->view->add_global( 'assets', $this->assets );
 		$this->view->add_global( 'config', Config::get_all() );
 		$this->view->add_global( 'utils', new Utils() );
 		$this->extension_manager = Extension_manager::instance();
@@ -43,6 +46,13 @@ class Request {
 			{
 				// json data request
 				$this->json_data();
+			}
+			if ( $this->uri->segment_1 == Config::get('compiled_css_trigger' ) )
+			{
+				// dynamically render LESS files. Only used where there is no caching enabled.
+				header("Content-type: text/css");
+				echo $this->assets->parse_less($_GET['file']);
+				return;
 			}
 			elseif ( $this->uri->segment_1 == Config::get('short_url_trigger' ) && $this->uri->segment_2 )
 			{
