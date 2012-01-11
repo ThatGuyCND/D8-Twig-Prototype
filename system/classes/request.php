@@ -4,13 +4,19 @@ class Request {
 	
 	public $uri;
 	
-	protected $page_path;
+	public $page_path;
 
-	protected $view;
+	public $view;
 		
-	protected $store;
+	public $store;
 	
-	protected $response = '';
+	public $pages;
+	
+	public $assets;
+	
+	public $response = '';
+	
+	protected $extension_manager;
 	
 	protected $user_cookie_name = 'user';
 	
@@ -20,12 +26,16 @@ class Request {
 		$this->uri = new URI();
 		$this->store = new Store();
 		$this->pages = new Pages();
+		$this->assets = new Assets();
+		$this->view->add_global( 'request', $this->get_request_data() );
 		$this->view->add_global( 'url', $this->uri );
 		$this->view->add_global( 'pages', $this->pages );
 		$this->view->add_global( 'data', Data::instance() );
-		$this->view->add_global( 'assets', new Assets() );
+		$this->view->add_global( 'assets', $this->assets );
 		$this->view->add_global( 'config', Config::get_all() );
 		$this->view->add_global( 'utils', new Utils() );
+		$this->extension_manager = Extension_manager::instance();
+		$this->view->add_global( 'actions', $this->extension_manager->get_actions( $this ) );
 	}
 	
 	public function execute()
@@ -36,6 +46,13 @@ class Request {
 			{
 				// json data request
 				$this->json_data();
+			}
+			if ( $this->uri->segment_1 == Config::get('compiled_css_trigger' ) )
+			{
+				// dynamically render LESS files. Only used where there is no caching enabled.
+				header("Content-type: text/css");
+				echo $this->assets->parse_less($_GET['file']);
+				return;
 			}
 			elseif ( $this->uri->segment_1 == Config::get('short_url_trigger' ) && $this->uri->segment_2 )
 			{
@@ -76,7 +93,19 @@ class Request {
 	
 	public function response()
 	{
+		$this->extension_manager->run_hook('before_display', array( $this ));
 		return $this->response;
+	}
+	
+	protected function get_request_data()
+	{
+	    // TODO: Do we want to sanitize this in any way?
+	    return array(
+	       'post' => $_POST,
+	       'get' => $_GET,
+	       'cookie' => $_COOKIE,
+	       'request' => $_REQUEST
+	    );
 	}
 	
 	protected function get_page_path()
@@ -119,6 +148,7 @@ class Request {
 	
 	protected function render()
 	{
+		$this->extension_manager->run_hook('before_render', array( $this ));
 		$this->view->set_path( $this->page_path );	
 		$this->response = $this->view->render();
 	}
@@ -130,7 +160,7 @@ class Request {
 		{
 			$data = Data::instance();
 			$user = $data->find('users.'. $user_id);
-			return $user ? $user : array( 'id' => $user_id );			
+			return $user ? $user : array( 'id' => $user_id );
 		}
 		return NULL;
 	}

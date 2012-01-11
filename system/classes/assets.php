@@ -97,6 +97,13 @@ Class Assets {
 		return implode($output_files,"\n");
 	}
 	
+	public function parse_less( $path )
+	{
+		require_once SYSTEM_PATH . '/vendor/Less/lessc.inc.php';
+		$less = new lessc(PUBLIC_PATH . $path);
+		return $less->parse();
+	}
+	
 	protected function process( $path, $opts = array() )
 	{
 		$item = array();
@@ -115,7 +122,7 @@ Class Assets {
 				// if we need to parse the file, do it here
 				if ( $parser = @$item['opts']['parser'] )
 				{
-					$parser_method = 'parse_' . $parser;
+					$parser_method = 'process_' . $parser;
 	
 					if ( method_exists( $this, $parser_method ) )
 					{
@@ -158,10 +165,10 @@ Class Assets {
 		return $output;
 	}
 	
-	protected function parse_less( $item )
+	protected function process_less( $item )
 	{
 		require_once SYSTEM_PATH . '/vendor/Less/lessc.inc.php';
-				
+		
 		if ( ASSET_CACHE )
 		{
 			$output_path = ASSET_CACHE . 'css' . DS . $item['filename'] . '.css';
@@ -186,6 +193,10 @@ Class Assets {
 				}
 			}
 			return $output_path;
+		}
+		else
+		{
+			return $this->uri->base() . Config::get('compiled_css_trigger') . '?file=' . $item['path'];
 		}
 		return FALSE;
 	}

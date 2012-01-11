@@ -13,7 +13,7 @@
  * Imports blocks defined in another template into the current template.
  *
  * <pre>
- * {% extends "_base.html" %}
+ * {% extends "base.html" %}
  *
  * {% use "blocks.html" %}
  *
@@ -76,7 +76,7 @@ class Twig_TokenParser_Use extends Twig_TokenParser
     /**
      * Gets the tag name associated with this token parser.
      *
-     * @param string The tag name
+     * @return string The tag name
      */
     public function getTag()
     {

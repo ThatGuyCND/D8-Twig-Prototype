@@ -4,6 +4,8 @@ logout_trigger: logout
 prefix: prontotype-
 cookie_lifetime: 604800 # 1 week
 
+extensions:
+
 debug: false
 auto_reload: true
 caching: true
@@ -20,5 +22,6 @@ index_nicename: Overview
 
 short_url_trigger: p
 json_data_trigger: __data
+compiled_css_trigger: __css
 
 xhtml_tags: false
