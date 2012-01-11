@@ -3,6 +3,7 @@
 $system_dir = 'system';
 $data_dir   = 'data';
 $site_dir   = 'site';
+$extensions_dir = 'extensions';
 $public_dir = 'public';
 
 define('DS', DIRECTORY_SEPARATOR);

@@ -4,13 +4,17 @@ class Request {
 	
 	public $uri;
 	
-	protected $page_path;
+	public $page_path;
 
-	protected $view;
+	public $view;
 		
-	protected $store;
+	public $store;
 	
-	protected $response = '';
+	public $pages;
+	
+	public $response = '';
+	
+	protected $extension_manager;
 	
 	protected $user_cookie_name = 'user';
 	
@@ -27,6 +31,8 @@ class Request {
 		$this->view->add_global( 'assets', new Assets() );
 		$this->view->add_global( 'config', Config::get_all() );
 		$this->view->add_global( 'utils', new Utils() );
+		$this->extension_manager = Extension_manager::instance();
+		$this->view->add_global( 'actions', $this->extension_manager->get_actions( $this ) );
 	}
 	
 	public function execute()
@@ -77,6 +83,7 @@ class Request {
 	
 	public function response()
 	{
+		$this->extension_manager->run_hook('before_display', array( $this ));
 		return $this->response;
 	}
 	
@@ -131,6 +138,7 @@ class Request {
 	
 	protected function render()
 	{
+		$this->extension_manager->run_hook('before_render', array( $this ));
 		$this->view->set_path( $this->page_path );	
 		$this->response = $this->view->render();
 	}
@@ -142,7 +150,7 @@ class Request {
 		{
 			$data = Data::instance();
 			$user = $data->find('users.'. $user_id);
-			return $user ? $user : array( 'id' => $user_id );			
+			return $user ? $user : array( 'id' => $user_id );
 		}
 		return NULL;
 	}
