@@ -47,7 +47,7 @@ class Request {
 				// json data request
 				$this->json_data();
 			}
-			if ( $this->uri->segment_1 == Config::get('compiled_css_trigger' ) )
+			elseif ( $this->uri->segment_1 == Config::get('compiled_css_trigger' ) )
 			{
 				// dynamically render LESS files. Only used where there is no caching enabled.
 				header("Content-type: text/css");
