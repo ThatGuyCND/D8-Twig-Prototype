@@ -14,6 +14,8 @@ class Request {
 	
 	public $assets;
 	
+	public $auth;
+	
 	public $response = '';
 	
 	protected $extension_manager;
@@ -27,6 +29,7 @@ class Request {
 		$this->store = new Store();
 		$this->pages = new Pages();
 		$this->assets = new Assets();
+		$this->auth = new Auth( $this );
 		$this->view->add_global( 'request', $this->get_request_data() );
 		$this->view->add_global( 'url', $this->uri );
 		$this->view->add_global( 'pages', $this->pages );
@@ -40,9 +43,28 @@ class Request {
 	
 	public function execute()
 	{
+		if ( ! $this->auth->authenticate() && $this->uri->segment_1 !== Config::get('auth_trigger' ) )
+		{
+			// if it requires auth and the user is not auth'd
+			$this->uri->redirect( '/' . Config::get('auth_trigger'), 301 );
+		}
+		
 		try
 		{
-			if ( $this->uri->segment_1 == Config::get('json_data_trigger' ) )
+			// TODO: put some sort of proper routing in here!
+			if ( $this->uri->segment_1 === Config::get('auth_trigger' ) )
+			{
+				if ( $this->auth->authenticate() )
+				{
+					// user has successfully authenticated or was already auth'd
+					$this->uri->redirect( '/', 301 );
+				}
+				
+				$this->view->set_path('PT/auth.html');
+				$this->response = $this->view->render();
+				return;
+			}
+			elseif ( $this->uri->segment_1 == Config::get('json_data_trigger' ) )
 			{
 				// json data request
 				$this->json_data();
@@ -51,7 +73,7 @@ class Request {
 			{
 				// dynamically render LESS files. Only used where there is no caching enabled.
 				header("Content-type: text/css");
-				echo $this->assets->parse_less($_GET['file']);
+				echo $this->assets->parse_less( $_GET['file'] );
 				return;
 			}
 			elseif ( $this->uri->segment_1 == Config::get('short_url_trigger' ) && $this->uri->segment_2 )

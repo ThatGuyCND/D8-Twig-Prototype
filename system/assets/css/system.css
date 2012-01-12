@@ -7,11 +7,18 @@ body {
 	margin: 0;
 }
 
+.block p:first-child {
+	margin-top: 0;
+}
+
 .block {
 	border: 1px solid #CCC;
 	background: #EEE;
 	padding: 20px;
 	margin-bottom: 10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
 .block.error {
@@ -58,6 +65,59 @@ p.to-note {
     font-size: 13px;
     color: #777;
 }
+
+/* @group Forms */
+
+form {
+	padding: 15px;
+	background: #FFF;
+	border: 1px solid #DDD;
+	margin-top: 15px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+form .container {
+	margin-bottom: 15px;
+}
+
+form label {
+	font-size: 16px;
+	display: inline-block;
+	width: 140px;
+	font-weight: bold;
+}
+
+form input {
+	display: inline-block;
+	width: 250px;
+	padding: 4px;
+	font-size: 14px;
+	font-family: sans-serif;
+}
+
+form button {
+	padding: 8px 20px;
+	font-size: 16px;
+	font-family: sans-serif;
+	border: 1px solid #CCC;
+	background: #DDD;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	color: #222;
+	font-weight: bold;
+	cursor: pointer;
+	margin-left: 140px;
+}
+
+#auth-form {
+	width: 450px;
+	margin: 0 auto;
+}
+
+/* @end Forms */
 
 /* @group Stacktrace */
 
