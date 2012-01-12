@@ -1,0 +1,32 @@
+{% extends "PT/base.html" %}
+{% import "PT/forms.html" as form %}
+
+{% set title = 'Access to this site is restricted' %}
+
+{% block content %}
+
+<div id="auth-form">
+	
+	{% if msg %}
+	<div class="block error">
+		<p>{{ msg }}</p>
+	</div>
+	{% endif %}
+	
+	<div class="block">
+	
+		<h1>Access to this site is restricted.</h1>
+	
+		{{ form.form_open({method:'post'}) }}
+	
+			{{ form.input('Password', 'passwor', { name : 'auth_password', id : 'auth_password' }) }}
+	
+			{{ form.button('Log in') }}
+	
+		{{ form.form_close }}
+		
+	</div>
+		
+</div>
+
+{% endblock content %}
