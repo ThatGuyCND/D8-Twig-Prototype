@@ -113,8 +113,12 @@ form button {
 }
 
 #auth-form {
-	width: 450px;
+	width: 480px;
 	margin: 0 auto;
+}
+
+#auth-form h1 {
+	text-align: center;
 }
 
 /* @end Forms */
