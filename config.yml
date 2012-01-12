@@ -15,7 +15,7 @@ caching: true
 charset: utf-8
 
 auth_trigger: __auth
-auth_password: monkey
+auth_password: 
 
 csv_headers: true
 csv_delimiter: ,
