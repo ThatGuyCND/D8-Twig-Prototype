@@ -1,0 +1,96 @@
+{% macro form_open( action, method ) %}
+<form action="{{ action }}" method="{{ method|default('post') }}">
+{% endmacro %}
+
+
+{% macro form_close() %}
+<form action="forms_submit" method="post" accept-charset="utf-8">
+{% endmacro %}
+
+
+{% macro label( label, opts ) %}
+<label{% if opts.id %} for="{{ opts.id }}"{% endif %}>{{ label|default('Input label') }}</label>
+{% endmacro %}
+
+
+{% macro input( label, type, attrs ) %}
+{{ _self.labeled_control( type, label, text, attrs, opts ) }}
+{% endmacro %}
+
+
+{% macro textarea( label, text, attrs ) %}
+{{ _self.labeled_control( 'textarea', label, text, attrs, opts ) }}
+{% endmacro %}
+
+
+{% macro select( label, opts, attrs) %}
+{{ _self.labeled_control( 'select', label, text, attrs, opts ) }}
+{% endmacro %}
+
+
+{% macro checkbox( label, attrs) %}
+{{ _self.labeled_control( 'checkbox', label, text, attrs, opts ) }}
+{% endmacro %}
+
+
+{% macro button( text ) %}
+<button type="submit">{{ text|default('Submit') }}</button>
+{% endmacro %}
+
+
+{% macro control( type, label, text, attrs, opts ) %}
+
+	{% if type == 'textarea' %}
+	
+	<textarea{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>{{ text }}</textarea>
+	
+	{% elseif type == 'select' %}
+	
+	<select{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>
+		{% for value, label in opts %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+	</select>
+	
+	{% elseif type == 'button' %}
+	
+	{{ _self.button(text) }}
+	
+	{% else %}
+	
+	<input type="{{ type|default('text') }}"{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>
+
+	{% endif %}
+
+{% endmacro %}
+
+
+{% macro labeled_control( type, label, text, attrs, opts ) %}
+
+{% if label is empty %}
+
+{{ _self.control(type, label, text, attrs, opts) }}		
+
+{% else %}
+
+<div class="container type-{{ type|default('text') }}">
+	
+{% if not attrs %}{% set attrs = {} %}{% endif %}
+{% if not attrs.id %}{% set attrs = attrs|merge({ 'id': 'id' ~ utils.random(0,99999) }) %}{% endif %}
+	
+{% if type == 'checkbox' or type == 'radio'  %}
+			
+	{{ _self.control(type, label, text, attrs, opts) }}		
+	{{ _self.label(label, attrs) }}
+	
+{% else %}
+
+	{{ _self.label(label, attrs) }}
+	{{ _self.control(type, label, text, attrs, opts) }}
+	
+{% endif %}
+
+</div>
+
+{% endif %}
+
+{% endmacro %}
+

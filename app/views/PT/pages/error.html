@@ -1,0 +1,13 @@
+{% extends "PT/layouts/system.html" %}
+
+{% set title = 'An error has occurred' %}
+
+{% block content %}
+
+<div id="notice" class="block error">
+
+	<p>An error has occurred: <em>{{ message }}</em></p>
+
+</div>
+
+{% endblock content %}
