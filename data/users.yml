@@ -1,0 +1,9 @@
+user:
+    username: user-example
+    name: Edward Xample
+    role: user
+    
+admin:
+    username: admin-example
+    name: Ellie Xample
+    role: admin

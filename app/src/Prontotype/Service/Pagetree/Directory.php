@@ -80,10 +80,10 @@ Class Directory {
 	public function add_children( $children )
 	{
 		$this->children = $children;
-
+		
 		$this->has_index = false;
 		foreach( $children as $child )
-		{
+		{			
 			if ( $child->name === 'index' )
 			{
 				$this->has_index = true;

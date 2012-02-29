@@ -47,17 +47,21 @@ $app->register(new TwigServiceProvider(), array(
 		'strict_variables' => false
 	)
 ));
-		
+
 $app->register(new Prontotype\Provider\PagetreeProvider());
+$app->register(new Prontotype\Provider\PagesProvider());
 $app->register(new Prontotype\Provider\UriProvider());
 $app->register(new Prontotype\Provider\DataProvider());
 $app->register(new Prontotype\Provider\StoreProvider());
+$app->register(new Prontotype\Provider\AssetsProvider());
 
 $app->before(function () use ($app) {
 	
 	$app['twig']->addGlobal( 'uri', $app['uri'] );
 	$app['twig']->addGlobal( 'data', $app['data'] );
+	$app['twig']->addGlobal( 'pages', $app['pages'] );
 	$app['twig']->addGlobal( 'store', $app['store'] );
+	$app['twig']->addGlobal( 'config', $app['config'] );
 	
 });
 

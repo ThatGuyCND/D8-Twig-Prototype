@@ -1,10 +1,14 @@
 <?php
 
+namespace Prontotype\Service;
+
 // session/persistent storage handling, uses unencrypted cookies so that they can be read via JS as well
 
 Class Store {
 	
 	protected $cookie_prefix = '';
+	
+	protected $app;
 	    
     public function __construct( $app )
     {
@@ -16,7 +20,7 @@ Class Store {
 	{
 		// raw url encode and set raw cookie used here to prevent issues with spaces encoded as '+'
 		$value = rawurlencode(json_encode($value));
-		setrawcookie( $this->cookie_prefix . $key, $value, time() + $app['config']['cookie_lifetime'], '/' );
+		setrawcookie( $this->cookie_prefix . $key, $value, time() + $this->app['config']['cookie_lifetime'], '/' );
 		$_COOKIE[$this->cookie_prefix . $key] = $value;
 	}
 	

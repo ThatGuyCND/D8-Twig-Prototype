@@ -84,9 +84,10 @@ Class Parser {
 		
 		foreach ( $iterator as $file )
 		{
+			$item = NULL;
 			if ( $file->isFile() && strpos( $file->getFilename(), '.' ) !== 0 )
 			{
-				$item = new Page( $file->getPathname(), $this->pages_path, $this->config );
+				$item = new Page( $file->getPathname(), $this->pages_path, $this->app );
 				$this->route_map[$item->url] = $item;
 				if ( $item->id )
 				{
@@ -95,14 +96,13 @@ Class Parser {
 			}
 			elseif ( $iterator->hasChildren() )
 			{
-				$item = new Directory( $file->getPathname(), $this->pages_path, $this->config );
+				$item = new Directory( $file->getPathname(), $this->pages_path, $this->app );
 				
 				$children = $this->parseDirectory( $iterator->getChildren() );
 				
 				$item->add_children( $children );
 			}
-			
-			$page_tree[] = $item;
+			if ( $item ) $page_tree[] = $item;
 		}
 		return $page_tree;
 	}

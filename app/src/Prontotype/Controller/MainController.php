@@ -16,36 +16,69 @@ class MainController implements ControllerProviderInterface
 		$controllers = new ControllerCollection();
 		$triggers = $app['config']['triggers'];
 		
-		$controllers->post('/' . $triggers['login'], function () use ( $app ) {
+		$controllers->post('/' . $triggers['login'], function ( Request $request ) use ( $app, $triggers ) {
+				
+			$user_id = $request->get('user');
+			if ( ! $user_id ) $app->abort(404);
 			
-			// TODO: implement
-			echo 'login';
+			$user = $app['data']->find('users.' . $user_id);
+			$user = $user ? $user : array( 'id' => $user_id );
+			
+			$app['store']->set('user', $user);
+			
+			if ( $request->get('redirect') ) {
+				$app->redirect($request->get('user'));
+			} else {
+				return $app->redirect('/'); // redirect to homepage
+			}
 			
 		})->bind('do_login');
 		
 		
-		$controllers->get('/' . $triggers['logout'], function () use ( $app ) {
+		$controllers->get('/' . $triggers['logout'], function ( Request $request ) use ( $app, $triggers ) {
 			
-			// TODO: logout
-			echo 'logout';
+			$app['store']->clear('user');
+			
+			if ( $request->get('redirect') ) {
+				$app->redirect($request->get('user'));
+			} else {
+				return $app->redirect('/'); // redirect to homepage
+			}
 
 		})->bind('do_logout');
 		
 		
-		$controllers->get('/' . $triggers['assets'], function () use ( $app ) {
+		$controllers->get('/' . $triggers['assets'] . '/{asset_path}.{format}', function ( $asset_path, $format ) use ( $app ) {
+						
+			if ( ! $output = $app['assets']->convert( $format, $asset_path . '.' . $format ) ) {
+				$app->abort(404);
+			}
 			
-			// TODO: get compiled assets (like LESS files etc)
-			echo 'assets';
-
-		})->bind('get_assets');
+			return new Response( $output, 200, array(
+				'Content-Type' => $app['assets']->contentType($format)
+			));
+			
+		})
+		->assert('asset_path', '.+')
+		->value('asset_path', '')
+		->bind('get_assets');
 		
 		
-		$controllers->get('/' . $triggers['data'], function () use ( $app ) {
+		$controllers->get('/' . $triggers['data'] . '/{data_path}', function ( $data_path ) use ( $app ) {
 			
 			// TODO: get JSON representation of data
-			echo 'data';
+			$result = $app['data']->find(str_replace('/','.',$data_path));
+			
+			if ( ! $result ) {
+				$app->abort(404);
+			} else {
+				return json_encode($result);
+			}
 
-		})->bind('get_json_data');
+		})
+		->assert('data_path', '.+')
+		->value('data_path', '')
+		->bind('get_json_data');
 		
 		
 		$controllers->get('/' . $triggers['shorturl']  . '/{page_id}', function ( $page_id ) use ( $app ) {
@@ -69,7 +102,6 @@ class MainController implements ControllerProviderInterface
 			try {
 				return $app['twig']->render($page->fs_path, array());
 			} catch ( \Exception $e ) {
-				// TODO: handle template errors nicely here
 				return $app['twig']->render('PT/pages/error.html', array(
 					'message'=>$e->getMessage()
 				));
