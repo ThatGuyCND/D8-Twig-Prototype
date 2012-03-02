@@ -16,7 +16,7 @@ class MainController implements ControllerProviderInterface
 		$controllers = new ControllerCollection();
 		$triggers = $app['config']['triggers'];
 		
-		$controllers->post('/' . $triggers['login'], function ( Request $request ) use ( $app, $triggers ) {
+		$controllers->match('/' . $triggers['login'], function ( Request $request ) use ( $app, $triggers ) {
 				
 			$user_id = $request->get('user');
 			if ( ! $user_id ) $app->abort(404);
@@ -32,7 +32,9 @@ class MainController implements ControllerProviderInterface
 				return $app->redirect('/'); // redirect to homepage
 			}
 			
-		})->bind('do_login');
+		})
+		->method('GET|POST')
+		->bind('do_login');
 		
 		
 		$controllers->get('/' . $triggers['logout'], function ( Request $request ) use ( $app, $triggers ) {
@@ -49,7 +51,7 @@ class MainController implements ControllerProviderInterface
 		
 		
 		$controllers->get('/' . $triggers['assets'] . '/{asset_path}.{format}', function ( $asset_path, $format ) use ( $app ) {
-						
+			
 			if ( ! $output = $app['assets']->convert( $format, $asset_path . '.' . $format ) ) {
 				$app->abort(404);
 			}
@@ -98,6 +100,10 @@ class MainController implements ControllerProviderInterface
 			if ( ! $page = $app['pagetree']->getPage($route) ) {
 				$app->abort(404);
 			}
+			
+			if ( $user = $app['store']->get('user') ) {
+				$app['twig']->addGlobal('user', $user);
+			}
 
 			try {
 				return $app['twig']->render($page->fs_path, array());
@@ -106,7 +112,6 @@ class MainController implements ControllerProviderInterface
 					'message'=>$e->getMessage()
 				));
 			}
-
 		})
 		->assert('route', '.+')
 		->value('route', '');

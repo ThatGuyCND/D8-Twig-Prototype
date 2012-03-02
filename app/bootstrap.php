@@ -13,10 +13,11 @@ define('APP_TEMPLATES_PATH', APP_PATH . '/views');
 define('VENDOR_PATH', APP_PATH . '/vendor');
 
 define('DATA_PATH', DOC_ROOT . '/data');
-define('DATA_CACHE', NULL ); // TODO
 
+define('CACHE_PATH', DOC_ROOT . '/_cache' );
 
-require_once VENDOR_PATH.'/silex.phar';
+require_once VENDOR_PATH . '/silex.phar';
+require_once VENDOR_PATH . '/Less/lessc.inc.php';
 
 $app = new Silex\Application();
 
@@ -50,18 +51,22 @@ $app->register(new TwigServiceProvider(), array(
 
 $app->register(new Prontotype\Provider\PagetreeProvider());
 $app->register(new Prontotype\Provider\PagesProvider());
+$app->register(new Prontotype\Provider\AssetsProvider());
 $app->register(new Prontotype\Provider\UriProvider());
 $app->register(new Prontotype\Provider\DataProvider());
+$app->register(new Prontotype\Provider\CacheProvider());
 $app->register(new Prontotype\Provider\StoreProvider());
-$app->register(new Prontotype\Provider\AssetsProvider());
+$app->register(new Prontotype\Provider\UtilsProvider());
 
 $app->before(function () use ($app) {
 	
-	$app['twig']->addGlobal( 'uri', $app['uri'] );
-	$app['twig']->addGlobal( 'data', $app['data'] );
-	$app['twig']->addGlobal( 'pages', $app['pages'] );
-	$app['twig']->addGlobal( 'store', $app['store'] );
-	$app['twig']->addGlobal( 'config', $app['config'] );
+	$app['twig']->addGlobal('uri', $app['uri']);
+	$app['twig']->addGlobal('data', $app['data']);
+	$app['twig']->addGlobal('cache', $app['cache']);
+	$app['twig']->addGlobal('pages', $app['pages']);
+	$app['twig']->addGlobal('store', $app['store']);
+	$app['twig']->addGlobal('config', $app['config']);
+	$app['twig']->addGlobal('utils', $app['utils']);
 	
 });
 
@@ -78,7 +83,7 @@ $app->error(function (\Exception $e, $code) use ($app) {
 		break;
 	}
 	
-	return new Response( $app['twig']->render($template, array()), $code );
+	return new Response( $app['twig']->render($template), $code );
 });
 
 $app->mount('/', new Prontotype\Controller\MainController());

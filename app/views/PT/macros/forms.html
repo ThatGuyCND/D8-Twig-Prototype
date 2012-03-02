@@ -1,10 +1,10 @@
-{% macro form_open( action, method ) %}
-<form action="{{ action }}" method="{{ method|default('post') }}">
+{% macro form_open( attrs ) %}
+<form{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>
 {% endmacro %}
 
 
 {% macro form_close() %}
-<form action="forms_submit" method="post" accept-charset="utf-8">
+</form>
 {% endmacro %}
 
 
@@ -34,20 +34,20 @@
 
 
 {% macro button( text ) %}
-<button type="submit">{{ text|default('Submit') }}</button>
+<button type="submit" class="btn">{{ text|default('Submit') }}</button>
 {% endmacro %}
 
 
-{% macro control( type, label, text, attrs, opts ) %}
+{% macro control( type, label, attrs, opts ) %}
 
 	{% if type == 'textarea' %}
 	
-	<textarea{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>{{ text }}</textarea>
+	<textarea{% for attr, val in attrs %}{% if attr != 'value' %} {{ attr }}="{{ val }}"{% endif %}{% endfor %}>{{ attrs.value|default('') }}</textarea>
 	
 	{% elseif type == 'select' %}
 	
 	<select{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>
-		{% for value, label in opts %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+		{% for value, label in opts %}<option value="{{ value }}"{% if attrs.value == value %} selected="selected"{% endif %}>{{ label }}</option>{% endfor %}
 	</select>
 	
 	{% elseif type == 'button' %}
@@ -63,28 +63,28 @@
 {% endmacro %}
 
 
-{% macro labeled_control( type, label, text, attrs, opts ) %}
+{% macro labeled_control( type, label, attrs, opts ) %}
 
 {% if label is empty %}
 
-{{ _self.control(type, label, text, attrs, opts) }}		
+{{ _self.control(type, label, attrs, opts) }}		
 
 {% else %}
 
 <div class="container type-{{ type|default('text') }}">
 	
 {% if not attrs %}{% set attrs = {} %}{% endif %}
-{% if not attrs.id %}{% set attrs = attrs|merge({ 'id': 'id' ~ utils.random(0,99999) }) %}{% endif %}
+{% if not attrs.id %}{% set attrs = attrs|merge({ 'id': 'id-' ~ utils.random(0,99999) }) %}{% endif %}
 	
 {% if type == 'checkbox' or type == 'radio'  %}
-			
-	{{ _self.control(type, label, text, attrs, opts) }}		
+	
+	{{ _self.control(type, label, attrs, opts) }}
 	{{ _self.label(label, attrs) }}
 	
 {% else %}
 
 	{{ _self.label(label, attrs) }}
-	{{ _self.control(type, label, text, attrs, opts) }}
+	{{ _self.control(type, label, attrs, opts) }}
 	
 {% endif %}
 
@@ -93,4 +93,3 @@
 {% endif %}
 
 {% endmacro %}
-

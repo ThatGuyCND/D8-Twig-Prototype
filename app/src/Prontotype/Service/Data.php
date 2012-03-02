@@ -95,23 +95,14 @@ class Data {
 	protected function retrieve( $file )
 	{
 		$parts = pathinfo( $file );
-		$file_mtime = filemtime( $file );
 		$data = array();
 		
-		if ( DATA_CACHE )
+		if ( $cachedData = $this->app['cache']->get( $file ) )
 		{
-			$cache_file = DATA_CACHE . '/' . $parts['filename'] . '.cache';
-
-			// TODO: Extract caching into standalone class?
-			if (  file_exists( $cache_file ) and $file_mtime < filemtime( $cache_file ) )
-			{
-				// cached version is newer, use that
-				return unserialize( file_get_contents( $cache_file ) );
-			}
+			return $cachedData;
 		}
-					
+		
 		// no cache or cache is outdated
-
 		if ( isset($this->extensions_map[strtolower($parts['extension'])]))
 		{
 			$parser = 'parse_' . $this->extensions_map[strtolower($parts['extension'])];
@@ -121,10 +112,7 @@ class Data {
 				$data = $this->$parser( $file );
 			}
 	
-			if ( DATA_CACHE )
-			{
-				file_put_contents( DATA_CACHE . '/' .$parts['filename'] . '.cache', serialize($data) );
-			}
+			$this->app['cache']->set( $file, $data ); // save to cache
 		}
 		return $data;
 	} 

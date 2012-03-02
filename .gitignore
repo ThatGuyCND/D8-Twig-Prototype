@@ -1,8 +1,4 @@
-/system/_cache/*
-!/system/_cache/.gitkeep
+/app/_cache/*
+!/app/_cache/.gitkeep
 .DS_Store
-_site/
 .htaccess
-/public/*
-!/public/robots.txt
-!/public/example.less
