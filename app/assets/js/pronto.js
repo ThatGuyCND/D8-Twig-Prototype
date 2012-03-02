@@ -5,7 +5,7 @@
 	PT.SETTINGS = {
 		prefix : 'prontotype-',
 		cookieLifetime : 604800,
-		jsonDataTrigger : '__data'
+		dataTrigger : '_data'
 	};
 	
 	PT.configure = function( config ){
@@ -89,7 +89,7 @@
 			'class' : this.classPrefix + 'note'
 		});
 		
-		$.getJSON('/' + PT.SETTINGS.jsonDataTrigger + '/' + this.notesfile + '/', function( data ){
+		$.getJSON('/' + PT.SETTINGS.dataTrigger + '/' + this.notesfile + '/', function( data ){
 			self.notes = data;
 			self.noted.each(function(){
 				self._makeNotable( $(this) );
@@ -214,7 +214,7 @@
 		this.store = new PT.store();
 		this.currentUser = this.store.get('user');
 		
-		$.getJSON('/' + PT.SETTINGS.jsonDataTrigger + '/' + this.usersfile + '/', function( data ){
+		$.getJSON('/' + PT.SETTINGS.dataTrigger + '/' + this.usersfile + '/', function( data ){
 			self.users = data;
 			callback();
 		});

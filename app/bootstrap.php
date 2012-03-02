@@ -33,6 +33,9 @@ use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+$app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
 $app->register(new AmuSilexExtension\SilexConfig\YamlConfig(array(
 	APP_PATH . "/config.yml",
 	DOC_ROOT . "/config.yml"
@@ -58,8 +61,10 @@ $app->register(new Prontotype\Provider\CacheProvider());
 $app->register(new Prontotype\Provider\StoreProvider());
 $app->register(new Prontotype\Provider\UtilsProvider());
 
-$app->before(function () use ($app) {
+$app->before(function ( Request $request ) use ($app) {
 	
+	$authPage = $app['url_generator']->generate('authenticate');
+
 	$app['twig']->addGlobal('uri', $app['uri']);
 	$app['twig']->addGlobal('data', $app['data']);
 	$app['twig']->addGlobal('cache', $app['cache']);
@@ -68,6 +73,19 @@ $app->before(function () use ($app) {
 	$app['twig']->addGlobal('config', $app['config']);
 	$app['twig']->addGlobal('utils', $app['utils']);
 	
+	if ( $request->getRequestUri() !== $authPage ) {
+		if ( ! empty($app['config']['protect']) && ! empty($app['config']['protect']['username']) && ! empty($app['config']['protect']['password']) ) {
+		
+			$currentUser = $app['session']->get( $app['config']['prefix'] . 'authed-user' );
+
+			if ( empty( $currentUser ) ) {
+				return $app->redirect($app['url_generator']->generate('authenticate'));
+			} else {
+				
+			}
+		}
+	}
+
 });
 
 
@@ -86,6 +104,8 @@ $app->error(function (\Exception $e, $code) use ($app) {
 	return new Response( $app['twig']->render($template), $code );
 });
 
+$app->mount('/_/', new Prontotype\Controller\SystemController());
 $app->mount('/', new Prontotype\Controller\MainController());
+
 
 return $app;

@@ -1,5 +1,9 @@
 debug: true
 
+protect:
+  username: 
+  password:
+
 prefix: prontotype-
 cookie_lifetime: 604800 # 1 week
 

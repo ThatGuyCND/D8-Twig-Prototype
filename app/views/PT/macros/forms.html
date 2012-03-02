@@ -74,7 +74,7 @@
 <div class="container type-{{ type|default('text') }}">
 	
 {% if not attrs %}{% set attrs = {} %}{% endif %}
-{% if not attrs.id %}{% set attrs = attrs|merge({ 'id': 'id-' ~ utils.random(0,99999) }) %}{% endif %}
+{% if not attrs.id %}{% set attrs = attrs|merge({ 'id': 'id-' ~ random() }) %}{% endif %}
 	
 {% if type == 'checkbox' or type == 'radio'  %}
 	

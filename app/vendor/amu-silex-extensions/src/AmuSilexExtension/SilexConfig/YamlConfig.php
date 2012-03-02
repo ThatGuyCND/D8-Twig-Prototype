@@ -38,7 +38,7 @@ class YamlConfig implements ServiceProviderInterface
 	            throw new \InvalidArgumentException(sprintf("The config file '%s' appears to be invalid YAML.", $filename));
 	        }
 
-	        $config = array_merge_recursive($config, $parsed);
+	        $config = $this->merge($config, $parsed);
 		}
 		
 		$replacedConfig = array();
@@ -65,4 +65,22 @@ class YamlConfig implements ServiceProviderInterface
 
         return strtr($value, $this->replacements);
     }
+	
+	protected function merge( array &$array1, array &$array2 )
+	{
+		$merged = $array1;
+		foreach ( $array2 as $key => &$value )
+		{
+			if ( is_array ( $value ) && isset ( $merged [$key] ) && is_array ( $merged [$key] ) )
+			{
+				$merged [$key] = $this->merge ( $merged [$key], $value );
+			}
+			else
+			{
+				$merged [$key] = $value;
+			}
+		}
+		return $merged;
+	}
+
 }

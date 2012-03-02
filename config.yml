@@ -1,1 +1,5 @@
 debug: true
+
+protect:
+  username: test
+  password: test

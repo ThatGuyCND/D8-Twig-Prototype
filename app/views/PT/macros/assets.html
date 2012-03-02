@@ -1,0 +1,26 @@
+{% macro pronto( opts ) %}
+	{{ _self.pronto_css( opts ) }}
+	{{ _self.pronto_js( opts ) }}
+{% endmacro %}
+
+
+{% macro pronto_js( opts ) %}
+{% if opts.jquery is not defined or opts.jquery %}
+<script src="/app/assets/js/jquery.min.js"></script>
+{% endif %}
+{% if opts.cookie is not defined or opts.cookie %}
+	<script src="/app/assets/js/jquery.cookie.min.js"></script>
+{% endif %}
+	<script src="/app/assets/js/pronto.js"></script>
+	<script>PT.configure({
+		"prefix" : "{{ config.prefix }}",
+		"cookieLifetime" : "{{ config.cookie_lifetime }}",
+		"dataTrigger" : "{{ config.triggers.data }}"
+	});</script>
+{% endmacro %}
+
+
+{% macro pronto_css() %}
+	<link rel="stylesheet" href="/app/assets/css/pronto.css" type="text/css" media="screen">
+{% endmacro %}
+
