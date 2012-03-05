@@ -14,8 +14,6 @@ define('VENDOR_PATH', APP_PATH . '/vendor');
 
 define('DATA_PATH', DOC_ROOT . '/data');
 
-define('CACHE_PATH', DOC_ROOT . '/_cache' );
-
 require_once VENDOR_PATH . '/silex.phar';
 require_once VENDOR_PATH . '/Less/lessc.inc.php';
 
@@ -46,7 +44,10 @@ $twigopts = array(
 );
 
 if ( $app['config']['cache_path'] ) {
-	$twigopts['cache'] = DOC_ROOT . '/' . trim($app['config']['cache_path'],'/');
+	define('CACHE_PATH', DOC_ROOT . '/' . trim($app['config']['cache_path'],'/') );
+	$twigopts['cache'] = CACHE_PATH;
+} else {
+	define('CACHE_PATH', null );
 }
 
 $app->register(new TwigServiceProvider(), array(
