@@ -34,7 +34,6 @@ class SystemController implements ControllerProviderInterface
 			if ( $app['request']->get('username') === $app['config']['authenticate']['username'] && $app['request']->get('password') === $app['config']['authenticate']['password'] ) {
 				
 				$userHash = $userHash = sha1($app['config']['authenticate']['username'] . $app['config']['authenticate']['password']);
-
 				$currentUser = $app['session']->set( $app['config']['prefix'] . 'authed-user', $userHash );
 				
 				return $app->redirect('/');

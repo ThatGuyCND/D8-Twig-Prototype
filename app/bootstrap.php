@@ -109,7 +109,9 @@ $app->error(function (\Exception $e, $code) use ($app) {
 		break;
 	}
 	
-	return new Response( $app['twig']->render($template), $code );
+	return new Response( $app['twig']->render($template, array(
+		'message' => $e->getMessage()
+	)), $code );
 });
 
 $app->mount('/_system/', new Prontotype\Controller\SystemController());
