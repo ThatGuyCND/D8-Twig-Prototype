@@ -68,6 +68,7 @@ $app->before(function () use ($app) {
 	
 	$authPage = array(
 		$app['url_generator']->generate('authenticate'),
+		$app['url_generator']->generate('de_authenticate'),
 		$app['url_generator']->generate('authenticate', array('result'=>'error'))
 	);
 

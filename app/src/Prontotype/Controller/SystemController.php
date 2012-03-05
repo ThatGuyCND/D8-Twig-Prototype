@@ -43,6 +43,17 @@ class SystemController implements ControllerProviderInterface
 
 		})->bind('do_authenticate');
 		
+		
+		$controllers->get('deauth', function ( $result ) use ( $app ) {
+			
+			$app['session']->set( $app['config']['prefix'] . 'authed-user', null );
+			return $app->redirect($app['url_generator']->generate('authenticate'));
+
+		})
+		->value('result', null)
+		->bind('de_authenticate');
+		
+		
         return $controllers;
     }
 }
