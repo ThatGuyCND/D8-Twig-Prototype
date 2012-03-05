@@ -71,7 +71,7 @@
 
 {% else %}
 
-<div class="container type-{{ type|default('text') }}">
+<div class="pt-container pt-type-{{ type|default('text') }}">
 	
 {% if not attrs %}{% set attrs = {} %}{% endif %}
 {% if not attrs.id %}{% set attrs = attrs|merge({ 'id': 'id-' ~ random() }) %}{% endif %}

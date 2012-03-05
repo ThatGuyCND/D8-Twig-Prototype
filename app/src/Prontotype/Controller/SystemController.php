@@ -15,17 +15,33 @@ class SystemController implements ControllerProviderInterface
     {
 		$controllers = new ControllerCollection();
 		
-		$controllers->get('authenticate', function () use ( $app ) {
-
-			return new Response( $app['twig']->render('PT/pages/authenticate.html'), 401 );
-
-		})->bind('authenticate');
 		
-		$controllers->post('authenticate', function () use ( $app ) {
+		$controllers->get('auth/{result}', function ( $result ) use ( $app ) {
+			
+			return $app['twig']->render('PT/pages/authenticate.html', array(
+				'auth_path' => $app['url_generator']->generate('authenticate'),
+				'result' => $result
+			));
 
-			return new Response( $app['twig']->render('PT/pages/authenticate.html'), 401 );
+		})
+		->value('result', null)
+		->bind('authenticate');
+		
+		
+		$controllers->post('auth', function () use ( $app ) {
 
-		})->bind('authenticate');
+			if ( $app['request']->get('username') === $app['config']['authenticate']['username'] && $app['request']->get('password') === $app['config']['authenticate']['password'] ) {
+				
+				$userHash = $userHash = sha1($app['config']['authenticate']['username'] . $app['config']['authenticate']['password']);
+
+				$currentUser = $app['session']->set( $app['config']['prefix'] . 'authed-user', $userHash );
+				
+				return $app->redirect('/');
+			} else {
+				return $app->redirect($app['url_generator']->generate('authenticate', array('result'=>'error')));
+			}
+
+		})->bind('do_authenticate');
 		
         return $controllers;
     }

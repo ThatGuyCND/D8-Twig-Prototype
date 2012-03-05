@@ -1,6 +1,6 @@
-debug: true
+cache_path: 
 
-protect:
+authenticate:
   username: 
   password:
 

@@ -41,15 +41,18 @@ $app->register(new AmuSilexExtension\SilexConfig\YamlConfig(array(
 	DOC_ROOT . "/config.yml"
 )));
 
-$app['debug'] = $app['config']['debug'];
+$twigopts = array(
+	'strict_variables' => false
+);
+
+if ( $app['config']['cache_path'] ) {
+	$twigopts['cache'] = DOC_ROOT . '/' . trim($app['config']['cache_path'],'/');
+}
 
 $app->register(new TwigServiceProvider(), array(
     'twig.path' 		=> array( TEMPLATES_PATH.'/', APP_TEMPLATES_PATH.'/' ),
     'twig.class_path' 	=>  APP_PATH . '/vendor/twig/lib',
-	'twig.options' 		=> array(
-		// 'cache' => __DIR__.'/_cache', // TODO
-		'strict_variables' => false
-	)
+	'twig.options' 		=> $twigopts
 ));
 
 $app->register(new Prontotype\Provider\PagetreeProvider());
@@ -61,9 +64,12 @@ $app->register(new Prontotype\Provider\CacheProvider());
 $app->register(new Prontotype\Provider\StoreProvider());
 $app->register(new Prontotype\Provider\UtilsProvider());
 
-$app->before(function ( Request $request ) use ($app) {
+$app->before(function () use ($app) {
 	
-	$authPage = $app['url_generator']->generate('authenticate');
+	$authPage = array(
+		$app['url_generator']->generate('authenticate'),
+		$app['url_generator']->generate('authenticate', array('result'=>'error'))
+	);
 
 	$app['twig']->addGlobal('uri', $app['uri']);
 	$app['twig']->addGlobal('data', $app['data']);
@@ -73,21 +79,25 @@ $app->before(function ( Request $request ) use ($app) {
 	$app['twig']->addGlobal('config', $app['config']);
 	$app['twig']->addGlobal('utils', $app['utils']);
 	
-	if ( $request->getRequestUri() !== $authPage ) {
-		if ( ! empty($app['config']['protect']) && ! empty($app['config']['protect']['username']) && ! empty($app['config']['protect']['password']) ) {
+	if ( ! in_array($app['request']->getRequestUri(), $authPage) )
+	{
+		if ( ! empty($app['config']['authenticate']) && ! empty($app['config']['authenticate']['username']) && ! empty($app['config']['authenticate']['password']) ) {
 		
 			$currentUser = $app['session']->get( $app['config']['prefix'] . 'authed-user' );
-
-			if ( empty( $currentUser ) ) {
-				return $app->redirect($app['url_generator']->generate('authenticate'));
-			} else {
-				
+			$userHash = sha1($app['config']['authenticate']['username'] . $app['config']['authenticate']['password']);
+			
+			if ( empty( $currentUser ) || $currentUser !== $userHash )
+			{
+				return $app->redirect($app['url_generator']->generate('authenticate')); // not logged in, redirect to auth page
+			}
+			elseif ( in_array($app['request']->getRequestUri(), $authPage)  )
+			{
+				return $app->redirect('/'); // logged in already. Redirect to homepage
 			}
 		}
 	}
 
 });
-
 
 $app->error(function (\Exception $e, $code) use ($app) {
 	
@@ -104,8 +114,7 @@ $app->error(function (\Exception $e, $code) use ($app) {
 	return new Response( $app['twig']->render($template), $code );
 });
 
-$app->mount('/_/', new Prontotype\Controller\SystemController());
+$app->mount('/_system/', new Prontotype\Controller\SystemController());
 $app->mount('/', new Prontotype\Controller\MainController());
-
 
 return $app;

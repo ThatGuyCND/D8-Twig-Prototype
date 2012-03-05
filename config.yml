@@ -1,5 +1,3 @@
-debug: true
-
-protect:
+authenticate:
   username: test
   password: test
