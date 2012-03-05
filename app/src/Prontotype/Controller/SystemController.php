@@ -16,16 +16,17 @@ class SystemController implements ControllerProviderInterface
 		$controllers = new ControllerCollection();
 		
 		
-		$controllers->get('auth/{result}', function ( $result ) use ( $app ) {
+		$controllers->get('auth', function () use ( $app ) {
+			
+			if ( $app['session']->has($app['config']['prefix'] . 'authed-user') ) {
+				return $app->redirect('/');
+			}
 			
 			return $app['twig']->render('PT/pages/authenticate.html', array(
-				'auth_path' => $app['url_generator']->generate('authenticate'),
-				'result' => $result
+				'auth_path' => $app['url_generator']->generate('authenticate')
 			));
-
-		})
-		->value('result', null)
-		->bind('authenticate');
+			
+		})->bind('authenticate');
 		
 		
 		$controllers->post('auth', function () use ( $app ) {
@@ -38,7 +39,9 @@ class SystemController implements ControllerProviderInterface
 				
 				return $app->redirect('/');
 			} else {
-				return $app->redirect($app['url_generator']->generate('authenticate', array('result'=>'error')));
+				$app['session']->setFlash('error', 'error');
+				$app['session']->remove( $app['config']['prefix'] . 'authed-user' );
+				return $app->redirect($app['url_generator']->generate('authenticate'));
 			}
 
 		})->bind('do_authenticate');
@@ -46,7 +49,7 @@ class SystemController implements ControllerProviderInterface
 		
 		$controllers->get('deauth', function ( $result ) use ( $app ) {
 			
-			$app['session']->set( $app['config']['prefix'] . 'authed-user', null );
+			$app['session']->remove( $app['config']['prefix'] . 'authed-user' );
 			return $app->redirect($app['url_generator']->generate('authenticate'));
 
 		})

@@ -4,13 +4,27 @@
 	<meta charset="utf-8">
 	
 	<link rel="stylesheet" href="/app/assets/css/bootstrap.min.css" type="text/css" media="screen">
-
+	<style type="text/css" media="screen">
+		body {
+			background: #EFEFEF;
+		}
+		
+		#pt-content {
+			padding: 15px 20px 1px 20px;
+			margin: 30px auto;
+			max-width: 500px;
+			background: #FFF;
+			border-radius: 8px;
+		}
+	</style>
 
 	<title>{{ title }}</title>
 </head>
 <body>
-		
-	{% block content %}{% endblock content %}
+	
+	<div id="pt-content">
+	{% block content %}{% endblock content %}	
+	</div>	
 	
 </body>	
 </html>

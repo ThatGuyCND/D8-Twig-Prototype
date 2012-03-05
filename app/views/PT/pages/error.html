@@ -3,11 +3,10 @@
 {% set title = 'An error has occurred' %}
 
 {% block content %}
-
-<div id="notice" class="block error">
-
-	<p>An error has occurred: <em>{{ message }}</em></p>
-
-</div>
-
+	
+	<div class="alert">
+		<h4 class="alert-heading">An error has occurred.</h4>
+		Computer says: {{ message }}
+	</div>	
+	
 {% endblock content %}

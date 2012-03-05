@@ -66,15 +66,15 @@ $app->register(new Prontotype\Provider\StoreProvider());
 $app->register(new Prontotype\Provider\UtilsProvider());
 
 $app->before(function () use ($app) {
-	
+		
 	$authPage = array(
 		$app['url_generator']->generate('authenticate'),
-		$app['url_generator']->generate('de_authenticate'),
-		$app['url_generator']->generate('authenticate', array('result'=>'error'))
+		$app['url_generator']->generate('de_authenticate')
 	);
 
 	$app['twig']->addGlobal('uri', $app['uri']);
 	$app['twig']->addGlobal('data', $app['data']);
+	$app['twig']->addGlobal('session', $app['session']);
 	$app['twig']->addGlobal('cache', $app['cache']);
 	$app['twig']->addGlobal('pages', $app['pages']);
 	$app['twig']->addGlobal('store', $app['store']);
@@ -91,10 +91,6 @@ $app->before(function () use ($app) {
 			if ( empty( $currentUser ) || $currentUser !== $userHash )
 			{
 				return $app->redirect($app['url_generator']->generate('authenticate')); // not logged in, redirect to auth page
-			}
-			elseif ( in_array($app['request']->getRequestUri(), $authPage)  )
-			{
-				return $app->redirect('/'); // logged in already. Redirect to homepage
 			}
 		}
 	}

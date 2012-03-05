@@ -1,20 +1,30 @@
 {% extends "PT/layouts/system.html" %}
 {% import "PT/macros/forms.html" as form %}
 
-{% set title = 'protected content' %}
+{% set title = 'You must be logged in to access this content' %}
 
 {% block content %}
 
-<h1>You must be logged in to view this content</h1>
-
-<form action="{{ auth_path }}" method="POST">
-		
+<form action="{{ auth_path }}" method="POST" class="form-horizontal">
+	
+	{% if session.hasFlash('error') %}
+	<div class="alert alert-error">
+		<strong>Your username or password was incorrect.</strong> Please try again.
+	</div>
+	{% else %}
+	<div class="alert alert-info">
+		<strong>You must be logged in to access this content.</strong>
+	</div>
+	{% endif %}
+	
 	{{ form.labeled_control('text', 'Username', { name : 'username', id : 'username' }) }}
-		
+	
 	{{ form.labeled_control('password', 'Password', { name : 'password', id : 'password' }) }}
-		
-	{{ form.button('Log in') }}
-		
+	
+	<div class="form-actions">
+		{{ form.button('Log in', 'btn-primary') }}
+	</div>
+
 </form>
 
 {% endblock content %}

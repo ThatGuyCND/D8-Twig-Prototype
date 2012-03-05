@@ -9,7 +9,7 @@
 
 
 {% macro label( label, opts ) %}
-<label{% if opts.id %} for="{{ opts.id }}"{% endif %}>{{ label|default('Input label') }}</label>
+<label{% if opts.id %} for="{{ opts.id }}"{% endif %} class="control-label">{{ label|default('Input label') }}</label>
 {% endmacro %}
 
 
@@ -33,8 +33,8 @@
 {% endmacro %}
 
 
-{% macro button( text ) %}
-<button type="submit" class="btn">{{ text|default('Submit') }}</button>
+{% macro button( text, class ) %}
+<button type="submit" class="btn {{ class }}">{{ text|default('Submit') }}</button>
 {% endmacro %}
 
 
@@ -65,31 +65,37 @@
 
 {% macro labeled_control( type, label, attrs, opts ) %}
 
+<div class="control-group pt-type-{{ type|default('text') }}">
+
 {% if label is empty %}
 
 {{ _self.control(type, label, attrs, opts) }}		
 
 {% else %}
 
-<div class="pt-container pt-type-{{ type|default('text') }}">
-	
 {% if not attrs %}{% set attrs = {} %}{% endif %}
 {% if not attrs.id %}{% set attrs = attrs|merge({ 'id': 'id-' ~ random() }) %}{% endif %}
 	
 {% if type == 'checkbox' or type == 'radio'  %}
 	
+	<div class="controls">
+		<label{% if opts.id %} for="{{ opts.id }}"{% endif %} class="{{ type }}">
 	{{ _self.control(type, label, attrs, opts) }}
-	{{ _self.label(label, attrs) }}
+		{{ opts.label|default('Input label') }}
+		</label>
+	</div>
 	
 {% else %}
-
-	{{ _self.label(label, attrs) }}
-	{{ _self.control(type, label, attrs, opts) }}
 	
+	{{ _self.label(label, attrs) }}
+	<div class="controls">
+	{{ _self.control(type, label, attrs, opts) }}
+	</div>
+	
+{% endif %}
+
 {% endif %}
 
 </div>
-
-{% endif %}
 
 {% endmacro %}
