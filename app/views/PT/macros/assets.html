@@ -15,7 +15,9 @@
 	<script>PT.configure({
 		"prefix" : "{{ config.prefix }}",
 		"cookieLifetime" : "{{ config.cookie_lifetime }}",
-		"dataTrigger" : "{{ config.triggers.data }}"
+		"dataTrigger" : "{{ config.triggers.data }}",
+		"loginTrigger" : "{{ config.triggers.login }}",
+		"logoutTrigger" : "{{ config.triggers.logout }}"
 	});</script>
 {% endmacro %}
 

@@ -17,7 +17,7 @@ class MainController implements ControllerProviderInterface
 		$triggers = $app['config']['triggers'];
 		
 		$controllers->match('/' . $triggers['login'], function ( Request $request ) use ( $app, $triggers ) {
-				
+			
 			$user_id = $request->get('user');
 			if ( ! $user_id ) $app->abort(404);
 			
@@ -27,7 +27,7 @@ class MainController implements ControllerProviderInterface
 			$app['store']->set('user', $user);
 			
 			if ( $request->get('redirect') ) {
-				$app->redirect($request->get('user'));
+				return $app->redirect($request->get('redirect'));
 			} else {
 				return $app->redirect('/'); // redirect to homepage
 			}
@@ -42,7 +42,7 @@ class MainController implements ControllerProviderInterface
 			$app['store']->clear('user');
 			
 			if ( $request->get('redirect') ) {
-				$app->redirect($request->get('user'));
+				return $app->redirect($request->get('redirect'));
 			} else {
 				return $app->redirect('/'); // redirect to homepage
 			}

@@ -5,7 +5,9 @@
 	PT.SETTINGS = {
 		prefix : 'prontotype-',
 		cookieLifetime : 604800,
-		dataTrigger : '_data'
+		dataTrigger : '_data',
+		loginTrigger : '_login',
+		logoutTrigger : '_logout',
 	};
 	
 	PT.configure = function( config ){
@@ -303,7 +305,8 @@
 				userMenu.bind('change', function(){
 					var val = $(this).find(':selected').attr('value');
 					if ( val !== '' ) {
-						window.location.search = PT.helpers.makeQs(window.location.search, {'login':val, 'logout':null});
+						var currentPage = window.location.pathname;						
+						window.location.href = '/' + PT.SETTINGS.loginTrigger + '?' + PT.helpers.makeQs(window.location.search, {user : val, redirect : currentPage});
 					}
 					return false;
 				});
@@ -314,7 +317,8 @@
 				// logged in
 				userMenu = $('<span>Logged in as <strong>' + self.users.currentUser.username + '</strong> (' + self.users.currentUser.role + ')' + ' <a href="#">Log out</a></span>');
 				userMenu.find('a').bind('click', function(){
-					window.location.search = PT.helpers.makeQs(window.location.search, {'logout':1, 'login':null});
+					var currentPage = window.location.pathname;
+					window.location.href = '/' + PT.SETTINGS.logoutTrigger + '?' + PT.helpers.makeQs(window.location.search, {redirect : currentPage});
 					return false;
 				});
 				section.append(userMenu);
