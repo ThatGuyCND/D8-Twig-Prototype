@@ -80,7 +80,7 @@
 	
 	<div class="controls">
 		<label{% if opts.id %} for="{{ opts.id }}"{% endif %} class="{{ type }}">
-	{{ _self.control(type, label, attrs, opts) }}
+		{{ _self.control(type, label, attrs, opts) }}
 		{{ opts.label|default('Input label') }}
 		</label>
 	</div>

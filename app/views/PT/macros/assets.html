@@ -1,6 +1,9 @@
 {% macro pronto( opts ) %}
 	{{ _self.pronto_css( opts ) }}
 	{{ _self.pronto_js( opts ) }}
+	{% if opts.toolbar %}
+	<script>new PT.toolbar([{% for item in opts.toolbar %}'{{ item }}'{% if not loop.last %},{% endif %}{% endfor %}]);</script>
+	{% endif %}
 {% endmacro %}
 
 
