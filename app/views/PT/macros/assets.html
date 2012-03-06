@@ -6,7 +6,6 @@
 	{% endif %}
 {% endmacro %}
 
-
 {% macro pronto_js( opts ) %}
 {% if opts.jquery is not defined or opts.jquery %}
 <script src="/app/assets/js/jquery.min.js"></script>
@@ -24,8 +23,25 @@
 	});</script>
 {% endmacro %}
 
-
 {% macro pronto_css() %}
-	<link rel="stylesheet" href="/app/assets/css/pronto.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="/app/assets/css/pronto.css" type="text/css" media="all">
 {% endmacro %}
+
+
+{% macro bootstrap( responsive ) %}
+	{{ _self.bootstrap_css( responsive ) }}
+	{{ _self.bootstrap_js }}
+{% endmacro %}
+
+{% macro bootstrap_css( responsive ) %}
+	<link rel="stylesheet" href="/app/assets/css/bootstrap.min.css" type="text/css" media="all">
+	{% if responsive %}
+	<link rel="stylesheet" href="/app/assets/css/bootstrap-responsive.min.css" type="text/css" media="all">
+	{% endif %}
+{% endmacro %}
+
+{% macro bootstrap_js() %}
+	 <script src="/app/assets/js/bootstrap.min.js"></script>
+{% endmacro %}
+
 

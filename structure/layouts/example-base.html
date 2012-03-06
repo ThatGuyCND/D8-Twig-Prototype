@@ -5,14 +5,14 @@
 <head>
 	<meta charset="utf-8">
 	
-	<link rel="stylesheet" href="/app/assets/css/bootstrap.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	{{ assets.bootstrap_css }}
 	
 	<title>Prontotype Example Site</title>
 </head>
 <body>
 	
 	{% if user %}
-		
+	
 	<div id="userbar">
 		
 		<div class="section" data-note="global.user_bar">
