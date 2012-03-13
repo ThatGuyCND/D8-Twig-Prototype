@@ -1,0 +1,47 @@
+{% macro pronto( opts ) %}
+	{{ _self.pronto_css( opts ) }}
+	{{ _self.pronto_js( opts ) }}
+	{% if opts.toolbar %}
+	<script>new PT.toolbar([{% for item in opts.toolbar %}'{{ item }}'{% if not loop.last %},{% endif %}{% endfor %}]);</script>
+	{% endif %}
+{% endmacro %}
+
+{% macro pronto_js( opts ) %}
+{% if opts.jquery is not defined or opts.jquery %}
+<script src="/app/assets/js/jquery.min.js"></script>
+{% endif %}
+{% if opts.cookie is not defined or opts.cookie %}
+	<script src="/app/assets/js/jquery.cookie.min.js"></script>
+{% endif %}
+	<script src="/app/assets/js/pronto.js"></script>
+	<script>PT.configure({
+		"prefix" : "{{ config.prefix }}",
+		"cookieLifetime" : "{{ config.cookie_lifetime }}",
+		"dataTrigger" : "{{ config.triggers.data }}",
+		"loginTrigger" : "{{ config.triggers.login }}",
+		"logoutTrigger" : "{{ config.triggers.logout }}"
+	});</script>
+{% endmacro %}
+
+{% macro pronto_css() %}
+	<link rel="stylesheet" href="/app/assets/css/pronto.css" type="text/css" media="all">
+{% endmacro %}
+
+
+{% macro bootstrap( responsive ) %}
+	{{ _self.bootstrap_css( responsive ) }}
+	{{ _self.bootstrap_js }}
+{% endmacro %}
+
+{% macro bootstrap_css( responsive ) %}
+	<link rel="stylesheet" href="/app/assets/css/bootstrap.min.css" type="text/css" media="all">
+	{% if responsive %}
+	<link rel="stylesheet" href="/app/assets/css/bootstrap-responsive.min.css" type="text/css" media="all">
+	{% endif %}
+{% endmacro %}
+
+{% macro bootstrap_js() %}
+	 <script src="/app/assets/js/bootstrap.min.js"></script>
+{% endmacro %}
+
+

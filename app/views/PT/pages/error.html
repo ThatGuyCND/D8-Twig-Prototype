@@ -1,0 +1,12 @@
+{% extends "PT/layouts/system.html" %}
+
+{% set title = 'An error has occurred' %}
+
+{% block content %}
+	
+	<div class="alert">
+		<h4 class="alert-heading">An error has occurred.</h4>
+		Computer says: {{ message }}
+	</div>	
+	
+{% endblock content %}

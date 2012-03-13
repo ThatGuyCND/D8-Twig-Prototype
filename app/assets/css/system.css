@@ -1,0 +1,12 @@
+body {
+	background: #EFEFEF;
+}
+		
+#pt-content {
+	padding: 15px 20px 1px 20px;
+	margin: 30px auto;
+	max-width: 500px;
+	background: #FFF;
+	border-radius: 8px;
+	box-shadow: 1px 1px 1px #CCC;
+}

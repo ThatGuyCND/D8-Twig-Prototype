@@ -1,0 +1,27 @@
+cache_path: 
+
+authenticate:
+  username: 
+  password:
+
+prefix: prontotype-
+cookie_lifetime: 604800 # 1 week
+
+triggers:
+  login: _login
+  logout: _logout
+  data: _data
+  assets: _assets
+  shorturl: _p
+
+nice_names:
+  index: Overview
+  home: Home
+
+data:
+  csv:
+    headers: true
+    delimiter: ','
+    enclosure: '"'
+    escape: '\'
+    id_header: id
