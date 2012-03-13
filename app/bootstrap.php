@@ -81,10 +81,12 @@ $app->before(function () use ($app) {
 	$app['twig']->addGlobal('config', $app['config']);
 	$app['twig']->addGlobal('utils', $app['utils']);
 	
+	$authRequired = ( ! empty($app['config']['authenticate']) && ! empty($app['config']['authenticate']['username']) && ! empty($app['config']['authenticate']['password']) ) ? true : false;
+	
 	if ( ! in_array($app['request']->getRequestUri(), $authPage) )
 	{
-		if ( ! empty($app['config']['authenticate']) && ! empty($app['config']['authenticate']['username']) && ! empty($app['config']['authenticate']['password']) ) {
-		
+		if ( $authRequired )
+		{
 			$currentUser = $app['session']->get( $app['config']['prefix'] . 'authed-user' );
 			$userHash = sha1($app['config']['authenticate']['username'] . $app['config']['authenticate']['password']);
 			
@@ -93,6 +95,11 @@ $app->before(function () use ($app) {
 				return $app->redirect($app['url_generator']->generate('authenticate')); // not logged in, redirect to auth page
 			}
 		}
+	}
+	elseif ( ! $authRequired )
+	{
+		// redirect visits to the auth pages to the homepage if no auth is required.	
+		return $app->redirect('/');
 	}
 
 });
