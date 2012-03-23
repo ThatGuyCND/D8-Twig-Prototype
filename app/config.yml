@@ -1,12 +1,38 @@
+#==================
+# cache_path
+# -----------------
+# Specify a full server path to a writeable directory to enable caching of templates and data
+#==================
 cache_path: 
 
+#==================
+# authenticate
+# -----------------
+# Provide a username and password pair to enable password-protection of the prototype
+#==================
 authenticate:
   username: 
   password:
 
+#==================
+# prefix
+# -----------------
+# The string to use when prefixing cookie names, classes etc.
+#==================
 prefix: prontotype-
+  
+#==================
+# cookie_lifetime
+# -----------------
+# How long cookies set by prontotype should persist for.
+#==================
 cookie_lifetime: 604800 # 1 week
 
+#==================
+# triggers
+# -----------------
+# URL segments that trigger specific behaviour
+#==================
 triggers:
   login: _login
   logout: _logout
@@ -14,10 +40,20 @@ triggers:
   assets: _assets
   shorturl: _p
 
+#==================
+# nice_names
+# -----------------
+# A few short text strings that should be used in auto-generated navigation macros
+#==================
 nice_names:
-  index: Overview
-  home: Home
+  index: Overview     # what to label the index pages as
+  home: Home          # what to label the home page as
 
+#==================
+# data
+# -----------------
+# Tweak to match the style of different data files.
+#==================
 data:
   csv:
     headers: true
