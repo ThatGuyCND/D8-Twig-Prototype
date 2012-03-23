@@ -14,5 +14,21 @@ class Utils {
 		if ( $max === null ) $max = getrandmax();
 		return rand( $min, $max );
 	}
-
+	
+	public function list_templates( $dir )
+	{
+		$dir = TEMPLATES_PATH . '/' . $dir;
+		$result = array();
+		$dirContents = scandir($dir);
+		foreach( $dirContents as $item )
+		{
+			if ( ! is_dir($item) )
+			{
+				$result[] = pathinfo($item);
+			}
+		}
+		return $result;
+	}
+	
+	
 }
