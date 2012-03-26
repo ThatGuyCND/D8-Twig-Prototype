@@ -3,7 +3,7 @@
 # -----------------
 # Set to an empty string if using mod_rewrite or the nginx equivalent
 #==================
-index: 
+index: index.php
 
 #==================
 # cache_path
