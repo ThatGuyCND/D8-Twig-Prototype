@@ -33,6 +33,11 @@ Class Parser {
 		{
 			$url_path = '/index'; // homepage
 		}
+		
+		if ( ! empty($this->app['config']['index']) )
+		{
+			$url_path = '/' . $this->app['config']['index'] . $url_path;
+		}
 
 		if ( isset($this->route_map[$url_path]) )
 		{

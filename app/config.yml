@@ -1,4 +1,11 @@
 #==================
+# index
+# -----------------
+# Set to an empty string if using mod_rewrite or the nginx equivalent
+#==================
+index: 
+
+#==================
 # cache_path
 # -----------------
 # Specify a full server path to a writeable directory to enable caching of templates and data

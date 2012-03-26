@@ -62,8 +62,14 @@ Class Page {
 		$this->fs_path = $dir_path . DS . $filename_info['fs_name'];
 		
 		$this->url = $route_dir_path . DS . $filename_info['route_name'];
-		
+				
 		$this->nice_url = str_replace('/index', '', $this->url);
+		
+		if ( ! empty($this->app['config']['index']) )
+		{
+			$this->url = '/' . $this->app['config']['index'] . $this->url;
+			$this->nice_url = '/' . $this->app['config']['index'] . $this->nice_url;
+		}
 		
 		if ( empty($this->nice_url) )
 		{
@@ -73,7 +79,7 @@ Class Page {
 		if ( ! empty( $filename_info['id'] ) )
 		{
 			$this->id = $filename_info['id'];
-			// $this->short_url = Config::get('short_url_trigger') . '/' . $this->id;
+			$this->short_url = $this->app['config']['triggers']['shorturl'] . '/' . $this->id;
 		}
 		
 		$this->name = $filename_info['route_name'];
