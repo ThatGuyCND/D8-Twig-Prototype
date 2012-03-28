@@ -15,13 +15,14 @@ Prontotype lets you:
 * Write CSS using LESS and have it automatically compiled for use in your protoype
 * Make use of a library of pre-build components to rapidly build your interfaces
 * Use whatever frontend prototyping framework you like (Twitter Bootstrap is included, but anything can be used)
+* Auto-generate navigation, forms and more using inbuilt macros
 * And plenty more&hellip;
 
 What you'll need to run Prontotype:
 --------------------
 
 * Linux-based web server
-* Apache with mod_rewrite enabled
+* A web server like Apache (optionally with mod_rewrite or equivalent enabled) or Nginx
 * PHP version 5.3.1+
 
 Installation
@@ -29,34 +30,15 @@ Installation
 
 1. Download and unzip the latest version ([or clone it from the Github repo](https://github.com/allmarkedup/prontotype))
 2. Move the files to the web root of your server
-3. If using Apache, change the filename of the `htaccess.txt` file to `.htaccess` (this may make it an 'invisible' file, depending on your OS) OR if you are using Nginx then see the Nginx configuration section below.
+3. Optionally tweak some of the default configuration settings (but you probably don't need to!)
 
 Documentation
 -------------
 
-**Coming soon.** When you first install Prontotype it will install a few example pages that will help you get started, but full docs are on their way.
+In-progress documentation is available at [http://prontotype.allmarkedup.com](http://prontotype.allmarkedup.com)
 
 Prontotype makes heavy use of [Twig](http://twig.sensiolabs.org/) and [YAML](http://yaml.org/start.html) so becoming familiar with them will help you greatly in mastering everything Prontotype has to offer.
 
-Nginx Configuration
--------------
 
-All requests need to be routed to through the index.php file. A sample Nginx configuration might look like this:
-
-	server
-	{
-	    listen 80;
-	    server_name prototype-name.dev;
-	    root /path/to/prontotype;
-
-	    location /
-	    {
-	        index index.php index.html;
-			if (!-f $request_filename)
-			{
-				rewrite ^/(.*)$ /index.php?/$1 last;
-			}
-	    }
-	}
 
 
