@@ -26,7 +26,7 @@ class Assets {
 		}
 				
 		$converter = 'convert' . ucwords(strtolower($format));
-			
+		
 		if ( method_exists( $this, $converter ) )
 		{
 			return $this->$converter( $fullpath );
@@ -44,6 +44,11 @@ class Assets {
 	{
 		$less = new \lessc( $path );
 		return $less->parse();
+	}
+	
+	public function convertCss( $path )
+	{
+		return file_get_contents($path);
 	}
 	
 }

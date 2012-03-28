@@ -18,8 +18,8 @@ cache_path:
 # Provide a username and password pair to enable password-protection of the prototype
 #==================
 authenticate:
-  username: 
-  password:
+  username: mark
+  password: mark
 
 #==================
 # prefix

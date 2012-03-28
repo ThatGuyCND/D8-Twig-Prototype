@@ -10,3 +10,16 @@ body {
 	border-radius: 8px;
 	box-shadow: 1px 1px 1px #CCC;
 }
+
+#pt-content h1 {
+	font-size: 20px;
+	margin-bottom: 10px;
+}
+
+#pt-content p {
+	margin-bottom: 14px;
+}
+
+#pt-content p:last-child {
+	margin-bottom: 20px;
+}

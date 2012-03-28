@@ -27,7 +27,6 @@
 	<link rel="stylesheet" href="/app/assets/css/pronto.css" type="text/css" media="all">
 {% endmacro %}
 
-
 {% macro bootstrap( responsive ) %}
 	{{ _self.bootstrap_css( responsive ) }}
 	{{ _self.bootstrap_js }}
@@ -45,6 +44,6 @@
 {% endmacro %}
 
 {% macro stylesheet( path, media ) %}
-	<link rel="stylesheet" href="/{{ config.triggers.assets }}{{ path }}" type="text/css" media="{{ media|default('all') }}">
+	<link rel="stylesheet" href="{% if config.index is not empty %}/{{ config.index }}{% endif %}/{{ config.triggers.assets }}{{ path }}" type="text/css" media="{{ media|default('all') }}">
 {% endmacro %}
 
