@@ -10,9 +10,10 @@ Class Uri {
 	
 	public static $uri_prefix;
 	
-	public function __construct()
+	public function __construct( $app )
 	{
 		$uri = $this->detect();
+		$this->app = $app;
 		
 		$uri = trim($uri, '/');
 		
@@ -131,6 +132,16 @@ Class Uri {
 		}
 			
 		return $uri;
+	}
+	
+	public function generate( $routeName )
+	{
+		$url = $this->app['url_generator']->generate($routeName);
+		if ( !empty($this->app['config']['index']) && strpos( $url, $this->app['config']['index'] ) === false )
+		{
+			$url = '/' . $this->app['config']['index'] . $url;
+		}
+		return $url;
 	}
 	
 	public function __toString()

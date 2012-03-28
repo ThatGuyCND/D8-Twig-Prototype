@@ -68,8 +68,8 @@ $app->register(new Prontotype\Provider\UtilsProvider());
 $app->before(function () use ($app) {
 		
 	$authPage = array(
-		$app['url_generator']->generate('authenticate'),
-		$app['url_generator']->generate('de_authenticate')
+		$app['uri']->generate('authenticate'),
+		$app['uri']->generate('de_authenticate')
 	);
 
 	$app['twig']->addGlobal('uri', $app['uri']);
@@ -92,7 +92,7 @@ $app->before(function () use ($app) {
 			
 			if ( empty( $currentUser ) || $currentUser !== $userHash )
 			{
-				return $app->redirect($app['url_generator']->generate('authenticate')); // not logged in, redirect to auth page
+				return $app->redirect($app['uri']->generate('authenticate')); // not logged in, redirect to auth page
 			}
 		}
 	}

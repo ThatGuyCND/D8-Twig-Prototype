@@ -23,7 +23,7 @@ class SystemController implements ControllerProviderInterface
 			}
 			
 			return $app['twig']->render('PT/pages/authenticate.html', array(
-				'auth_path' => $app['url_generator']->generate('authenticate')
+				'auth_path' => $app['uri']->generate('authenticate')
 			));
 			
 		})->bind('authenticate');
@@ -40,7 +40,7 @@ class SystemController implements ControllerProviderInterface
 			} else {
 				$app['session']->setFlash('error', 'error');
 				$app['session']->remove( $app['config']['prefix'] . 'authed-user' );
-				return $app->redirect($app['url_generator']->generate('authenticate'));
+				return $app->redirect($app['uri']->generate('authenticate'));
 			}
 
 		})->bind('do_authenticate');
@@ -49,7 +49,7 @@ class SystemController implements ControllerProviderInterface
 		$controllers->get('deauth', function ( $result ) use ( $app ) {
 			
 			$app['session']->remove( $app['config']['prefix'] . 'authed-user' );
-			return $app->redirect($app['url_generator']->generate('authenticate'));
+			return $app->redirect($app['uri']->generate('authenticate'));
 
 		})
 		->value('result', null)
