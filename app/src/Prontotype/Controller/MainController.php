@@ -97,6 +97,18 @@ class MainController implements ControllerProviderInterface
 		// everything else...
 		$controllers->get('/{route}', function ( $route ) use ( $app ) {
 			
+			$routes = $app['config']['routes'] ? $app['config']['routes'] : array();
+			
+			foreach( $routes as $routeSpec => $endRoute ) {
+				$routeSpec = trim($routeSpec,'/');
+				$routeSpec = str_replace(array('(:any)','(:num)','/'), array('(.*)','(\d*)','\/'), $routeSpec);
+				$routeSpec = '/^' . $routeSpec . '$/';
+				if ( preg_match( $routeSpec, $route ) ) {
+					$route = $endRoute;
+					break;
+				}
+			}
+			
 			if ( ! $page = $app['pagetree']->getPage($route) ) {
 				$app->abort(404);
 			}
