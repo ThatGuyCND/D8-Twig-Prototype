@@ -97,15 +97,56 @@ class MainController implements ControllerProviderInterface
 		// everything else...
 		$controllers->get('/{route}', function ( $route ) use ( $app ) {
 			
+			// lets see if we need to do any checking of custom routes
 			$routes = $app['config']['routes'] ? $app['config']['routes'] : array();
+			$replacements = array();
+			if ( count($routes) ) {
+				foreach( $routes as $routeSpec => $endRoute ) {
+					// see if there are any page ID placeholders that need parsing out
+					if ( preg_match('/\(:id=([^\)]*)\)/', $routeSpec, $matches) ) {
+						if ( $routePage = $app['pagetree']->getPageById($matches[1]) ) {
+							$replacements[] = trim(str_replace($app['config']['index'], '', $routePage->nice_url),'/');
+							$routeSpec = str_replace(
+								array($matches[0],$app['config']['index']),
+								array($routePage->nice_url,''),
+								$routeSpec
+							);
+						} else {
+							continue;
+						}
+					}
+					$routeSpec = trim($routeSpec,'/');
+					// replace helper placeholders
+					$routeSpec = str_replace(
+						array('(:any)','(:num)','(:all)','/'),
+						array('([^/]*)','(\d*)','(.*)','\/'),
+						$routeSpec
+					);
+					$routeSpec = '/^' . $routeSpec . '$/';
+					if ( preg_match( $routeSpec, $route, $matches ) ) {
+						// we have a match!
+						for( $i = 0; $i < count($matches); $i++ ) {
+							if ( $i !== 0) {
+								$replacements[] = $matches[$i];
+							}
+						}
+						$route = $endRoute;
+						break;
+					}
+				}
+				
+				// replace and reference tokens in the route
+				// '(:id=test)/hello': '$1'
+				$replacementTokens = array();
+				for( $j = 0; $j < count($replacements); $j++ ) {
+					$replacementTokens['$' . ($j+1)] = $replacements[$j];
+				}
+				$route = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $route);
 			
-			foreach( $routes as $routeSpec => $endRoute ) {
-				$routeSpec = trim($routeSpec,'/');
-				$routeSpec = str_replace(array('(:any)','(:num)','/'), array('(.*)','(\d*)','\/'), $routeSpec);
-				$routeSpec = '/^' . $routeSpec . '$/';
-				if ( preg_match( $routeSpec, $route ) ) {
-					$route = $endRoute;
-					break;
+				// replace any page ID placeholders in the route itself
+				if ( preg_match('/\(:id=(.*)\)/', $route, $matches) ) {
+					$routePage = $app['pagetree']->getPageById($matches[1]);
+					$route = str_replace(array($matches[0],$app['config']['index']), array($routePage->nice_url,''), $route);
 				}
 			}
 			
