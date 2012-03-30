@@ -61,3 +61,10 @@ data:
     enclosure: '"'
     escape: '\'
     id_header: id
+
+#==================
+# routing
+# -----------------
+# Add custom routes here
+#==================
+routes:
