@@ -10,6 +10,8 @@ Class Parser {
 	
 	protected $id_map = array();
 	
+	protected $dir_map = array();
+	
 	protected $pages_path;
 	
 	protected $app;
@@ -73,6 +75,12 @@ Class Parser {
 	{
 		return $this->page_tree;
 	}
+	
+	public function getDirMap()
+	{
+		return $this->dir_map;
+	}
+	
 
  	protected function loadPages()
 	{
@@ -106,6 +114,8 @@ Class Parser {
 				$children = $this->parseDirectory( $iterator->getChildren() );
 				
 				$item->add_children( $children );
+				
+				$this->dir_map[$item->url] = $item;
 			}
 			if ( $item ) $page_tree[] = $item;
 		}

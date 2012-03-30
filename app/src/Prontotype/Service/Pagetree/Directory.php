@@ -70,6 +70,8 @@ Class Directory {
 		
 		$segments = explode( DS, trim($route_dir_path, DS) );
 		
+		$this->nice_url = $this->url = $route_dir_path;
+		
 		$this->name = end($segments);
 
 		$this->fs_path = $dir_path;

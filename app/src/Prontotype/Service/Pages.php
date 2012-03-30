@@ -25,7 +25,6 @@ Class Pages {
 	
 	function getById( $id )
 	{
-		
 		return $this->app['pagetree']->getPageById($id);
 	}
 	
@@ -44,6 +43,18 @@ Class Pages {
 	function getAll()
 	{
 		return $this->app['pagetree']->getPageTree();
+	}
+	
+	function getAllUnder( $url )
+	{
+		$urlparts = explode('/', trim($url,'/'));
+		$tree = $this->app['pagetree']->getDirMap();		
+		foreach( $tree as $dir ) {
+			if ( trim($url,'/') === trim($dir->nice_url,'/') ) {
+				return $dir->children;
+			}
+		}
+		return array();
 	}
 	
 }
