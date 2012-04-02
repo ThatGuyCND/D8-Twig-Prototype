@@ -44,8 +44,13 @@ $twigopts = array(
 );
 
 if ( $app['config']['cache_path'] ) {
-	define('CACHE_PATH', DOC_ROOT . '/' . trim($app['config']['cache_path'],'/') );
-	$twigopts['cache'] = CACHE_PATH;
+	$cache_path = DOC_ROOT . '/' . trim($app['config']['cache_path'],'/');
+	if ( is_writable($cache_path) ) {
+		define('CACHE_PATH', $cache_path );
+		$twigopts['cache'] = CACHE_PATH;
+	} else {
+		exit('The specified cache directory (' . $cache_path . ') could not be written to. Please check the permissions and refresh.');
+	}
 } else {
 	define('CACHE_PATH', null );
 }
@@ -55,15 +60,42 @@ $app->register(new TwigServiceProvider(), array(
     'twig.class_path' 	=>  APP_PATH . '/vendor/twig/lib',
 	'twig.options' 		=> $twigopts
 ));
+	
+// register services
 
-$app->register(new Prontotype\Provider\PagetreeProvider());
-$app->register(new Prontotype\Provider\PagesProvider());
-$app->register(new Prontotype\Provider\AssetsProvider());
-$app->register(new Prontotype\Provider\UriProvider());
-$app->register(new Prontotype\Provider\DataProvider());
-$app->register(new Prontotype\Provider\CacheProvider());
-$app->register(new Prontotype\Provider\StoreProvider());
-$app->register(new Prontotype\Provider\UtilsProvider());
+$app['assets'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Assets( $app, DOC_ROOT );
+});
+
+$app['cache'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Cache( $app, CACHE_PATH );
+});
+
+$app['data'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Data( $app );
+});
+
+$app['pages'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Pages( $app );
+});
+
+$app['pagetree'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Pagetree\Parser( DOC_ROOT, PAGES_PATH, $app );
+});
+
+$app['store'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Store( $app );
+});
+
+$app['uri'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Uri( $app );
+});
+
+$app['utils'] = $app->share(function() {
+    return new Prontotype\Service\Utils();
+});
+
+// pre/post/error handlers
 
 $app->before(function () use ($app) {
 		
