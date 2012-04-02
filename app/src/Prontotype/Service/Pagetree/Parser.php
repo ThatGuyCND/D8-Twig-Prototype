@@ -119,6 +119,9 @@ Class Parser {
 			}
 			if ( $item ) $page_tree[] = $item;
 		}
+		uasort($page_tree, function( $a, $b ){			
+			return strnatcasecmp($a->fs_path, $b->fs_path);
+		});
 		return $page_tree;
 	}
 	
