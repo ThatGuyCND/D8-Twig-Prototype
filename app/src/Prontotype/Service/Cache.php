@@ -6,43 +6,77 @@ Class Cache {
 	
 	protected $app;
 	
+	protected $cache_path = null;
+	
 	public function __construct( $app, $cache_path )
 	{
 		$this->app = $app;
 		$this->cache_path = $cache_path;
 	}
 	
-	public function set( $key, $content )
+	public function set( $type, $key, $content )
 	{
-		$key = $this->encodeKey( $key );
-	
-		// TODO
+		if ( ! $this->cache_path ) {
+			return false;
+		}
+
+		try {
+			$this->forcefileContents( $this->makePath( $type, $key ), serialize($content) );
+		} catch ( \Exception $e ) {
+			return false;
+		}
 		
-		// file_put_contents( DATA_CACHE . '/' .$parts['filename'] . '.cache', serialize($data) );
+		return true;
 	}
 	
-	public function get( $key )
+	public function get( $type, $key, $newerThan = null )
 	{
-		// $file_mtime = filemtime( $file );
-		// $cache_file = DATA_CACHE . '/' . $parts['filename'] . '.cache';
-		// 
-		// if (  file_exists( $cache_file ) and $file_mtime < filemtime( $cache_file ) )
-		// {
-		// 	// cached version is newer, use that
-		// 	return unserialize( file_get_contents( $cache_file ) );
-		// }
+		if ( ! $this->cache_path ) {
+			return null;
+		}
 		
-		return NULL;
+		$cache_file = $this->makePath( $type, $key );
+		
+		if (  file_exists( $cache_file ) and $newerThan < filemtime( $cache_file ) )
+		{
+			return unserialize( file_get_contents( $cache_file ) );
+		}
+		
+		return null;
 	}
 	
-	public function clear( $key = NULL )
+	public function clear( $type = NULL, $key = NULL )
 	{
+		if ( ! $this->cache_path ) {
+			return null;
+		}
 		// TODO
+	}
+	
+	protected function makePath( $type, $key )
+	{
+		$key = $this->encodeKey( $key );	
+		return $this->cache_path . '/' . $type . '/' . $key . '.cache';
 	}
 	
 	protected function encodeKey( $key )
 	{
 		return base64_encode( $key );
+	}
+	
+	protected function forcefileContents( $location, $contents )
+	{
+		$file = basename($location);
+		$dir = dirname($location);
+		
+		if ( ! is_dir($dir) )
+		{
+			mkdir($dir, 0771, true);
+		}
+		
+
+		file_put_contents($location, $contents);
+		chmod($location, 0644);
 	}
 
 }

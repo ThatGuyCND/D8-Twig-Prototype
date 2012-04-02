@@ -97,7 +97,7 @@ class Data {
 		$parts = pathinfo( $file );
 		$data = array();
 		
-		if ( $cachedData = $this->app['cache']->get( $file ) )
+		if ( $cachedData = $this->app['cache']->get( 'data', $file, filemtime($file) ) )
 		{
 			return $cachedData;
 		}
@@ -112,7 +112,7 @@ class Data {
 				$data = $this->$parser( $file );
 			}
 	
-			$this->app['cache']->set( $file, $data ); // save to cache
+			$this->app['cache']->set( 'data', $file, $data ); // save to cache
 		}
 		return $data;
 	} 

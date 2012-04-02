@@ -39,15 +39,10 @@ $app->register(new AmuSilexExtension\SilexConfig\YamlConfig(array(
 	DOC_ROOT . "/config.yml"
 )));
 
-$twigopts = array(
-	'strict_variables' => false
-);
-
 if ( $app['config']['cache_path'] ) {
 	$cache_path = DOC_ROOT . '/' . trim($app['config']['cache_path'],'/');
 	if ( is_writable($cache_path) ) {
 		define('CACHE_PATH', $cache_path );
-		$twigopts['cache'] = CACHE_PATH;
 	} else {
 		throw new \Exception('The specified cache directory <strong>' . $cache_path . '</strong> could not be written to. Please check the directory permissions and refresh.');
 	}
@@ -58,9 +53,13 @@ if ( $app['config']['cache_path'] ) {
 $app->register(new TwigServiceProvider(), array(
     'twig.path' 		=> array( TEMPLATES_PATH.'/', APP_TEMPLATES_PATH.'/' ),
     'twig.class_path' 	=>  APP_PATH . '/vendor/twig/lib',
-	'twig.options' 		=> $twigopts
+	'twig.options' 		=> array(
+		'strict_variables' 	=> false,
+		'cache'				=> CACHE_PATH ? CACHE_PATH . '/twig' : false,
+		'auto_reload'		=> true
+	)
 ));
-	
+
 // register services
 
 $app['assets'] = $app->share(function( $app ) {
