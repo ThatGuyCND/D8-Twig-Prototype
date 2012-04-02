@@ -45,12 +45,17 @@ Class Cache {
 		return null;
 	}
 	
-	public function clear( $type = NULL, $key = NULL )
+	public function clear( $type, $key = NULL )
 	{
 		if ( ! $this->cache_path ) {
 			return null;
 		}
-		// TODO
+		
+		if ( $type && $key ) {
+			return unlink($this->makePath($type, $key));
+		} else {
+			$this->forceRemoveDir( $this->cache_path . '/' . $type );
+		} 
 	}
 	
 	public function mtime( $type, $key )
@@ -94,6 +99,19 @@ Class Cache {
 
 		file_put_contents($location, $contents);
 		chmod($location, 0644);
+	}
+	
+	protected function forceRemoveDir($dir)
+	{
+		foreach ( glob($dir . '/*') as $file )
+		{
+			if ( is_dir($file) ) {
+				$this->rrmdir( $file );
+			} else {
+				unlink($file);
+			}
+		}
+		rmdir($dir);
 	}
 
 }
