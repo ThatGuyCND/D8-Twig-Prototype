@@ -36,8 +36,7 @@ Class Directory {
 	
 	public function is_parent()
 	{
-		$uri = $this->uriProvider;
-		$uri_segments = $uri->segments();
+		$uri_segments = $this->uriSegments;
 		$page_segments = explode( '/', trim($this->nice_url, '/') );
 		
 		$num_uri_segments = count( $uri_segments );

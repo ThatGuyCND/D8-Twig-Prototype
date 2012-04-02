@@ -81,7 +81,7 @@ Class Page {
 		if ( ! empty( $filename_info['id'] ) )
 		{
 			$this->id = $filename_info['id'];
-			$this->short_url = $this->app['config']['triggers']['shorturl'] . '/' . $this->id;
+			$this->short_url = $this->configProvider['triggers']['shorturl'] . '/' . $this->id;
 		}
 		
 		$this->name = $filename_info['route_name'];
@@ -105,11 +105,11 @@ Class Page {
 	{
 		if ( $level == 1 && $name == 'index' )
 		{
-			return $this->app['config']['nice_names']['home'];
+			return $this->configProvider['nice_names']['home'];
 		}
 		elseif ( $name == 'index' )
 		{
-			return $this->app['config']['nice_names']['index'];
+			return $this->configProvider['nice_names']['index'];
 		}
 		
 		return Parser::title_case(str_replace(array('_','-'), ' ', $name));
