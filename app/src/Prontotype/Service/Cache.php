@@ -73,7 +73,7 @@ Class Cache {
 			return false;
 		}
 		
-		return file_exists($this->makePath( $type, $key ));
+		return @file_exists($this->makePath( $type, $key ));
 	}
 	
 	protected function makePath( $type, $key )
