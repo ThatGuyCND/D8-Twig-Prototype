@@ -10,7 +10,7 @@ index: index.php
 # -----------------
 # Specify a full server path to a writeable directory to enable caching of templates and data
 #==================
-cache_path: _cache
+cache_path: 
 
 #==================
 # authenticate
