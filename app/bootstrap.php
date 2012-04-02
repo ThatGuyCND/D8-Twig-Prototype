@@ -49,7 +49,7 @@ if ( $app['config']['cache_path'] ) {
 		define('CACHE_PATH', $cache_path );
 		$twigopts['cache'] = CACHE_PATH;
 	} else {
-		exit('The specified cache directory (' . $cache_path . ') could not be written to. Please check the permissions and refresh.');
+		throw new \Exception('The specified cache directory <strong>' . $cache_path . '</strong> could not be written to. Please check the directory permissions and refresh.');
 	}
 } else {
 	define('CACHE_PATH', null );
