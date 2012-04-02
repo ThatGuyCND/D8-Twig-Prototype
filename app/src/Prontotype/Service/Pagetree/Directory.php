@@ -24,18 +24,19 @@ Class Directory {
 	
 	public $level;
 	
-	protected $app;
-		
-	function __construct( $path, $pages_root_path, $app )
+	protected $uriSegments;
+			
+	function __construct( $path, $pages_root_path, $uriSegments, $configProvider )
 	{
-		$this->app = $app;
 		$this->pages_root_path = $pages_root_path;
+		$this->uriSegments = $uriSegments;
+		$this->configProvider = $configProvider;
 		$this->build_data( $path );
 	}
 	
 	public function is_parent()
 	{
-		$uri = $this->app['uri'];
+		$uri = $this->uriProvider;
 		$uri_segments = $uri->segments();
 		$page_segments = explode( '/', trim($this->nice_url, '/') );
 		

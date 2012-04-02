@@ -22,23 +22,25 @@ Class Page {
 	
 	public $level;
 	
-	protected $app;
-	
 	protected $pages_root_path;
+	
+	protected $requestUri;
+	
+	protected $configProvider;
 	
 	protected $name_format_regex = '/^((\d)*[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)\.html$/';
 	
-	function __construct( $path, $pages_root_path, $app )
+	function __construct( $path, $pages_root_path, $requestUri, $configProvider )
 	{
-		$this->app = $app;
 		$this->pages_root_path = $pages_root_path;
+		$this->requestUri = $requestUri;
+		$this->configProvider = $configProvider;
 		$this->build_data( $path );
 	}
 	
 	public function is_current()
 	{
-		$uri = $this->app['uri'];
-		return ( trim($this->nice_url,'/') == trim( $uri->string(),'/') );
+		return ( trim($this->nice_url,'/') == trim( $this->requestUri,'/') );
 	}
 		
 	protected function build_data( $path )
@@ -52,7 +54,7 @@ Class Page {
 		$level = count(explode('/',$dir_path));
 		
 		$route_dir_path = preg_replace( Parser::$folder_format_regex, '/', $dir_path );
-
+		
 		$dir_path = '/pages' . $dir_path; // TODO: fix this!
 
 		$filename_info = $this->parse_filename(str_replace($this->pages_root_path, '', $info['basename']));
@@ -65,10 +67,10 @@ Class Page {
 				
 		$this->nice_url = str_replace('/index', '', $this->url);
 		
-		if ( ! empty($this->app['config']['index']) )
+		if ( ! empty($this->configProvider['index']) )
 		{
-			$this->url = '/' . $this->app['config']['index'] . $this->url;
-			$this->nice_url = '/' . $this->app['config']['index'] . $this->nice_url;
+			$this->url = '/' . $this->configProvider['index'] . $this->url;
+			$this->nice_url = '/' . $this->configProvider['index'] . $this->nice_url;
 		}
 		
 		if ( empty($this->nice_url) )

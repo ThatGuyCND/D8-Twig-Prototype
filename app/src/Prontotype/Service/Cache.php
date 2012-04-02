@@ -22,7 +22,7 @@ Class Cache {
 
 		try {
 			$this->forcefileContents( $this->makePath( $type, $key ), serialize($content) );
-		} catch ( \Exception $e ) {
+		} catch ( \Exception $e ) {			
 			return false;
 		}
 		
@@ -53,6 +53,24 @@ Class Cache {
 		// TODO
 	}
 	
+	public function mtime( $type, $key )
+	{
+		if ( ! $this->cache_path ) {
+			return false;
+		}
+		
+		return filemtime($this->makePath( $type, $key ));
+	}
+	
+	public function exists( $type, $key )
+	{
+		if ( ! $this->cache_path ) {
+			return false;
+		}
+		
+		return file_exists($this->makePath( $type, $key ));
+	}
+	
 	protected function makePath( $type, $key )
 	{
 		$key = $this->encodeKey( $key );	
@@ -73,7 +91,6 @@ Class Cache {
 		{
 			mkdir($dir, 0771, true);
 		}
-		
 
 		file_put_contents($location, $contents);
 		chmod($location, 0644);
