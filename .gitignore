@@ -1,4 +1,3 @@
-/app/_cache/*
-!/app/_cache/.gitkeep
 .DS_Store
 .htaccess
+_cache/*

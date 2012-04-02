@@ -20,16 +20,18 @@ class Assets {
 			return NULL;
 		}
 		
-		if ( $contents = $this->app['cache']->get( $fullpath ) )
+		if ( $contents = $this->app['cache']->get( 'assets', $fullpath ) )
 		{
 			return $contents;
 		}
-				
+		
 		$converter = 'convert' . ucwords(strtolower($format));
 		
 		if ( method_exists( $this, $converter ) )
 		{
-			return $this->$converter( $fullpath );
+			$output = $this->$converter( $fullpath );
+			$this->app['cache']->set( 'assets', $fullpath, $output );
+			return $output;
 		}
 		
 		return NULL;

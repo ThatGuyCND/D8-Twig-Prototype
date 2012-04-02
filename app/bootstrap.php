@@ -39,13 +39,13 @@ $app->register(new AmuSilexExtension\SilexConfig\YamlConfig(array(
 	DOC_ROOT . "/config.yml"
 )));
 
-$twigopts = array(
-	'strict_variables' => false
-);
-
 if ( $app['config']['cache_path'] ) {
-	define('CACHE_PATH', DOC_ROOT . '/' . trim($app['config']['cache_path'],'/') );
-	$twigopts['cache'] = CACHE_PATH;
+	$cache_path = DOC_ROOT . '/' . trim($app['config']['cache_path'],'/');
+	if ( is_writable($cache_path) ) {
+		define('CACHE_PATH', $cache_path );
+	} else {
+		throw new \Exception('The specified cache directory <strong>' . $cache_path . '</strong> could not be written to. Please check the directory permissions and refresh.');
+	}
 } else {
 	define('CACHE_PATH', null );
 }
@@ -53,17 +53,48 @@ if ( $app['config']['cache_path'] ) {
 $app->register(new TwigServiceProvider(), array(
     'twig.path' 		=> array( TEMPLATES_PATH.'/', APP_TEMPLATES_PATH.'/' ),
     'twig.class_path' 	=>  APP_PATH . '/vendor/twig/lib',
-	'twig.options' 		=> $twigopts
+	'twig.options' 		=> array(
+		'strict_variables' 	=> false,
+		'cache'				=> CACHE_PATH ? CACHE_PATH . '/twig' : false,
+		'auto_reload'		=> true
+	)
 ));
 
-$app->register(new Prontotype\Provider\PagetreeProvider());
-$app->register(new Prontotype\Provider\PagesProvider());
-$app->register(new Prontotype\Provider\AssetsProvider());
-$app->register(new Prontotype\Provider\UriProvider());
-$app->register(new Prontotype\Provider\DataProvider());
-$app->register(new Prontotype\Provider\CacheProvider());
-$app->register(new Prontotype\Provider\StoreProvider());
-$app->register(new Prontotype\Provider\UtilsProvider());
+// register services
+
+$app['assets'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Assets( $app, DOC_ROOT );
+});
+
+$app['cache'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Cache( $app, CACHE_PATH );
+});
+
+$app['data'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Data( $app );
+});
+
+$app['pages'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Pages( $app );
+});
+
+$app['pagetree'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Pagetree\Parser( DOC_ROOT, PAGES_PATH, $app );
+});
+
+$app['store'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Store( $app );
+});
+
+$app['uri'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Uri( $app );
+});
+
+$app['utils'] = $app->share(function() {
+    return new Prontotype\Service\Utils();
+});
+
+// pre/post/error handlers
 
 $app->before(function () use ($app) {
 		
