@@ -8,7 +8,7 @@ index: index.php
 #==================
 # cache_path
 # -----------------
-# Specify a full server path to a writeable directory to enable caching of templates and data
+# Specify a path to a writeable directory (relative to the Prontotype root directory) to enable caching of templates and da
 #==================
 cache_path: 
 
