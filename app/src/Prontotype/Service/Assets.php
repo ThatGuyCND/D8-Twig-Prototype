@@ -39,7 +39,18 @@ class Assets {
 	
 	public function contentType( $format )
 	{
-		return 'text/css';
+		$format = strtolower($format);
+		switch( $format )
+		{
+			case 'css':
+			case 'less':
+				$type = 'text/css';
+				break;
+			default:
+				$type = 'text/html';
+				break;
+		}
+		return $type;
 	}
 	
 	public function convertLess( $path )
