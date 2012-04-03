@@ -1,14 +1,13 @@
-{% macro page_tree( opts, page_tree ) %}
+{% macro page_tree( opts, page_tree, level ) %}
 
 {% if not page_tree %}{% set page_tree = pages.getAll %}{% endif %}
+{% if not level %}{% set level = 1 %}{% endif %}
 
 <{{ opts.list_type|default('ul') }}{% if opts.id %} id="{{ opts.id }}"{% endif %}{% if opts.class %} class="{{ opts.class }}"{% endif %}{% if opts.note %} data-note="{{ opts.note }}"{% endif %}>
 
 	{% for item in page_tree %}
 	
-	{% if item.name != '404' %}
-
-		{% if not (item.name == 'index' and opts.hide_index and item.level != 1) %}
+		{% if not (item.name == 'index' and opts.hide_index and level != 1) %}
 	
 		<li{% if item.is_current or item.is_parent %} class="{% if item.is_current %}current {% endif %}{% if item.is_parent %}parent{% endif %}"{% endif %}>
 		{% if item.type == 'directory' %}
@@ -17,18 +16,16 @@
 			{% else %}
 				<a href="{{ item.nice_url }}">{{ item.nice_name }}</a>
 			{% endif %}
-			{% if item.level < opts.depth  %}
-			{{ _self.page_tree( opts, item.children ) }}
+			{% if level < opts.depth  %}
+			{{ _self.page_tree( opts, item.children, level + 1 ) }}
 			{% elseif not opts.depth %}
-			{{ _self.page_tree( opts, item.children ) }}
+			{{ _self.page_tree( opts, item.children, level + 1 ) }}
 			{% endif %}
 		{%  else %}
 			<a href="{{ item.nice_url }}">{{ item.nice_name }}</a>
 		{% endif %}
 		</li>
 		{% endif %}
-	
-	{% endif %}
 	
 	{% endfor %}
 	
