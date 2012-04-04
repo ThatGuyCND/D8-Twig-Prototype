@@ -20,10 +20,10 @@ class MainController implements ControllerProviderInterface
 			
 			$user_id = $request->get('user');
 			if ( ! $user_id ) {
-				$user = array();
+				$user = true;
 			} else {
 				$user = $app['data']->find('users.' . $user_id);
-				$user = $user ? $user : array();
+				$user = $user ? $user : true;
 			}
 			
 			$app['store']->set('user', $user);
