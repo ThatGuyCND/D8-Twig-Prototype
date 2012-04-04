@@ -39,6 +39,21 @@ In-progress documentation is available at [http://prontotype.allmarkedup.com](ht
 
 Prontotype makes heavy use of [Twig](http://twig.sensiolabs.org/) and [YAML](http://yaml.org/start.html) so becoming familiar with them will help you greatly in mastering everything Prontotype has to offer.
 
+In the works...
+---------------
+
+Prontotype is still very young! The following is a list of things (in no particular order) that are on the to-do list for the near-future:
+
+* An **example site** to better show off all the features of Prontotype
+* **Extension system** to allow you to model more complex behaviours that need server-side logic
+* **Page scraping capability** so that you can populate pages in your prototype with content dynamically scraped from pages of sites
+* **XML/JSON feed parser** to allow pages to be dynamically populated with data that exists as JSON or XML feeds.
+* **WURFL** integration to allow for prototyping of server-side device detection
+* **Coffeescript compiliation** to work in a similar way to the LESS compilation does
+* **More macros** for Bootstrap components, dummy images services etc.
+* **Unit tests** to make sure everything is working ok!
+
+
 
 
 
