@@ -5,8 +5,9 @@
  * A lightweight server-side framework to help you quickly build interactive, data-driven HTML prototypes. 
  */
  
+define('PRONTOTYPE_VERSION', '1.0-beta');
 $requiredVersion = '5.3.1';
-	
+
 try {
 	if ( strnatcmp(phpversion(), $requiredVersion) < 0 ) {
 		throw new Exception("Sorry, you need to be running PHP <strong>{$requiredVersion}</strong> or greater to run Prontotype.");
