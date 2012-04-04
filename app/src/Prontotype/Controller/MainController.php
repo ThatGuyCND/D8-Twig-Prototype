@@ -19,10 +19,12 @@ class MainController implements ControllerProviderInterface
 		$controllers->match('/' . $triggers['login'], function ( Request $request ) use ( $app, $triggers ) {
 			
 			$user_id = $request->get('user');
-			if ( ! $user_id ) $app->abort(404);
-			
-			$user = $app['data']->find('users.' . $user_id);
-			$user = $user ? $user : array( 'id' => $user_id );
+			if ( ! $user_id ) {
+				$user = true;
+			} else {
+				$user = $app['data']->find('users.' . $user_id);
+				$user = $user ? $user : true;
+			}
 			
 			$app['store']->set('user', $user);
 			
