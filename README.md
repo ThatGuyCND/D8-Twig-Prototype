@@ -3,6 +3,8 @@ Prontotype
 
 Prontotype is a lightweight, server-side framework to help you quickly build interactive, data-driven HTML prototypes.
 
+See [http://prontotype.allmarkedup.com](http://prontotype.allmarkedup.com) for **setup instructions** and **documentation**. Prontotype makes heavy use of [Twig](http://twig.sensiolabs.org/) and [YAML](http://yaml.org/start.html) so becoming familiar with them will help you greatly in mastering everything Prontotype has to offer.
+
 Prontotype lets you:
 --------------------
 
@@ -15,7 +17,7 @@ Prontotype lets you:
 * Give your pages IDs so you can move them around easily without breaking links
 * Use whatever frontend prototyping framework you like (Twitter Bootstrap is included but anything can be used)</li>
 * Auto-generate navigation, forms and more using in-built macros
-* And plenty more!
+* And plenty more...
 
 
 What you'll need to run Prontotype:
@@ -25,19 +27,6 @@ What you'll need to run Prontotype:
 * A web server like Apache (optionally with mod_rewrite or equivalent enabled) or Nginx
 * PHP version 5.3.1+
 
-Installation
-------------
-
-1. Download and unzip the latest version ([or clone it from the Github repo](https://github.com/allmarkedup/prontotype))
-2. Move the files to the web root of your server
-3. Optionally tweak some of the default configuration settings (but you probably don't need to!)
-
-Documentation
--------------
-
-In-progress documentation is available at [http://prontotype.allmarkedup.com](http://prontotype.allmarkedup.com)
-
-Prontotype makes heavy use of [Twig](http://twig.sensiolabs.org/) and [YAML](http://yaml.org/start.html) so becoming familiar with them will help you greatly in mastering everything Prontotype has to offer.
 
 In the works...
 ---------------
