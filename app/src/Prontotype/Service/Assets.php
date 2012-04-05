@@ -56,6 +56,7 @@ class Assets {
 	public function convertLess( $path )
 	{
 		$less = new \lessc( $path );
+		$less->importDir = $this->root_path;
 		return $less->parse();
 	}
 	
