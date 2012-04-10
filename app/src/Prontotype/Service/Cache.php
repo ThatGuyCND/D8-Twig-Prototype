@@ -64,7 +64,7 @@ Class Cache {
 			return false;
 		}
 		
-		return filemtime($this->makePath( $type, $key ));
+		return @filemtime($this->makePath( $type, $key ));
 	}
 	
 	public function exists( $type, $key )

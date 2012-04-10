@@ -20,8 +20,12 @@ class Assets {
 			return NULL;
 		}
 		
-		if ( $contents = $this->app['cache']->get( 'assets', $fullpath ) )
+		if ( $contents = $this->app['cache']->get( 'assets', $fullpath, filemtime($fullpath) ) )
 		{
+			echo '<pre>';
+			print_r('from cache');
+			echo '</pre>';
+			
 			return $contents;
 		}
 		
