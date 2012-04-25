@@ -69,6 +69,14 @@ data:
     enclosure: '"'
     escape: '\'
     id_header: id
+    
+#==================
+# less_import_paths
+# -----------------
+# Specify an array of paths relative to the Prontotype root directory)
+# to look for less files in when parsing @import statements during compilation
+#==================
+less_import_paths:
 
 #==================
 # routing

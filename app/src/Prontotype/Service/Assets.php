@@ -60,7 +60,8 @@ class Assets {
 	public function convertLess( $path )
 	{
 		$less = new \lessc( $path );
-		$less->importDir = $this->root_path;
+		$importPaths = (array)$this->app['config']['less_import_paths'];
+		$less->importDir = array_merge( array($this->root_path), $importPaths);
 		return $less->parse();
 	}
 	
