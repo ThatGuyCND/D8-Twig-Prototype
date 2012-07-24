@@ -3,6 +3,8 @@ Prontotype
 
 Prontotype is a lightweight, server-side framework to help you quickly build interactive, data-driven HTML prototypes.
 
+It's great for building responsive design prototypes (especially for larger sites) that typically need a lot of iteration and finessing.
+
 See [http://prontotype.allmarkedup.com](http://prontotype.allmarkedup.com) for **setup instructions** and **documentation**. Prontotype makes heavy use of [Twig](http://twig.sensiolabs.org/) and [YAML](http://yaml.org/start.html) so becoming familiar with them will help you greatly in mastering everything Prontotype has to offer.
 
 Prontotype lets you:
@@ -38,7 +40,7 @@ Prontotype is still very young! The following is a list of things (in no particu
 * **Page scraping capability** so that you can populate pages in your prototype with content dynamically scraped from pages of sites.
 * **XML/JSON feed parser** to allow pages to be dynamically populated with data that exists as JSON or XML feeds.
 * The ability to **specify contextual notes** and have their display state toggled easily on and off.
-* **WURFL** integration to allow for prototyping of server-side device detection.
+* **WURFL (or similar)**  integration to allow for prototyping of server-side device detection.
 * **Coffeescript compiliation** to work in a similar way to the LESS compilation does.
 * **More macros** for Bootstrap components, dummy images services etc.
 * **Unit tests** to make sure everything is working ok!

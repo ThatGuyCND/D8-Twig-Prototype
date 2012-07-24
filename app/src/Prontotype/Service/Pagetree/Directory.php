@@ -29,14 +29,15 @@ Class Directory {
 	function __construct( $path, $pages_root_path, $uriSegments, $configProvider )
 	{
 		$this->pages_root_path = $pages_root_path;
-		$this->uriSegments = $uriSegments;
+		$this->uriSegments = $uriSegments; // not safe to use when caching!
 		$this->configProvider = $configProvider;
 		$this->build_data( $path );
 	}
 	
 	public function is_parent()
 	{
-		$uri_segments = $this->uriSegments;
+		$uri = new \Prontotype\Service\Uri();
+		$uri_segments = $uri->segments();
 		$page_segments = explode( '/', trim($this->nice_url, '/') );
 		
 		$num_uri_segments = count( $uri_segments );

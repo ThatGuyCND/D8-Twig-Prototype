@@ -1,5 +1,7 @@
 {% macro page_tree( opts, level ) %}
 
+{% if not opts %}{% set opts = {} %}{% endif %}
+
 {% if not opts.start_from or opts.start_from == '/' %}
 	{% set page_array = pages.getAll %}
 {% else %}

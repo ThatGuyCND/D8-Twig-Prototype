@@ -10,7 +10,7 @@ Class Uri {
 	
 	public static $uri_prefix;
 	
-	public function __construct( $app )
+	public function __construct( $app = null )
 	{
 		$uri = $this->detect();
 		$this->app = $app;
@@ -136,6 +136,9 @@ Class Uri {
 	
 	public function generate( $routeName )
 	{
+		if ( ! $this->app ) {
+			throw new \Exception('No app provided');
+		}
 		$url = $this->app['url_generator']->generate($routeName);
 		if ( !empty($this->app['config']['index']) && strpos( $url, $this->app['config']['index'] ) === false )
 		{

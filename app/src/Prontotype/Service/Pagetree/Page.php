@@ -40,7 +40,8 @@ Class Page {
 	
 	public function is_current()
 	{
-		return ( trim($this->nice_url,'/') == trim( $this->requestUri,'/') );
+		$uri = new \Prontotype\Service\Uri();
+		return ( trim($this->nice_url,'/') == trim( $uri->string(),'/') );
 	}
 		
 	protected function build_data( $path )

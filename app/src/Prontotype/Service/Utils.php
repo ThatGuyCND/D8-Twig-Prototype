@@ -17,13 +17,12 @@ class Utils {
 		$dirContents = scandir($dir);
 		foreach( $dirContents as $item )
 		{
-			if ( ! is_dir($item) )
+			if ( $item !== '.' && $item !== '..' && ! is_dir($dir . $item) )
 			{
 				$result[] = pathinfo($item);
 			}
 		}
 		return $result;
 	}
-	
 	
 }

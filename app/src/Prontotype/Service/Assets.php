@@ -20,8 +20,8 @@ class Assets {
 			return NULL;
 		}
 		
-		if ( $contents = $this->app['cache']->get( 'assets', $fullpath ) )
-		{
+		if ( $contents = $this->app['cache']->get( 'assets', $fullpath, filemtime($fullpath) ) )
+		{			
 			return $contents;
 		}
 		
@@ -56,6 +56,8 @@ class Assets {
 	public function convertLess( $path )
 	{
 		$less = new \lessc( $path );
+		$importPaths = (array)$this->app['config']['less_import_paths'];
+		$less->importDir = array_merge( array($this->root_path), $importPaths);
 		return $less->parse();
 	}
 	
