@@ -36,6 +36,7 @@ In the works...
 Prontotype is still very young! The following is a list of things (in no particular order) that are on the to-do list for the near-future:
 
 * An **example site** to better show off all the features of Prontotype.
+* **Export to static HTML** for easier sharing
 * **Extension system** to allow you to model more complex behaviours that need server-side logic.
 * **Page scraping capability** so that you can populate pages in your prototype with content dynamically scraped from pages of sites.
 * **XML/JSON feed parser** to allow pages to be dynamically populated with data that exists as JSON or XML feeds.
