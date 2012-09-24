@@ -105,6 +105,7 @@ class MainController implements ControllerProviderInterface
 			if ( count($routes) ) {
 				foreach( $routes as $routeSpec => $endRoute ) {
 					// see if there are any page ID placeholders that need parsing out
+					$replacements = array();
 					if ( preg_match('/\(:id=([^\)]*)\)/', $routeSpec, $matches) ) {
 						if ( $routePage = $app['pagetree']->getPageById($matches[1]) ) {
 							$replacements[] = trim(str_replace($app['config']['index'], '', $routePage->nice_url),'/');
