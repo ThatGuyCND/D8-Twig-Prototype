@@ -5,7 +5,7 @@
  * A lightweight server-side framework to help you quickly build interactive, data-driven HTML prototypes. 
  */
  
-define('PRONTOTYPE_VERSION', '1.0-beta2');
+define('PRONTOTYPE_VERSION', '1.0');
 $requiredVersion = '5.3.1';
 
 try {
