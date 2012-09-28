@@ -14,7 +14,7 @@ Prontotype lets you:
 * Define reusable chunks of HTML to make prototype-wide updates quick and easy
 * Separate your layouts from your content using powerful template inheritance
 * Mock-up everything from simple login behaviours to complex role-based authentication scenarios
-* Use YAML or CSV files to define data structures that will be accessible throughout your prototype
+* Use YAML, JSON or CSV files to define data structures that will be accessible throughout your prototype
 * Write CSS using LESS and have it automatically compiled for use in your protoype
 * Give your pages IDs so you can move them around easily without breaking links
 * Use whatever frontend prototyping framework you like (Twitter Bootstrap is included but anything can be used)</li>
