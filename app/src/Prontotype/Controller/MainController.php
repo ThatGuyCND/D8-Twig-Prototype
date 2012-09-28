@@ -97,7 +97,7 @@ class MainController implements ControllerProviderInterface
 		
 		
 		// everything else...
-		$controllers->get('/{route}', function ( $route ) use ( $app ) {
+		$controllers->match('/{route}', function ( $route ) use ( $app ) {
 			
 			// lets see if we need to do any checking of custom routes
 			$routes = $app['config']['routes'] ? $app['config']['routes'] : array();
@@ -169,6 +169,7 @@ class MainController implements ControllerProviderInterface
 				));
 			}
 		})
+		->method('GET|POST')
 		->assert('route', '.+')
 		->value('route', '');
 		
