@@ -13,6 +13,7 @@ class Data {
 		'csv'  => 'csv',
 		'yml'  => 'yml',
 		'yaml' => 'yml',
+		'json' => 'json',
 	);
 	    
     public function __construct( $app )
@@ -179,6 +180,19 @@ class Data {
 		catch( \Exception $e )
 		{
             throw new Exception('Yaml data format error in ' . $path);
+		}
+	}
+	
+	protected function parse_json( $path )
+	{
+		try
+		{
+			$data = json_decode(file_get_contents($path), true);
+			return $data;
+		}
+		catch( \Exception $e )
+		{
+            throw new Exception('JSON data format error in ' . $path);
 		}
 	}
     
