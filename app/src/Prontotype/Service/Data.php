@@ -40,6 +40,26 @@ class Data {
 	{
 		return $this->$file;
 	}
+	
+	public function file( $file )
+	{
+		return $this->$file;
+	}
+	
+	public function external( $url, $type )
+	{
+		$data = $this->make_external_request($url);
+		if ( isset($this->extensions_map[strtolower($type)]))
+		{
+			$parser = 'parse_' . $this->extensions_map[strtolower($type)];
+			
+			if ( method_exists( $this, $parser ) )
+			{
+				$data = $this->$parser( $url );
+			}
+		}
+		return $data;
+	}
 
     public function find( $path )
     {
@@ -121,13 +141,29 @@ class Data {
 	protected function parse_csv( $path )
 	{
 		$config = $this->app['config']['data']['csv'];
+		
 		try
 		{
 			$row = 1;
 			$data_array = array();
 			$headers = array();
 			$id_col = FALSE;
-			if ( ( $handle = fopen($path, "r") ) !== FALSE )
+			
+			if ( strpos($path,'http') === 0 ) {
+				// external url
+				$handle = fopen('php://temp', 'w+');
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_URL, $url);
+				curl_setopt($curl, CURLOPT_FILE, $handle);
+				curl_exec($curl);
+				curl_close($curl);
+				rewind($handle);
+			} else {
+				// local file
+				$handle = fopen($path, "r");
+			}
+			
+			if ( $handle !== FALSE )
 			{
 			    while (($data = fgetcsv($handle, 0, $config['delimiter'], $config['enclosure'], $config['escape'] )) !== FALSE)
 				{
@@ -173,9 +209,14 @@ class Data {
 	{
 		try
 		{
+			if ( strpos($path, 'http') === 0 ) {
+				$data = $this->make_external_request($path);
+			} else {
+				$data = file_get_contents($path);
+			}
 			$yaml = new Yaml();
-			$data = $yaml->parse(file_get_contents($path));
-			return $data;	
+			$data = $yaml->parse($data);
+			return $data;
 		}
 		catch( \Exception $e )
 		{
@@ -187,7 +228,12 @@ class Data {
 	{
 		try
 		{
-			$data = json_decode(file_get_contents($path), true);
+			if ( strpos($path, 'http') === 0 ) {
+				$data = $this->make_external_request($path);
+			} else {
+				$data = file_get_contents($path);
+			}
+			$data = json_decode($data, true);
 			return $data;
 		}
 		catch( \Exception $e )
@@ -196,4 +242,21 @@ class Data {
 		}
 	}
     
+	protected function make_external_request( $url )
+	{
+		if ( $cachedData = $this->app['cache']->get( 'data', $url, strtotime('- ' . $this->app['config']['request_cache_expiry'] . ' minutes') ) )
+		{
+			return $cachedData;
+		}
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		
+		$this->app['cache']->set( 'data', $url, $data ); // save to cache
+		
+		return $data;
+	}
 }

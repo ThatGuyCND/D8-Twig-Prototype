@@ -123,7 +123,7 @@ $app->before(function () use ($app) {
 	$app['twig']->addGlobal('store', $app['store']);
 	$app['twig']->addGlobal('config', $app['config']);
 	$app['twig']->addGlobal('utils', $app['utils']);
-	// $app['twig']->addGlobal('request', new Prontotype\Service\Request($app));
+	$app['twig']->addGlobal('request', new Prontotype\Service\Request($app));
 	
 	$authRequired = ( ! empty($app['config']['authenticate']) && ! empty($app['config']['authenticate']['username']) && ! empty($app['config']['authenticate']['password']) ) ? true : false;
 	

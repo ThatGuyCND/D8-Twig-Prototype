@@ -19,7 +19,7 @@ Class Cache {
 		if ( ! $this->cache_path ) {
 			return false;
 		}
-
+		
 		try {
 			$this->forcefileContents( $this->makePath( $type, $key ), serialize($content) );
 		} catch ( \Exception $e ) {			
@@ -37,7 +37,11 @@ Class Cache {
 		
 		$cache_file = $this->makePath( $type, $key );
 		
-		if (  file_exists( $cache_file ) and $newerThan < filemtime( $cache_file ) )
+		if (  file_exists( $cache_file ) and $newerThan and $newerThan < filemtime( $cache_file ) )
+		{
+			return unserialize( file_get_contents( $cache_file ) );
+		}
+		elseif ( file_exists( $cache_file ) and $newerThan === null )
 		{
 			return unserialize( file_get_contents( $cache_file ) );
 		}

@@ -103,22 +103,22 @@ Class Parser {
 			$idMapExists = $this->app['cache']->exists('structure', 'id_map') ? true : null;
 			$dirMapExists = $this->app['cache']->exists('structure', 'dir_map') ? true : null;
 			
-			if ( ! $cacheTime or $this->thereIsAFileNewerThan( $cacheTime ) or ! isset( $routeMapExists, $idMapExists, $dirMapExists ) )
+			if ( true or ! $cacheTime or $this->thereIsAFileNewerThan( $cacheTime ) or ! isset( $routeMapExists, $idMapExists, $dirMapExists ) )
 			{
 				$pages = new \RecursiveDirectoryIterator( $this->pages_path );
 				$this->page_tree = $this->parseDirectory( $pages );
 
-				$this->app['cache']->set('structure', 'page_tree', $this->page_tree );
-				$this->app['cache']->set('structure', 'route_map', $this->route_map );
-				$this->app['cache']->set('structure', 'id_map', $this->id_map );
-				$this->app['cache']->set('structure', 'dir_map', $this->dir_map );
+				// $this->app['cache']->set('structure', 'page_tree', $this->page_tree );
+				// 				$this->app['cache']->set('structure', 'route_map', $this->route_map );
+				// 				$this->app['cache']->set('structure', 'id_map', $this->id_map );
+				// 				$this->app['cache']->set('structure', 'dir_map', $this->dir_map );
 			}
 			else
 			{
-				$this->page_tree = $this->app['cache']->get('structure', 'page_tree' );
-				$this->route_map = $this->app['cache']->get('structure', 'route_map' );
-				$this->id_map = $this->app['cache']->get('structure', 'id_map' );
-				$this->dir_map = $this->app['cache']->get('structure', 'dir_map' );
+				// $this->page_tree = $this->app['cache']->get('structure', 'page_tree' );
+				// 				$this->route_map = $this->app['cache']->get('structure', 'route_map' );
+				// 				$this->id_map = $this->app['cache']->get('structure', 'id_map' );
+				// 				$this->dir_map = $this->app['cache']->get('structure', 'dir_map' );
 			}
 		}
 	}
@@ -132,7 +132,6 @@ Class Parser {
 			$item = NULL;
 			if ( $file->isFile() && strpos( $file->getFilename(), '.' ) !== 0 )
 			{
-				$uriProvider = new \stdClass(); // TEMP
 				$item = new Page($file->getPathname(), $this->pages_path, $this->app['uri']->string(), (array)$this->app['config'] );
 					
 				$this->route_map[$item->url] = $item;
@@ -143,7 +142,6 @@ Class Parser {
 			}
 			elseif ( $iterator->hasChildren() )
 			{
-				$uriProvider = new \stdClass(); // TEMP
 				$item = new Directory( $file->getPathname(), $this->pages_path, $this->app['uri']->segments(), (array)$this->app['config'] );
 				
 				$children = $this->parseDirectory( $iterator->getChildren() );

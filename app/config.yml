@@ -12,6 +12,7 @@ index: index.php
 # to enable caching of templates and data
 #==================
 cache_path: 
+request_cache_expiry: 5 # in minutes
 
 #==================
 # authenticate
