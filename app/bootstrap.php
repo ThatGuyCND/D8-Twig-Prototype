@@ -14,17 +14,29 @@ define('VENDOR_PATH', APP_PATH . '/vendor');
 
 define('DATA_PATH', DOC_ROOT . '/data');
 
-require_once VENDOR_PATH . '/silex.phar';
 require_once VENDOR_PATH . '/Less/lessc.inc.php';
 
-$app = new Silex\Application();
+// not using the Silex Phar because of hosting issues with running PHAR archives.
+require_once VENDOR_PATH . '/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+use Symfony\Component\ClassLoader\UniversalClassLoader;
+
+$loader = new UniversalClassLoader();
 
 $loader->registerNamespaces(array(
-	'Symfony'			=> APP_PATH . '/vendor/symfony/src',	
-	'AmuSilexExtension' => APP_PATH . '/vendor/amu-silex-extensions/src',
-	'Twig' 				=> APP_PATH . '/vendor/twig/lib',
+    'Silex'   			=> VENDOR_PATH . '/silex/src',
+	'Symfony'			=> VENDOR_PATH . '/symfony/src',	
+	'AmuSilexExtension' => VENDOR_PATH . '/amu-silex-extensions/src',
+	'Twig' 				=> VENDOR_PATH . '/twig/lib',
 	'Prontotype'		=> APP_PATH . '/src',
 ));
+
+$loader->registerPrefixes(array(
+    'Pimple' => VENDOR_PATH . '/pimple/lib',
+));
+
+$loader->register();
+
+$app = new Silex\Application();
 
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
@@ -111,7 +123,7 @@ $app->before(function () use ($app) {
 	$app['twig']->addGlobal('store', $app['store']);
 	$app['twig']->addGlobal('config', $app['config']);
 	$app['twig']->addGlobal('utils', $app['utils']);
-	$app['twig']->addGlobal('request', new Prontotype\Service\Request($app));
+	// $app['twig']->addGlobal('request', new Prontotype\Service\Request($app));
 	
 	$authRequired = ( ! empty($app['config']['authenticate']) && ! empty($app['config']['authenticate']['username']) && ! empty($app['config']['authenticate']['password']) ) ? true : false;
 	
