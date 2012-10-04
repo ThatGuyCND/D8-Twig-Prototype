@@ -118,9 +118,13 @@ $app['utils'] = $app->share(function() {
     return new Prontotype\Service\Utils();
 });
 
+$app['pt_request'] = $app->share(function() {
+    return new Prontotype\Service\Request();
+});
+
 // extend twig a little...
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
-    $twig->addGlobal('now', time());
+    $twig->addGlobal('now',	time());
 	$twig->addGlobal('uri', $app['uri']);
 	$twig->addGlobal('data', $app['data']);
 	$twig->addGlobal('session', $app['session']);
@@ -129,35 +133,35 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 	$twig->addGlobal('store', $app['store']);
 	$twig->addGlobal('config', $app['config']);
 	$twig->addGlobal('utils', $app['utils']);
-	$twig->addGlobal('request', new Prontotype\Service\Request($app));
+	$twig->addGlobal('request', $app['pt_request']);
     return $twig;
 }));
 
 
-$app->before(function () use ($app) {
-		
-	$authPage = array(
-		$app['uri']->generate('authenticate'),
-		$app['uri']->generate('de_authenticate')
-	);
-	
-	$authRequired = ( ! empty($app['config']['authenticate']) && ! empty($app['config']['authenticate']['username']) && ! empty($app['config']['authenticate']['password']) ) ? true : false;
-	
-	if ( ! in_array($app['request']->getRequestUri(), $authPage) ) {
-		if ( $authRequired ) {
-			$currentUser = $app['session']->get( $app['config']['prefix'] . 'authed-user' );
-			$userHash = sha1($app['config']['authenticate']['username'] . $app['config']['authenticate']['password']);
-			
-			if ( empty( $currentUser ) || $currentUser !== $userHash ) {
-				return $app->redirect($app['uri']->generate('authenticate')); // not logged in, redirect to auth page
-			}
-		}
-	} elseif ( ! $authRequired ) {
-		// redirect visits to the auth pages to the homepage if no auth is required.	
-		return $app->redirect('/');
-	}
-
-});
+// $app->before(function () use ($app) {
+// 		
+// 	$authPage = array(
+// 		$app['uri']->generate('authenticate'),
+// 		$app['uri']->generate('de_authenticate')
+// 	);
+// 	
+// 	$authRequired = ( ! empty($app['config']['authenticate']) && ! empty($app['config']['authenticate']['username']) && ! empty($app['config']['authenticate']['password']) ) ? true : false;
+// 	
+// 	if ( ! in_array($app['request']->getRequestUri(), $authPage) ) {
+// 		if ( $authRequired ) {
+// 			$currentUser = $app['session']->get( $app['config']['prefix'] . 'authed-user' );
+// 			$userHash = sha1($app['config']['authenticate']['username'] . $app['config']['authenticate']['password']);
+// 			
+// 			if ( empty( $currentUser ) || $currentUser !== $userHash ) {
+// 				return $app->redirect($app['uri']->generate('authenticate')); // not logged in, redirect to auth page
+// 			}
+// 		}
+// 	} elseif ( ! $authRequired ) {
+// 		// redirect visits to the auth pages to the homepage if no auth is required.	
+// 		return $app->redirect('/');
+// 	}
+// 
+// });
 
 $app->error(function (\Exception $e, $code) use ($app) {
 	
@@ -175,7 +179,8 @@ $app->error(function (\Exception $e, $code) use ($app) {
 	)), $code );
 });
 
-$app->mount('/_system/', new Prontotype\Controller\SystemController());
+// $app->mount('/_system/', new Prontotype\Controller\SystemController());
 $app->mount('/', new Prontotype\Controller\MainController());
+
 
 return $app;
