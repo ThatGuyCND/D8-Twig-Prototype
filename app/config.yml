@@ -6,13 +6,28 @@
 index: index.php
 
 #==================
-# cache_path
+# Timezone
+# -----------------
+# 
+#==================
+timezone: Europe/London
+
+#==================
+# Debugging
+# -----------------
+# 
+#==================
+debug: false
+
+#==================
+# cache
 # -----------------
 # Specify a path to a writeable directory (relative to the Prontotype root directory)
 # to enable caching of templates and data
 #==================
-cache_path: 
-request_cache_expiry: 5 # in minutes
+cache:
+  path:
+  request_expiry: 5 # in minutes
 
 #==================
 # authenticate
@@ -72,12 +87,20 @@ data:
     id_header: id
     
 #==================
-# less_import_paths
+# assets
 # -----------------
-# Specify an array of paths relative to the Prontotype root directory)
-# to look for less files in when parsing @import statements during compilation
+# 
 #==================
-less_import_paths:
+assets:
+  # less_example:
+  #   file: /public/assets/less/less-example.less
+  #   filter: less
+  #   target: css/less-example.css
+  # scss_example:
+  #   file: /public/assets/scss/scss-example.scss
+  #   filter: scss
+  #   target: css/scss-example.css
+
   
 #==================
 # routing

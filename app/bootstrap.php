@@ -2,57 +2,30 @@
 
 define('DS', '/');
 
-// define a few paths
+/* Define a few globally available paths */
 define('DOC_ROOT', realpath(__DIR__ . '/../'));
 define('APP_PATH', DOC_ROOT . '/app');
-
 define('TEMPLATES_PATH', DOC_ROOT . '/structure');
 define('PAGES_PATH', TEMPLATES_PATH . '/pages');
-
 define('APP_TEMPLATES_PATH', APP_PATH . '/views');
 define('VENDOR_PATH', APP_PATH . '/vendor');
-
 define('DATA_PATH', DOC_ROOT . '/data');
 
-require_once VENDOR_PATH . '/Less/lessc.inc.php';
+require_once APP_PATH . '/vendor/autoload.php';
 
-// not using the Silex Phar because of hosting issues with running PHAR archives.
-require_once VENDOR_PATH . '/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
-use Symfony\Component\ClassLoader\UniversalClassLoader;
-
-$loader = new UniversalClassLoader();
-
-$loader->registerNamespaces(array(
-    'Silex'   			=> VENDOR_PATH . '/silex/src',
-	'Symfony'			=> VENDOR_PATH . '/symfony/src',	
-	'AmuSilexExtension' => VENDOR_PATH . '/amu-silex-extensions/src',
-	'Twig' 				=> VENDOR_PATH . '/twig/lib',
-	'Prontotype'		=> APP_PATH . '/src',
-));
-
-$loader->registerPrefixes(array(
-    'Pimple' => VENDOR_PATH . '/pimple/lib',
-));
-
-$loader->register();
+use Symfony\Component\Translation\Loader\YamlFileLoader;
 
 $app = new Silex\Application();
 
-use Silex\Application;
-use Silex\Provider\TwigServiceProvider;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
-$app->register(new Silex\Provider\SessionServiceProvider());
-$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
-
-$app->register(new AmuSilexExtension\SilexConfig\YamlConfig(array(
+$app->register(new Silextend\Config\YamlConfig(array(
 	APP_PATH . "/config.yml",
 	DOC_ROOT . "/config.yml"
 )));
 
-if ( $app['config']['cache_path'] ) {
-	$cache_path = DOC_ROOT . '/' . trim($app['config']['cache_path'],'/');
+date_default_timezone_set($app['config']['timezone']);
+
+if ( $app['config']['cache']['path'] ) {
+	$cache_path = DOC_ROOT . '/' . trim($app['config']['cache']['path'],'/');
 	if ( is_writable($cache_path) ) {
 		define('CACHE_PATH', $cache_path );
 	} else {
@@ -62,9 +35,18 @@ if ( $app['config']['cache_path'] ) {
 	define('CACHE_PATH', null );
 }
 
-$app->register(new TwigServiceProvider(), array(
+if ( $app['debug'] ) {
+	error_reporting(E_ALL ^ E_WARNING);
+} else {
+	error_reporting(0);
+}
+
+$app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+// set up twig
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' 		=> array( TEMPLATES_PATH.'/', APP_TEMPLATES_PATH.'/' ),
-    'twig.class_path' 	=>  APP_PATH . '/vendor/twig/lib',
 	'twig.options' 		=> array(
 		'strict_variables' 	=> false,
 		'cache'				=> CACHE_PATH ? CACHE_PATH . '/twig' : false,
@@ -72,6 +54,36 @@ $app->register(new TwigServiceProvider(), array(
 	)
 ));
 
+$app->register(new SilexAssetic\AsseticExtension(), array(
+	'assetic.path_to_web' => __DIR__ . '/../public/assets/compiled',
+	'assetic.options' => array(
+		'debug' => $app['config']['debug'],
+		'auto_dump_assets' => TRUE,
+		'formulae_cache_dir' => ''
+	),
+    'assetic.filters' => $app->protect(function($fm) {
+        $fm->set('less', new Assetic\Filter\LessphpFilter(
+            __DIR__ . '/../vendor/leafo/lessphp/lessc.inc.php'
+        ));
+        $fm->set('scss', new Assetic\Filter\ScssphpFilter(
+            __DIR__ . '/../vendor/leafo/scssphp/scss.inc.php'
+        ));
+    }),
+    'assetic.assets' => $app->protect(function($am, $fm) use ($app) {
+		foreach ( $app['config']['assetic']['assets'] as $key => $opts ) {
+			$app['monolog']->debug('assetic', $app['config']['assetic']['assets']);
+			$am->set($key, new Assetic\Asset\AssetCache(
+				new Assetic\Asset\GlobAsset(
+					__DIR__ . '/../' . trim($opts['file'], '/'),
+					array($fm->get($opts['filter']))
+				),
+				new Assetic\Cache\FilesystemCache(__DIR__ . '/../tmp/cache/assetic')
+			));
+			$am->get($key)->setTargetPath($opts['target']);
+		}
+    })
+));
+	
 // register services
 
 $app['assets'] = $app->share(function( $app ) {
@@ -106,7 +118,21 @@ $app['utils'] = $app->share(function() {
     return new Prontotype\Service\Utils();
 });
 
-// pre/post/error handlers
+// extend twig a little...
+$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+    $twig->addGlobal('now', time());
+	$twig->addGlobal('uri', $app['uri']);
+	$twig->addGlobal('data', $app['data']);
+	$twig->addGlobal('session', $app['session']);
+	$twig->addGlobal('cache', $app['cache']);
+	$twig->addGlobal('pages', $app['pages']);
+	$twig->addGlobal('store', $app['store']);
+	$twig->addGlobal('config', $app['config']);
+	$twig->addGlobal('utils', $app['utils']);
+	$twig->addGlobal('request', new Prontotype\Service\Request($app));
+    return $twig;
+}));
+
 
 $app->before(function () use ($app) {
 		
@@ -114,34 +140,19 @@ $app->before(function () use ($app) {
 		$app['uri']->generate('authenticate'),
 		$app['uri']->generate('de_authenticate')
 	);
-
-	$app['twig']->addGlobal('uri', $app['uri']);
-	$app['twig']->addGlobal('data', $app['data']);
-	$app['twig']->addGlobal('session', $app['session']);
-	$app['twig']->addGlobal('cache', $app['cache']);
-	$app['twig']->addGlobal('pages', $app['pages']);
-	$app['twig']->addGlobal('store', $app['store']);
-	$app['twig']->addGlobal('config', $app['config']);
-	$app['twig']->addGlobal('utils', $app['utils']);
-	$app['twig']->addGlobal('request', new Prontotype\Service\Request($app));
 	
 	$authRequired = ( ! empty($app['config']['authenticate']) && ! empty($app['config']['authenticate']['username']) && ! empty($app['config']['authenticate']['password']) ) ? true : false;
 	
-	if ( ! in_array($app['request']->getRequestUri(), $authPage) )
-	{
-		if ( $authRequired )
-		{
+	if ( ! in_array($app['request']->getRequestUri(), $authPage) ) {
+		if ( $authRequired ) {
 			$currentUser = $app['session']->get( $app['config']['prefix'] . 'authed-user' );
 			$userHash = sha1($app['config']['authenticate']['username'] . $app['config']['authenticate']['password']);
 			
-			if ( empty( $currentUser ) || $currentUser !== $userHash )
-			{
+			if ( empty( $currentUser ) || $currentUser !== $userHash ) {
 				return $app->redirect($app['uri']->generate('authenticate')); // not logged in, redirect to auth page
 			}
 		}
-	}
-	elseif ( ! $authRequired )
-	{
+	} elseif ( ! $authRequired ) {
 		// redirect visits to the auth pages to the homepage if no auth is required.	
 		return $app->redirect('/');
 	}
@@ -150,14 +161,13 @@ $app->before(function () use ($app) {
 
 $app->error(function (\Exception $e, $code) use ($app) {
 	
-	switch( $code )
-	{
+	switch( $code ) {
 		case '404':
 			$template = 'PT/pages/404.html';
-		break;
+			break;
 		default:
 			$template = 'PT/pages/error.html';
-		break;
+			break;
 	}
 	
 	return new Response( $app['twig']->render($template, array(

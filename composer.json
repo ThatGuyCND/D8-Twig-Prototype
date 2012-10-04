@@ -1,0 +1,22 @@
+{
+	"require": {
+		"php": ">=5.3.2",
+		"silex/silex": "1.0.*",
+		"symfony/twig-bridge": "2.1.*",
+		"symfony/twig-bundle": "2.1.*",
+		"allmarkedup/silextend": "*",
+		"kriswallsmith/assetic" : "1.*",
+		"mheap/Silex-Assetic": "*",
+		"leafo/lessphp" : "0.*",
+		"leafo/scssphp" : "0.*"
+	},
+	"minimum-stability": "dev",
+	"config": {
+		"vendor-dir": "app/vendor"
+	},
+	"autoload": {
+		"psr-0": {
+			"Prontotype": "app/src/"
+		}
+	}
+}
