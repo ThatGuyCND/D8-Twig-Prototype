@@ -8,14 +8,14 @@ index: index.php
 #==================
 # Timezone
 # -----------------
-# 
+# Timezone used for date functions
 #==================
 timezone: Europe/London
 
 #==================
 # Debugging
 # -----------------
-# 
+# Whether or not to enable debug mode (more error reporting etc)
 #==================
 debug: false
 
@@ -25,9 +25,8 @@ debug: false
 # Specify a path to a writeable directory (relative to the Prontotype root directory)
 # to enable caching of templates and data
 #==================
-cache:
-  path:
-  request_expiry: 5 # in minutes
+cache_path: 
+request_cache_expiry: 5 # in minutes
 
 #==================
 # authenticate
@@ -37,6 +36,7 @@ cache:
 authenticate:
   username: 
   password:
+  ip_whitelist:
 
 #==================
 # prefix
@@ -89,18 +89,9 @@ data:
 #==================
 # assets
 # -----------------
-# 
+# Specify files to run through the SCSS or LESS compilers here
 #==================
 assets:
-  # less_example:
-  #   file: /public/assets/less/less-example.less
-  #   filter: less
-  #   target: css/less-example.css
-  # scss_example:
-  #   file: /public/assets/scss/scss-example.scss
-  #   filter: scss
-  #   target: css/scss-example.css
-
   
 #==================
 # routing

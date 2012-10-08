@@ -8,13 +8,12 @@ use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class SystemController implements ControllerProviderInterface
 {
-    public function connect(Application $app)
-    {
-		$controllers = new ControllerCollection();
-		
+	public function connect(Application $app)
+	{
+
+		$controllers = $app['controllers_factory'];
 		
 		$controllers->get('auth', function () use ( $app ) {
 			

@@ -24,8 +24,8 @@ $app->register(new Silextend\Config\YamlConfig(array(
 
 date_default_timezone_set($app['config']['timezone']);
 
-if ( $app['config']['cache']['path'] ) {
-	$cache_path = DOC_ROOT . '/' . trim($app['config']['cache']['path'],'/');
+if ( $app['config']['cache_path'] ) {
+	$cache_path = DOC_ROOT . '/' . trim($app['config']['cache_path'],'/');
 	if ( is_writable($cache_path) ) {
 		define('CACHE_PATH', $cache_path );
 	} else {
@@ -55,29 +55,28 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 ));
 
 $app->register(new SilexAssetic\AsseticExtension(), array(
-	'assetic.path_to_web' => __DIR__ . '/../public/assets/compiled',
+	'assetic.path_to_web' => DOC_ROOT,
 	'assetic.options' => array(
 		'debug' => $app['config']['debug'],
 		'auto_dump_assets' => TRUE,
 		'formulae_cache_dir' => ''
 	),
-    'assetic.filters' => $app->protect(function($fm) {
-        $fm->set('less', new Assetic\Filter\LessphpFilter(
-            __DIR__ . '/../vendor/leafo/lessphp/lessc.inc.php'
-        ));
-        $fm->set('scss', new Assetic\Filter\ScssphpFilter(
-            __DIR__ . '/../vendor/leafo/scssphp/scss.inc.php'
-        ));
-    }),
-    'assetic.assets' => $app->protect(function($am, $fm) use ($app) {
-		foreach ( $app['config']['assetic']['assets'] as $key => $opts ) {
-			$app['monolog']->debug('assetic', $app['config']['assetic']['assets']);
+	'assetic.filters' => $app->protect(function($fm) {
+		$fm->set('less', new Assetic\Filter\LessphpFilter(
+			VENDOR_PATH . '/leafo/lessphp/lessc.inc.php'
+		));
+		$fm->set('scss', new Assetic\Filter\ScssphpFilter(
+			VENDOR_PATH . '/leafo/scssphp/scss.inc.php'
+		));
+	}),
+	'assetic.assets' => $app->protect(function($am, $fm) use ($app) {
+		foreach ( $app['config']['assets'] as $key => $opts ) {
 			$am->set($key, new Assetic\Asset\AssetCache(
 				new Assetic\Asset\GlobAsset(
-					__DIR__ . '/../' . trim($opts['file'], '/'),
+					DOC_ROOT . '/' . trim($opts['file'], '/'),
 					array($fm->get($opts['filter']))
 				),
-				new Assetic\Cache\FilesystemCache(__DIR__ . '/../tmp/cache/assetic')
+				new Assetic\Cache\FilesystemCache(CACHE_PATH)
 			));
 			$am->get($key)->setTargetPath($opts['target']);
 		}
@@ -138,30 +137,35 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 }));
 
 
-// $app->before(function () use ($app) {
-// 		
-// 	$authPage = array(
-// 		$app['uri']->generate('authenticate'),
-// 		$app['uri']->generate('de_authenticate')
-// 	);
-// 	
-// 	$authRequired = ( ! empty($app['config']['authenticate']) && ! empty($app['config']['authenticate']['username']) && ! empty($app['config']['authenticate']['password']) ) ? true : false;
-// 	
-// 	if ( ! in_array($app['request']->getRequestUri(), $authPage) ) {
-// 		if ( $authRequired ) {
-// 			$currentUser = $app['session']->get( $app['config']['prefix'] . 'authed-user' );
-// 			$userHash = sha1($app['config']['authenticate']['username'] . $app['config']['authenticate']['password']);
-// 			
-// 			if ( empty( $currentUser ) || $currentUser !== $userHash ) {
-// 				return $app->redirect($app['uri']->generate('authenticate')); // not logged in, redirect to auth page
-// 			}
-// 		}
-// 	} elseif ( ! $authRequired ) {
-// 		// redirect visits to the auth pages to the homepage if no auth is required.	
-// 		return $app->redirect('/');
-// 	}
-// 
-// });
+$app->before(function () use ($app) {
+		
+	$ip_whitelist = $app['config']['authenticate']['ip_whitelist'];
+	if ( (is_array($ip_whitelist) && in_array($_SERVER['REMOTE_ADDR'], $ip_whitelist)) || is_string($ip_whitelist) && $_SERVER['REMOTE_ADDR'] ===  $ip_whitelist) {
+		$authRequired = false;
+	} else {
+		$authRequired = ( ! empty($app['config']['authenticate']) && ! empty($app['config']['authenticate']['username']) && ! empty($app['config']['authenticate']['password']) ) ? true : false;		
+	}
+	
+	if ( ! in_array($app['request']->getRequestUri(), $authPage) )
+	{
+		if ( $authRequired )
+		{
+			$currentUser = $app['session']->get( $app['config']['prefix'] . 'authed-user' );
+			$userHash = sha1($app['config']['authenticate']['username'] . $app['config']['authenticate']['password']);
+			
+			if ( empty( $currentUser ) || $currentUser !== $userHash )
+			{
+				return $app->redirect($app['uri']->generate('authenticate')); // not logged in, redirect to auth page
+			}
+		}
+	}
+	elseif ( ! $authRequired )
+	{
+		// redirect visits to the auth pages to the homepage if no auth is required.	
+		return $app->redirect('/');
+	}
+
+});
 
 $app->error(function (\Exception $e, $code) use ($app) {
 	
@@ -179,7 +183,7 @@ $app->error(function (\Exception $e, $code) use ($app) {
 	)), $code );
 });
 
-// $app->mount('/_system/', new Prontotype\Controller\SystemController());
+$app->mount('/_system/', new Prontotype\Controller\SystemController());
 $app->mount('/', new Prontotype\Controller\MainController());
 
 
