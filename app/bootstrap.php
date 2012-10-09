@@ -14,6 +14,8 @@ define('DATA_PATH', DOC_ROOT . '/data');
 require_once APP_PATH . '/vendor/autoload.php';
 
 use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 $app = new Silex\Application();
 
@@ -33,12 +35,6 @@ if ( $app['config']['cache_path'] ) {
 	}
 } else {
 	define('CACHE_PATH', null );
-}
-
-if ( $app['debug'] ) {
-	error_reporting(E_ALL ^ E_WARNING);
-} else {
-	error_reporting(0);
 }
 
 $app->register(new Silex\Provider\SessionServiceProvider());
@@ -117,8 +113,8 @@ $app['utils'] = $app->share(function() {
     return new Prontotype\Service\Utils();
 });
 
-$app['pt_request'] = $app->share(function() {
-    return new Prontotype\Service\Request();
+$app['pt_request'] = $app->share(function() use ( $app ) {
+    return new Prontotype\Service\Request($app);
 });
 
 // extend twig a little...
@@ -138,6 +134,11 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
 
 $app->before(function () use ($app) {
+	
+	$authPage = array(
+		$app['uri']->generate('authenticate'),
+		$app['uri']->generate('de_authenticate')
+	);
 		
 	$ip_whitelist = $app['config']['authenticate']['ip_whitelist'];
 	if ( (is_array($ip_whitelist) && in_array($_SERVER['REMOTE_ADDR'], $ip_whitelist)) || is_string($ip_whitelist) && $_SERVER['REMOTE_ADDR'] ===  $ip_whitelist) {
