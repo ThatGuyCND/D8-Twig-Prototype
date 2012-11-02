@@ -14,6 +14,7 @@ class Data {
 		'yml'  => 'yml',
 		'yaml' => 'yml',
 		'json' => 'json',
+		'xml' => 'xml',
 	);
 	    
     public function __construct( $app )
@@ -153,7 +154,7 @@ class Data {
 				// external url
 				$handle = fopen('php://temp', 'w+');
 				$curl = curl_init();
-				curl_setopt($curl, CURLOPT_URL, $url);
+				curl_setopt($curl, CURLOPT_URL, $path);
 				curl_setopt($curl, CURLOPT_FILE, $handle);
 				curl_exec($curl);
 				curl_close($curl);
@@ -224,6 +225,24 @@ class Data {
 		}
 	}
 	
+	protected function parse_xml( $path )
+	{
+		try
+		{
+			if ( strpos($path, 'http') === 0 ) {
+				$data = $this->make_external_request($path);
+			} else {
+				$data = file_get_contents($path);
+			}
+            $data = simplexml_load_string($data);
+			return $data;
+		}
+		catch( \Exception $e )
+		{
+            throw new Exception('Xml data format error in ' . $path);
+		}
+	}
+
 	protected function parse_json( $path )
 	{
 		try

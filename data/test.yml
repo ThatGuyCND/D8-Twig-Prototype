@@ -1,0 +1,15 @@
+people:
+  bob:
+    first_name: Bob
+    last_name: Builder
+    email: bob@thebuilder.com
+  pat:
+    first_name: Pat
+    last_name: Postman
+    email: pat@thepostman.com
+
+links:
+  - url: http://example.com
+    text: An example
+  - url: http://test.com
+    text: A test linkuser:
