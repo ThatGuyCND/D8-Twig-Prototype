@@ -6,35 +6,19 @@
 	
 	{{ assets.bootstrap_css }}
 	{{ assets.stylesheet('/app/assets/css/system.css') }}
-
 	
 	<title>Prontotype</title>
 </head>
 <body>
+	
 	<div id="pt-content">
 	
-
-    {% set feed = data.external('http://liftconference.com/news.xml', 'xml') %}
-    {% for d in feed.channel.item %}
-    <p>
-        {{ d.title }}
-    </p>
-    {% endfor %}
-    {#
-
-    {{ data.test.people.bob.email }}
-
-    {% for d in data.external('https://raw.github.com/matplotlib/sample_data/master/msft.csv', 'csv') %}
-        {{ d.Open }}
-    {% endfor %}
-
-	{% import 'PT/macros/images.html' as images %}
-    {{ images.dummyimage({text: 'hello benoît'}, {class: 'idiot'}) }}
-    {{ images.flickholdr({text: 'hello benoît'}) }}
-    {{ images.lorempixel({text: 'hellobenot'}) }}
-    {{ images.placeholdit({text: 'hello benoît'}) }}
-    #}
-
+		<h1>Prontotype is up and running.</h1>
+		
+		<p>If this is your first time using Prontotype then you'll probably a want to check out the <a href="http://prontotype.allmarkedup.com/">Prontotype documentation</a> to help you get started.</p>
+		
+		<p><strong>Happy prototyping!</strong></p>
+		
 	</div>
 	
 </body>	
