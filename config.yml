@@ -96,15 +96,6 @@ assets:
   #   file: /assets/main.less
   #   filter: less
   #   target: /compiled/main.css
-        
-  # less_example:
-  #   file: /public/assets/less/less-example.less
-  #   filter: less
-  #   target: css/less-example.css
-  # scss_example:
-  #   file: /public/assets/scss/scss-example.scss
-  #   filter: scss
-  #   target: css/scss-example.css
   
 #==================
 # routing
