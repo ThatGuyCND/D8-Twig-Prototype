@@ -8,11 +8,13 @@ class Data {
 	
 	protected $data = array();
 	protected $app;
+	protected $requestHeaders = array();
 	
 	protected $extensions_map = array(
 		'csv'  => 'csv',
 		'yml'  => 'yml',
 		'yaml' => 'yml',
+		'json' => 'json',
 	);
 	    
     public function __construct( $app )
@@ -34,26 +36,41 @@ class Data {
 		return $this->$name ? TRUE : FALSE;
 	}
 	
-	public function toJSON( $path )
-	{	
-		return json_encode($this->find($path));
-	}
-	
 	// convenience function - for use when templates need to load data from a file whose name they won't know until runtime
 	public function get( $file )
 	{
 		return $this->$file;
 	}
+	
+	public function file( $file )
+	{
+		return $this->$file;
+	}
+	
+	public function external( $url, $type, $headers = array() )
+	{
+		$this->requestHeaders = $headers;
+		if ( isset($this->extensions_map[strtolower($type)]))
+		{
+			$parser = 'parse_' . $this->extensions_map[strtolower($type)];
+			
+			if ( method_exists( $this, $parser ) )
+			{
+				$data = $this->$parser( $url );
+			}
+		}
+		return $data;
+	}
 
     public function find( $path )
     {
 		$pathparts = explode( '.', trim( $path, '.') );
-				
+		
 		$data = $this->{$pathparts[0]};
-
+		
 		unset($pathparts[0]);
 		$pathparts = array_values($pathparts);
-
+		
 		if ( count( $pathparts) )
 		{
 			foreach ( $pathparts as $key )
@@ -125,13 +142,29 @@ class Data {
 	protected function parse_csv( $path )
 	{
 		$config = $this->app['config']['data']['csv'];
+		
 		try
 		{
 			$row = 1;
 			$data_array = array();
 			$headers = array();
 			$id_col = FALSE;
-			if ( ( $handle = fopen($path, "r") ) !== FALSE )
+			
+			if ( strpos($path,'http') === 0 ) {
+				// external url
+				$handle = fopen('php://temp', 'w+');
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_URL, $url);
+				curl_setopt($curl, CURLOPT_FILE, $handle);
+				curl_exec($curl);
+				curl_close($curl);
+				rewind($handle);
+			} else {
+				// local file
+				$handle = fopen($path, "r");
+			}
+			
+			if ( $handle !== FALSE )
 			{
 			    while (($data = fgetcsv($handle, 0, $config['delimiter'], $config['enclosure'], $config['escape'] )) !== FALSE)
 				{
@@ -177,13 +210,56 @@ class Data {
 	{
 		try
 		{
-			$data = Yaml::parse($path);
+			if ( strpos($path, 'http') === 0 ) {
+				$data = $this->make_external_request($path);
+			} else {
+				$data = file_get_contents($path);
+			}
+			$data = Yaml::parse($data);
 			return $data;
 		}
 		catch( \Exception $e )
 		{
-            throw new \Exception('Yaml data format error in ' . $path);
+            throw new Exception('Yaml data format error in ' . $path);
+		}
+	}
+	
+	protected function parse_json( $path )
+	{
+		try
+		{
+			if ( strpos($path, 'http') === 0 ) {
+				$data = $this->make_external_request($path);
+			} else {
+				$data = file_get_contents($path);
+			}
+			$data = json_decode($data, true);
+			return $data;
+		}
+		catch( \Exception $e )
+		{
+            throw new Exception('JSON data format error in ' . $path);
 		}
 	}
     
+	protected function make_external_request( $url )
+	{
+		// if ( $cachedData = $this->app['cache']->get( 'data', $url, strtotime('- ' . $this->app['config']['request_cache_expiry'] . ' minutes') ) )
+		// 		{
+		// 			return $cachedData;
+		// 		}
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		if ( count($this->requestHeaders) ) {
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $this->requestHeaders);
+		}
+		$data = curl_exec($ch);
+		curl_close($ch);
+		
+		// $this->app['cache']->set( 'data', $url, $data ); // save to cache
+		
+		return $data;
+	}
 }

@@ -40,6 +40,13 @@ Class Pages {
 		return '#';
 	}
 	
+	function path( $id )
+	{
+		$page = @$this->getById($id);
+		if ( $page ) return $page->fs_path;
+		return '#';
+	}
+	
 	function getAll()
 	{
 		return $this->app['pagetree']->getPageTree();
