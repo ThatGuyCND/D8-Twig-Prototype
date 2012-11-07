@@ -24,8 +24,6 @@ $app->register(new Silextend\Config\YamlConfig(array(
 	DOC_ROOT . "/config.yml"
 )));
 
-$app['debug'] = $app['config']['debug'];
-
 date_default_timezone_set($app['config']['timezone']);
 
 if ( $app['config']['cache_path'] ) {
@@ -68,15 +66,17 @@ $app->register(new SilexAssetic\AsseticExtension(), array(
 		));
 	}),
 	'assetic.assets' => $app->protect(function($am, $fm) use ($app) {
-		foreach ( $app['config']['assets'] as $key => $opts ) {
-			$am->set($key, new Assetic\Asset\AssetCache(
-				new Assetic\Asset\GlobAsset(
-					DOC_ROOT . '/' . trim($opts['file'], '/'),
-					array($fm->get($opts['filter']))
-				),
-				new Assetic\Cache\FilesystemCache(CACHE_PATH)
-			));
-			$am->get($key)->setTargetPath($opts['target']);
+		if ( is_array($app['config']['assets']) && count($app['config']['assets']) ) {
+			foreach ( $app['config']['assets'] as $key => $opts ) {
+				$am->set($key, new Assetic\Asset\AssetCache(
+					new Assetic\Asset\GlobAsset(
+						DOC_ROOT . '/' . trim($opts['file'], '/'),
+						array($fm->get($opts['filter']))
+					),
+					new Assetic\Cache\FilesystemCache(CACHE_PATH)
+				));
+				$am->get($key)->setTargetPath($opts['target']);
+			}			
 		}
     })
 ));
@@ -122,7 +122,6 @@ $app['pt_request'] = $app->share(function() use ( $app ) {
 // extend twig a little...
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     $twig->addGlobal('now',	time());
- 	$twig->addGlobal('nextweek', strtotime('+ 7 days'));
 	$twig->addGlobal('uri', $app['uri']);
 	$twig->addGlobal('data', $app['data']);
 	$twig->addGlobal('session', $app['session']);
@@ -134,6 +133,7 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 	$twig->addGlobal('request', $app['pt_request']);
     return $twig;
 }));
+
 
 $app->before(function () use ($app) {
 	
@@ -167,7 +167,6 @@ $app->before(function () use ($app) {
 		// redirect visits to the auth pages to the homepage if no auth is required.	
 		return $app->redirect('/');
 	}
-
 
 });
 
