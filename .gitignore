@@ -2,3 +2,4 @@
 .htaccess
 _cache/*
 composer.lock
+app/vendor/*
