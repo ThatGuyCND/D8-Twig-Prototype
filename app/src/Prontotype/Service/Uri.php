@@ -101,11 +101,6 @@ Class Uri {
 		header('Location: '. $url, TRUE, $status );
 		exit();
 	}
-	
-	public function get()
-	{
-		return $_GET;
-	}
 			
 	protected function detect()
 	{

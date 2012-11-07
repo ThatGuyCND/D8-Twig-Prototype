@@ -25,14 +25,4 @@ class Utils {
 		return $result;
 	}
 	
-	public function prettify( $str )
-	{
-		return ucwords(str_replace(array('_','-'),' ', $str));
-	}
-	
-	public function explode( $delim, $str )
-	{
-		return explode($delim, $str);
-	}
-	
 }
