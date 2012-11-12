@@ -84,3 +84,12 @@ less_import_paths:
 # Add custom routes here
 #==================
 routes:
+
+#==================
+# debug
+# -----------------
+# enable/disable Twig debug mode.
+# notably gives access to dump(var) function for dumping data
+# http://twig.sensiolabs.org/doc/functions/dump.html
+#==================
+debug: false

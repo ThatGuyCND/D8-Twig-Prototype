@@ -68,7 +68,8 @@ $app->register(new TwigServiceProvider(), array(
 	'twig.options' 		=> array(
 		'strict_variables' 	=> false,
 		'cache'				=> CACHE_PATH ? CACHE_PATH . '/twig' : false,
-		'auto_reload'		=> true
+		'auto_reload'		=> true,
+		'debug'		=> $app['config']['debug']
 	)
 ));
 
@@ -124,6 +125,8 @@ $app->before(function () use ($app) {
 	$app['twig']->addGlobal('config', $app['config']);
 	$app['twig']->addGlobal('utils', $app['utils']);
 	$app['twig']->addGlobal('request', new Prontotype\Service\Request($app));
+
+    $app['twig']->addExtension(new Twig_Extension_Debug());
 	
 	$authRequired = ( ! empty($app['config']['authenticate']) && ! empty($app['config']['authenticate']['username']) && ! empty($app['config']['authenticate']['password']) ) ? true : false;
 	
