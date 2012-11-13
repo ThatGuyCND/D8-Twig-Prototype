@@ -224,7 +224,7 @@ class Data {
             throw new Exception('Yaml data format error in ' . $path);
 		}
 	}
-	
+
 	protected function parse_xml( $path )
 	{
 		try
@@ -234,7 +234,9 @@ class Data {
 			} else {
 				$data = file_get_contents($path);
 			}
-            $data = simplexml_load_string($data);
+
+            $data = (array) simplexml_load_string($data);
+
 			return $data;
 		}
 		catch( \Exception $e )
