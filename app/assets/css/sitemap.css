@@ -1,0 +1,29 @@
+.prontotype-sitemap .level {
+    display: block;
+    background-repeat: no-repeat;
+}
+
+.prontotype-sitemap .level-1 {
+    margin-left: 0px;
+    background-image: none;
+}
+
+.prontotype-sitemap .level-2 {
+    margin-left: 16px;
+}
+
+.prontotype-sitemap .level-3 {
+    margin-left: 32px;
+}
+
+.prontotype-sitemap .level-4 {
+    margin-left: 48px;
+}
+
+.prontotype-sitemap .level-5 {
+    margin-left: 60px;
+}
+
+.prontotype-sitemap .level-6 {
+    margin-left: 72px;
+}
