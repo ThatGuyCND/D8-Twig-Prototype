@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	{{ assets.stylesheet('/app/assets/css/system.css') }}
+
+    {% set query = request.query.get('q') %}
+    <title>{{ query }} - Google Search</title>
+</head>
+<body>
+    {% block search %}
+    <div id="search" />
+        <form method="GET"> 
+            <input type="text" />
+            <input type="submit" value="Search"/>
+        </form>
+    </div>
+    {% endblock %}
+    {% block results %}
+    <div id="results" />
+        <ol id="results">
+            {% for link in fake.scrap('http://www.google.ch/search?q=ie=utf-8&oe=utf-8&' ~ query, 'ol li.g') %}
+                {{ link.asXML|raw }}
+            {% endfor %}
+        </ol>
+    </div>
+    {% endblock %}
+</body>	
+</html>
