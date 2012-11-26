@@ -87,8 +87,8 @@ $app['data'] = $app->share(function( $app ) {
     return new Prontotype\Service\Data( $app );
 });
 
-$app['fake'] = $app->share(function( $app ) {
-    return new Prontotype\Service\Fake( $app );
+$app['scrap'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Scraper\Scraper( $app );
 });
 
 $app['pages'] = $app->share(function( $app ) {
@@ -122,7 +122,7 @@ $app->before(function () use ($app) {
 
 	$app['twig']->addGlobal('uri', $app['uri']);
 	$app['twig']->addGlobal('data', $app['data']);
-	$app['twig']->addGlobal('fake', $app['fake']);
+	$app['twig']->addGlobal('scrap', $app['scrap']);
 	$app['twig']->addGlobal('session', $app['session']);
 	$app['twig']->addGlobal('cache', $app['cache']);
 	$app['twig']->addGlobal('pages', $app['pages']);

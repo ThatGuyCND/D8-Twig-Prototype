@@ -1,47 +1,68 @@
 <?php
 
-namespace Prontotype\Service;
+namespace Prontotype\Service\Scraper;
 
+use Symfony\Component\CssSelector\CssSelector;
 use Symfony\Component\DomCrawler\Crawler;
 
-class Fake {
+class Scrap {
 
-	protected $app;
-	protected $client;
+	protected $dom;
+	protected $xpath;
 
-    public function __construct( $app )
+    public function __construct( $html, $uri )
     {
-        $this->app = $app;
-    }
-
-    public function scrap( $uri = '', $filter = '' )
-    {
-        $html = $this->make_external_request($uri);
-        $dom = new \DOMDocument('1.0', 'utf8');
-        $dom->validateOnParse = false;
+        $this->dom = new \DOMDocument('1.0', 'utf8');
+        $this->dom->validateOnParse = false;
 
         $current = libxml_use_internal_errors(true);
-        $dom->loadHTML($html);
+        $this->dom->loadHTML($html);
         libxml_use_internal_errors($current);
 
-        // change href and src attribute values
-        $xpath = new \DOMXpath($dom);
+        $this->xpath = new \DOMXpath($this->dom);
 
+        // change href and src attribute values
         foreach (array('href', 'src') as $attr) {
-            foreach ($xpath->query("//*[@" . $attr . "]") as $element) {
+            foreach ($this->xpath->query("//*[@" . $attr . "]") as $element) {
                 $url = $this->absolute_url($uri, $element->getAttribute($attr));
                 $element->setAttribute($attr, $url);
             }
         }
+    }
 
+    public function filter($filter)
+    {
         // perform filter
-        $crawler = new Crawler($dom->saveHtml());
+        $crawler = new Crawler($this->dom->saveHtml());
         $results = $crawler->filter($filter)->each(function ($node, $i) {
             $xml = simplexml_import_dom($node);
             return $xml;
         });
 
         return $results;
+    }
+
+    public function insert($filter, $html)
+    {
+        $html = trim ( (string) $html);
+        if (empty($html) ) {
+            return $this;
+        }
+
+        $tempDom = new \DOMDocument('1.0', 'utf8');
+        $tempDom->loadHTML($html);
+        $import = $tempDom->getElementsByTagName('body')->item(0);
+
+        foreach ($this->xpath->query(CssSelector::toXPath($filter)) as $element) {
+            $firstChild = $element->firstChild;
+
+            foreach ($import->childNodes as $child) {
+                $importedNode = $this->dom->importNode($child, true);
+                $element->insertBefore($importedNode, $firstChild);
+            }
+        }
+
+        return $this;
     }
 
     /*
@@ -85,15 +106,7 @@ class Fake {
         ) . "/" . implode("/", $parts);
     }
 
-    // TODO refactor this and Data::make_external_request into a single function with optional cache
-	protected function make_external_request( $url )
-	{
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_URL, $url);
-		$data = curl_exec($ch);
-		curl_close($ch);
-
-		return $data;
-	}
+    public function __toString() {
+        return $this->dom->saveHtml();
+    }
 }

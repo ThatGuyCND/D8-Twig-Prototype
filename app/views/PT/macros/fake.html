@@ -1,0 +1,31 @@
+{% macro google_result( item ) %}
+<li class="g">
+    <h3 class="r">
+        <a href="{{ item.url }}">{{ item.title }}</a>
+    </h3>
+    <div class="s">
+        <div class="kv" style="margin-bottom:2px">
+            <cite>{{ item.url }}</cite>
+            <span class="flc"> - <a href="#">Cached</a> - <a href="#">Similar</a></span>
+        </div>
+        <span class="st">{{ item.desc }} </span>
+    </div>
+</li>
+{% endmacro %}
+
+{% macro google_results( items ) %}
+    {% for item in items %}
+        {{ _self.google_result(item) }}
+    {% endfor %}
+{% endmacro %}
+
+{% macro google_search_page( request, items ) %}
+{% set params = request.query.all %}
+{% set querystring = '?' %}
+{% for key in params|keys %}
+    {% set querystring = querystring ~ key ~ '=' ~ params[key] ~ '&' %}
+{% endfor %}
+{% set items = fake.google_results(items) %}
+{{ scrap.get('http://www.google.ch/search' ~ querystring).insert('#search ol', items)|raw }}
+{% endmacro %}
+
