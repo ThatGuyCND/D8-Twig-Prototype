@@ -69,7 +69,8 @@ $app->register(new TwigServiceProvider(), array(
 		'strict_variables' 	=> false,
 		'cache'				=> CACHE_PATH ? CACHE_PATH . '/twig' : false,
 		'auto_reload'		=> true,
-		'debug'		=> $app['config']['debug']
+		'debug'		=> $app['config']['debug'],
+		'autoescape'		=> false
 	)
 ));
 

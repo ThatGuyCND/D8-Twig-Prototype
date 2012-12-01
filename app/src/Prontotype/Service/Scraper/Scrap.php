@@ -3,20 +3,29 @@
 namespace Prontotype\Service\Scraper;
 
 use Symfony\Component\CssSelector\CssSelector;
-use Symfony\Component\DomCrawler\Crawler;
 
 class Scrap {
 
+	protected $full_html;
+	protected $html;
+	protected $uri;
 	protected $dom;
 	protected $xpath;
 
     public function __construct( $html, $uri )
     {
+        $this->html = $html;
+        $this->uri = $uri;
+
+        $this->full_html = strpos($html, '<html') > -1;
+    }
+
+    protected function domBootstrap () {
         $this->dom = new \DOMDocument('1.0', 'utf8');
         $this->dom->validateOnParse = false;
 
         $current = libxml_use_internal_errors(true);
-        $this->dom->loadHTML($html);
+        $this->dom->loadHTML($this->html);
         libxml_use_internal_errors($current);
 
         $this->xpath = new \DOMXpath($this->dom);
@@ -24,7 +33,7 @@ class Scrap {
         // change href and src attribute values
         foreach (array('href', 'src') as $attr) {
             foreach ($this->xpath->query("//*[@" . $attr . "]") as $element) {
-                $url = $this->absolute_url($uri, $element->getAttribute($attr));
+                $url = $this->absolute_url($this->uri, $element->getAttribute($attr));
                 $element->setAttribute($attr, $url);
             }
         }
@@ -32,18 +41,21 @@ class Scrap {
 
     public function filter($filter)
     {
-        // perform filter
-        $crawler = new Crawler($this->dom->saveHtml());
-        $results = $crawler->filter($filter)->each(function ($node, $i) {
-            $xml = simplexml_import_dom($node);
-            return $xml;
-        });
+        $this->domBootstrap();
 
-        return $results;
+        $collection = new ScrapCollection();
+
+        foreach ($this->xpath->query(CssSelector::toXPath($filter)) as $element) {
+            $collection->add(new Scrap($this->dom->saveHtml($element), $this->uri));
+        }
+
+        return $collection;
     }
 
     public function insert($filter, $html)
     {
+        $this->domBootstrap();
+
         $html = trim ( (string) $html);
         if (empty($html) ) {
             return $this;
@@ -106,7 +118,26 @@ class Scrap {
         ) . "/" . implode("/", $parts);
     }
 
-    public function __toString() {
-        return $this->dom->saveHtml();
+    public function content () {
+        if (isset($this->dom)) {
+            if (!$this->full_html) {
+                $content = '';
+                $body = $this->dom->getElementsByTagName('body')->item(0);
+
+                foreach ($body->childNodes as $element) {
+                    $content .= $this->dom->saveHTML($element);
+                }
+
+                return $content;
+            }
+
+            return $this->dom->saveHTML();
+        }
+
+        return $this->html;
     }
-}
+
+    public function __toString() {
+        return $this->content();
+    }
+ }
