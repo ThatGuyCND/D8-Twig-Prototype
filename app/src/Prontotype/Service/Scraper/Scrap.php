@@ -4,7 +4,7 @@ namespace Prontotype\Service\Scraper;
 
 use Symfony\Component\CssSelector\CssSelector;
 
-class Scrap {
+class Scrap implements ScrapInterface {
 
 	protected $full_html;
 	protected $html;

@@ -2,7 +2,7 @@
 
 namespace Prontotype\Service\Scraper;
 
-class ScrapCollection {
+class ScrapCollection implements ScrapInterface {
 
 	protected $collection;
 
@@ -11,7 +11,7 @@ class ScrapCollection {
         $this->collection = array();
     }
 
-    public function add(Scrap $scrap) {
+    public function add(ScrapInterface $scrap) {
         $this->collection[] = $scrap;
     }
 
@@ -25,12 +25,27 @@ class ScrapCollection {
         return $collection;
     }
 
-    public function __toString() {
+    public function filter ($filter)
+    {
+        $collection = new ScrapCollection();
+        foreach ($this->collection as $scrap) {
+            $collection->add($scrap->filter($filter));
+        }
+
+        return $collection;
+    }
+
+    public function content()
+    {
         $content = '';
         foreach ($this->collection as $scrap) {
-            $content .= (string) $scrap;
+            $content .= $scrap->content();
         }
 
         return $content;
+    }
+
+    public function __toString() {
+        return $this->content();
     }
 }
