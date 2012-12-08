@@ -12,7 +12,7 @@ class Scrap implements ScrapInterface {
 	protected $dom;
 	protected $xpath;
 
-    public function __construct( $html, $uri )
+    public function __construct($html, $uri = '')
     {
         $this->html = $html;
         $this->uri = $uri;
@@ -30,11 +30,13 @@ class Scrap implements ScrapInterface {
 
         $this->xpath = new \DOMXpath($this->dom);
 
-        // change href and src attribute values
-        foreach (array('href', 'src') as $attr) {
-            foreach ($this->xpath->query("//*[@" . $attr . "]") as $element) {
-                $url = $this->absolute_url($this->uri, $element->getAttribute($attr));
-                $element->setAttribute($attr, $url);
+        if ($this->uri) {
+            // change href and src attribute values
+            foreach (array('href', 'src') as $attr) {
+                foreach ($this->xpath->query("//*[@" . $attr . "]") as $element) {
+                    $url = $this->absolute_url($this->uri, $element->getAttribute($attr));
+                    $element->setAttribute($attr, $url);
+                }
             }
         }
     }
@@ -46,7 +48,7 @@ class Scrap implements ScrapInterface {
         $collection = new ScrapCollection();
 
         foreach ($this->xpath->query(CssSelector::toXPath($filter)) as $element) {
-            $collection->add(new Scrap($this->dom->saveHtml($element), $this->uri));
+            $collection->add(new Scrap($this->dom->saveHtml($element)));
         }
 
         return $collection;
@@ -74,7 +76,7 @@ class Scrap implements ScrapInterface {
             }
         }
 
-        return $this;
+        return new Scrap($this->dom->saveHtml());
     }
 
     /*
