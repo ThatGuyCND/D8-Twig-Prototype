@@ -45,13 +45,18 @@ define('TEMPLATES_PATH', BASE_PATH . '/structure');
 define('PAGES_PATH', TEMPLATES_PATH . '/pages');
 define('DATA_PATH', BASE_PATH . '/data');
 
+$configFiles = array(
+	APP_PATH . "/config.yml",
+);
+foreach(array(DOC_ROOT, BASE_PATH) as $path) {
+    if (file_exists($path . "/config.yml")) {
+        $configFiles[] = $path . "/config.yml";
+    }
+}
+$app->register(new AmuSilexExtension\SilexConfig\YamlConfig($configFiles));
+
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
-$app->register(new AmuSilexExtension\SilexConfig\YamlConfig(array(
-	APP_PATH . "/config.yml",
-	DOC_ROOT . "/config.yml",
-	BASE_PATH. "/config.yml"
-)));
 
 if ( $app['config']['cache_path'] ) {
 	$cache_path = DOC_ROOT . '/' . trim($app['config']['cache_path'],'/');
