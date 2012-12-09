@@ -1,0 +1,12 @@
+#==================
+# prototypes
+# -----------------
+# Specify the various prototypes this prontotype install should server
+#==================
+prototypes:
+    default:
+        domain: prontotype.lo
+        base_path: .
+    test:
+        domain: prontotype-test.lo
+        base_path: ./app/test

@@ -3,16 +3,11 @@
 define('DS', '/');
 
 // define a few paths
-define('DOC_ROOT', realpath(__DIR__ . '/../'));
+define('DOC_ROOT', realpath(__DIR__ . '/..'));
 define('APP_PATH', DOC_ROOT . '/app');
-
-define('TEMPLATES_PATH', DOC_ROOT . '/structure');
-define('PAGES_PATH', TEMPLATES_PATH . '/pages');
-
-define('APP_TEMPLATES_PATH', APP_PATH . '/views');
 define('VENDOR_PATH', APP_PATH . '/vendor');
 
-define('DATA_PATH', DOC_ROOT . '/data');
+define('APP_TEMPLATES_PATH', APP_PATH . '/views');
 
 require_once VENDOR_PATH . '/Less/lessc.inc.php';
 
@@ -24,7 +19,7 @@ $loader = new UniversalClassLoader();
 
 $loader->registerNamespaces(array(
     'Silex'   			=> VENDOR_PATH . '/silex/src',
-	'Symfony'			=> VENDOR_PATH . '/symfony/src',	
+	'Symfony'			=> VENDOR_PATH . '/symfony/src',
 	'AmuSilexExtension' => VENDOR_PATH . '/amu-silex-extensions/src',
 	'Twig' 				=> VENDOR_PATH . '/twig/lib',
 	'Prontotype'		=> APP_PATH . '/src',
@@ -36,19 +31,26 @@ $loader->registerPrefixes(array(
 
 $loader->register();
 
-$app = new Silex\Application();
-
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+$app = new Application();
+
+$app->register(new Prontotype\Service\Prototype());
+
+define('BASE_PATH', $app['prototype']['base_path']);
+define('TEMPLATES_PATH', BASE_PATH . '/structure');
+define('PAGES_PATH', TEMPLATES_PATH . '/pages');
+define('DATA_PATH', BASE_PATH . '/data');
+
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
-
 $app->register(new AmuSilexExtension\SilexConfig\YamlConfig(array(
 	APP_PATH . "/config.yml",
-	DOC_ROOT . "/config.yml"
+	DOC_ROOT . "/config.yml",
+	DOC_ROOT . "/config.yml",
 )));
 
 if ( $app['config']['cache_path'] ) {
@@ -67,7 +69,7 @@ $app->register(new TwigServiceProvider(), array(
     'twig.class_path' 	=>  APP_PATH . '/vendor/twig/lib',
 	'twig.options' 		=> array(
 		'strict_variables' 	=> false,
-		'cache'				=> CACHE_PATH ? CACHE_PATH . '/twig' : false,
+		'cache'				=> CACHE_PATH ? CACHE_PATH . '/' . $app['prototype']['domain'] . '/twig' : false,
 		'auto_reload'		=> true,
 		'debug'		=> $app['config']['debug']
 	)
