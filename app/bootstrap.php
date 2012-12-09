@@ -50,7 +50,7 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new AmuSilexExtension\SilexConfig\YamlConfig(array(
 	APP_PATH . "/config.yml",
 	DOC_ROOT . "/config.yml",
-	DOC_ROOT . "/config.yml",
+	BASE_PATH. "/config.yml"
 )));
 
 if ( $app['config']['cache_path'] ) {
