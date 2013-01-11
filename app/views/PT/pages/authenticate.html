@@ -7,7 +7,7 @@
 
 <form action="{{ auth_path }}" method="POST" class="form-horizontal">
 	
-	{% if session.hasFlash('error') %}
+	{% if session.flashbag.get('error') %}
 	<div class="alert alert-error">
 		<strong>Your username or password was incorrect.</strong> Please try again.
 	</div>

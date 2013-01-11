@@ -107,7 +107,9 @@ Class Parser {
 			{
 				$pages = new \RecursiveDirectoryIterator( $this->pages_path );
 				$this->page_tree = $this->parseDirectory( $pages );
-
+                
+                // TODO: fix caching - disabled for now as it is not working correctly.
+                
 				// $this->app['cache']->set('structure', 'page_tree', $this->page_tree );
 				// 				$this->app['cache']->set('structure', 'route_map', $this->route_map );
 				// 				$this->app['cache']->set('structure', 'id_map', $this->id_map );

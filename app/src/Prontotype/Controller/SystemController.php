@@ -37,7 +37,7 @@ class SystemController implements ControllerProviderInterface
 				
 				return $app->redirect('/');
 			} else {
-				$app['session']->setFlash('error', 'error');
+				$app['session']->getFlashBag()->set('error', 'error');
 				$app['session']->remove( $app['config']['prefix'] . 'authed-user' );
 				return $app->redirect($app['uri']->generate('authenticate'));
 			}
