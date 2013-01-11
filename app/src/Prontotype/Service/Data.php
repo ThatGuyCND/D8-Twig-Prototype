@@ -234,7 +234,7 @@ class Data {
 			} else {
 				$data = file_get_contents($path);
 			}
-            $data = simplexml_load_string($data);
+            $data = (array)simplexml_load_string($data);
 			return $data;
 		}
 		catch( \Exception $e )
