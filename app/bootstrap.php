@@ -46,7 +46,8 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 	'twig.options' 		=> array(
 		'strict_variables' 	=> false,
 		'cache'				=> CACHE_PATH ? CACHE_PATH . '/twig' : false,
-		'auto_reload'		=> true
+		'auto_reload'		=> true,
+        'debug'             => $app['config']['debug']
 	)
 ));
 
@@ -131,6 +132,7 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 	$twig->addGlobal('config', $app['config']);
 	$twig->addGlobal('utils', $app['utils']);
 	$twig->addGlobal('request', $app['pt_request']);
+    $twig->addExtension(new Twig_Extension_Debug());
     return $twig;
 }));
 
