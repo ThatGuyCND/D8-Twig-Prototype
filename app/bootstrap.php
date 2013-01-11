@@ -3,8 +3,7 @@
 define('DS', '/');
 define('VERSION', '2.0');
 
-/* Define a few globally available paths */
-
+/* Define globally available application paths */
 define('DOC_ROOT', realpath(__DIR__ . '/..'));
 define('APP_PATH', DOC_ROOT . '/app');
 define('VENDOR_PATH', APP_PATH . '/vendor');
@@ -13,17 +12,13 @@ define('APP_TEMPLATES_PATH', APP_PATH . '/views');
 
 require_once APP_PATH . '/vendor/autoload.php';
 
-use Silex\Application;
-use Silex\Provider\TwigServiceProvider;
-use Symfony\Component\Translation\Loader\YamlFileLoader;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+$app = new Silex\Application();
 
-$app = new Application();
-
+/* Identify the prototype */
 $app->register(new Prontotype\Service\Prototype($app));
 
-define('BASE_PATH', $app['prototype']['base_path']);
+/* Define globally available prototype paths */
+define('BASE_PATH', DOC_ROOT . '/' . $app['prototype']['base_path']);
 define('TEMPLATES_PATH', BASE_PATH . '/structure');
 define('PAGES_PATH', TEMPLATES_PATH . '/pages');
 define('DATA_PATH', BASE_PATH . '/data');
@@ -31,9 +26,8 @@ define('DATA_PATH', BASE_PATH . '/data');
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silextend\Config\YamlConfig(array(
-	APP_PATH . "/config.yml",
-	DOC_ROOT . "/config.yml",
-	DOC_ROOT . "/config.yml",
+	APP_PATH  . "/config.yml",
+	BASE_PATH . "/config.yml"
 )));
 
 date_default_timezone_set($app['config']['timezone']);
@@ -174,7 +168,7 @@ $app->error(function (\Exception $e, $code) use ($app) {
 			break;
 	}
 	
-	return new Response( $app['twig']->render($template, array(
+	return new Symfony\Component\HttpFoundation\Response( $app['twig']->render($template, array(
 		'message' => $e->getMessage()
 	)), $code );
 });
