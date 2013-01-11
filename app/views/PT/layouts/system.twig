@@ -1,9 +1,10 @@
+{% import "PT/macros/assets.twig" as assets %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	
-	<link rel="stylesheet" href="/app/assets/css/system.css" type="text/css" media="all">
+    {{ assets.stylesheet('/app/assets/css/system.css') }}
 
 	<title>{{ title }}</title>
 </head>

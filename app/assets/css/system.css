@@ -42,6 +42,10 @@ a {
 	color: #377c95;
 	border-color: #e5ecef;
 }
+.alert-heading {
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
 #pt-login-form {
 	margin-bottom: 15px;

@@ -154,10 +154,10 @@ $app->error(function (\Exception $e, $code) use ($app) {
 	
 	switch( $code ) {
 		case '404':
-			$template = 'PT/pages/404.html';
+			$template = 'PT/pages/404.twig';
 			break;
 		default:
-			$template = 'PT/pages/error.html';
+			$template = 'PT/pages/error.twig';
 			break;
 	}
 	
