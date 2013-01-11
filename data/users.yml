@@ -1,4 +1,4 @@
 user:
-  username: user-example
   name: Edward Xample
+  email: ed@xample.com
   role: user

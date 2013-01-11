@@ -84,17 +84,6 @@ data:
     enclosure: '"'
     escape: '\'
     id_header: id
-    
-#==================
-# assets
-# -----------------
-# Specify files to run through the SCSS or LESS compilers here
-#==================
-assets:
-  # main:
-  #   file: /assets/main.less
-  #   filter: less
-  #   target: /compiled/main.css
   
 #==================
 # routing
