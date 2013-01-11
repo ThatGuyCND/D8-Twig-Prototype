@@ -2,3 +2,5 @@
 .htaccess
 _cache/*
 prototypes.yml
+composer.lock
+app/vendor/*

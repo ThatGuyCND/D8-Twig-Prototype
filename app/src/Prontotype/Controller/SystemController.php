@@ -8,13 +8,12 @@ use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class SystemController implements ControllerProviderInterface
 {
-    public function connect(Application $app)
-    {
-		$controllers = new ControllerCollection();
-		
+	public function connect(Application $app)
+	{
+
+		$controllers = $app['controllers_factory'];
 		
 		$controllers->get('auth', function () use ( $app ) {
 			
@@ -22,7 +21,7 @@ class SystemController implements ControllerProviderInterface
 				return $app->redirect('/');
 			}
 			
-			return $app['twig']->render('PT/pages/authenticate.html', array(
+			return $app['twig']->render('PT/pages/authenticate.twig', array(
 				'auth_path' => $app['uri']->generate('authenticate')
 			));
 			
@@ -38,7 +37,7 @@ class SystemController implements ControllerProviderInterface
 				
 				return $app->redirect('/');
 			} else {
-				$app['session']->setFlash('error', 'error');
+				$app['session']->getFlashBag()->set('error', 'error');
 				$app['session']->remove( $app['config']['prefix'] . 'authed-user' );
 				return $app->redirect($app['uri']->generate('authenticate'));
 			}

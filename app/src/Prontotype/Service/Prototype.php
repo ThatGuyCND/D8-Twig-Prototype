@@ -52,4 +52,6 @@ class Prototype implements ServiceProviderInterface
         $app['prototype'] = $current;
     }
 
+    public function boot ( Application $app ) {}
+
 }
