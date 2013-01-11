@@ -61,7 +61,6 @@ triggers:
   login: _login
   logout: _logout
   data: _data
-  assets: _assets
   shorturl: _p
 
 #==================

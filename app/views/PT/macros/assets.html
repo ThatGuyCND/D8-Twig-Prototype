@@ -1,33 +1,3 @@
-{% macro pronto( opts ) %}
-	{{ _self.pronto_css( opts ) }}
-	{{ _self.pronto_js( opts ) }}
-	{% if opts.toolbar %}
-	<script>new PT.toolbar([{% for item in opts.toolbar %}'{{ item }}'{% if not loop.last %},{% endif %}{% endfor %}]);</script>
-	{% endif %}
-{% endmacro %}
-
-{% macro pronto_js( opts ) %}
-{% if opts.jquery is not defined or opts.jquery %}
-<script src="/app/assets/js/jquery.min.js"></script>
-{% endif %}
-{% if opts.cookie is not defined or opts.cookie %}
-	<script src="/app/assets/js/jquery.cookie.min.js"></script>
-{% endif %}
-	<script src="/app/assets/js/pronto.js"></script>
-	<script>PT.configure({
-		"prefix" : "{{ config.prefix }}",
-		"cookieLifetime" : "{{ config.cookie_lifetime }}",
-		"dataTrigger" : "{{ config.triggers.data }}",
-		"loginTrigger" : "{{ config.triggers.login }}",
-		"logoutTrigger" : "{{ config.triggers.logout }}"
-	});</script>
-{% endmacro %}
-
-{% macro pronto_css() %}
-	<link rel="stylesheet" href="/app/assets/css/pronto.css" type="text/css" media="all">
-{% endmacro %}
-
 {% macro stylesheet( path, media ) %}
-	<link rel="stylesheet" href="{% if config.index is not empty %}/{{ config.index }}{% endif %}/{{ config.triggers.assets }}{{ path }}" type="text/css" media="{{ media|default('all') }}">
+	<link rel="stylesheet" href="{{ path }}" type="text/css" media="{{ media|default('all') }}">
 {% endmacro %}
-

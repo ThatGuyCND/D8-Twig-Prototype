@@ -84,10 +84,6 @@ $app->register(new SilexAssetic\AsseticExtension(), array(
 	
 // register services
 
-$app['assets'] = $app->share(function( $app ) {
-    return new Prontotype\Service\Assets( $app, DOC_ROOT );
-});
-
 $app['cache'] = $app->share(function( $app ) {
     return new Prontotype\Service\Cache( $app, CACHE_PATH );
 });
