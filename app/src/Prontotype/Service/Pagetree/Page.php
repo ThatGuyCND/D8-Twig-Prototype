@@ -28,7 +28,7 @@ Class Page {
 	
 	protected $configProvider;
 	
-	protected $name_format_regex = '/^((\d)*[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)\.html$/';
+	protected $name_format_regex = '/^((\d)*[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)\.twig$/';
 	
 	function __construct( $path, $pages_root_path, $requestUri, $configProvider )
 	{

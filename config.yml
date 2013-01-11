@@ -17,7 +17,7 @@ timezone: Europe/London
 # -----------------
 # Whether or not to enable debug mode (more error reporting etc)
 #==================
-debug: true
+debug: false
 
 #==================
 # cache

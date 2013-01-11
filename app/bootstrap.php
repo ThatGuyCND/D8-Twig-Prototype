@@ -52,12 +52,11 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 ));
 
 $app->register(new SilexAssetic\AsseticExtension(), array(
-	'assetic.path_to_web' => DOC_ROOT,
-	'assetic.options' => array(
-		'debug' => $app['config']['debug'],
-		'auto_dump_assets' => TRUE,
-		'formulae_cache_dir' => ''
-	),
+    'assetic.path_to_web' => DOC_ROOT,
+    'assetic.options' => array(
+        'auto_dump_assets' => true,
+        'debug' => $app['config']['debug']
+    ),
 	'assetic.filters' => $app->protect(function($fm) {
 		$fm->set('less', new Assetic\Filter\LessphpFilter(
 			VENDOR_PATH . '/leafo/lessphp/lessc.inc.php'
@@ -65,22 +64,14 @@ $app->register(new SilexAssetic\AsseticExtension(), array(
 		$fm->set('scss', new Assetic\Filter\ScssphpFilter(
 			VENDOR_PATH . '/leafo/scssphp/scss.inc.php'
 		));
-	}),
-	'assetic.assets' => $app->protect(function($am, $fm) use ($app) {
-		if ( is_array($app['config']['assets']) && count($app['config']['assets']) ) {
-			foreach ( $app['config']['assets'] as $key => $opts ) {
-				$am->set($key, new Assetic\Asset\AssetCache(
-					new Assetic\Asset\GlobAsset(
-						DOC_ROOT . '/' . trim($opts['file'], '/'),
-						array($fm->get($opts['filter']))
-					),
-					new Assetic\Cache\FilesystemCache(CACHE_PATH)
-				));
-				$am->get($key)->setTargetPath($opts['target']);
-			}			
-		}
-    })
+	})
 ));
+    
+$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+    $twig->addExtension(new Twig_Extension_Debug());
+    $twig->addExtension(new Prontotype\Twig\HelperExtension($app));
+    return $twig;
+}));
 	
 // register services
 
@@ -116,22 +107,13 @@ $app['pt_request'] = $app->share(function() use ( $app ) {
     return new Prontotype\Service\Request($app);
 });
 
-// extend twig a little...
-$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
-    $twig->addGlobal('now',	time());
-	$twig->addGlobal('uri', $app['uri']);
-	$twig->addGlobal('data', $app['data']);
-	$twig->addGlobal('session', $app['session']);
-	$twig->addGlobal('cache', $app['cache']);
-	$twig->addGlobal('pages', $app['pages']);
-	$twig->addGlobal('store', $app['store']);
-	$twig->addGlobal('config', $app['config']);
-	$twig->addGlobal('utils', $app['utils']);
-	$twig->addGlobal('request', $app['pt_request']);
-    $twig->addExtension(new Twig_Extension_Debug());
-    return $twig;
-}));
-
+if ($app['assetic.options']['auto_dump_assets']){
+    $dumper = $app['assetic.dumper'];
+    if (isset($app['twig'])) {
+        $dumper->addTwigAssets();
+    }
+    $dumper->dumpAssets();
+}
 
 $app->before(function () use ($app) {
 	

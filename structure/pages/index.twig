@@ -5,13 +5,17 @@
 	<meta charset="utf-8">
 	
 	{{ assets.stylesheet('/app/assets/css/system.css') }}
+    
+    {% stylesheets 'assets/test.css' filter='less' output='assets/all.css' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
 	
 	<title>Prontotype</title>
 </head>
 <body>
 	
 	<div id="pt-content">
-	
+	    
 		<h1>Prontotype is up and running.</h1>
 		
 		<p>If this is your first time using Prontotype then you'll probably a want to check out the <a href="http://prontotype.allmarkedup.com/">Prontotype documentation</a> to help you get started.</p>
