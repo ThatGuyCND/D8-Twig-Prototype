@@ -147,7 +147,7 @@ class MainController implements ControllerProviderInterface
 			try {
 				return $app['twig']->render($page->fs_path, array());
 			} catch ( \Exception $e ) {
-				return $app['twig']->render('PT/pages/error.html', array(
+				return $app['twig']->render('PT/pages/error.twig', array(
 					'message'=>$e->getMessage()
 				));
 			}

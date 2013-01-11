@@ -21,7 +21,7 @@ class SystemController implements ControllerProviderInterface
 				return $app->redirect('/');
 			}
 			
-			return $app['twig']->render('PT/pages/authenticate.html', array(
+			return $app['twig']->render('PT/pages/authenticate.twig', array(
 				'auth_path' => $app['uri']->generate('authenticate')
 			));
 			
