@@ -1,6 +1,7 @@
 <?php
 
 define('DS', '/');
+define('VERSION', '2.0');
 
 /* Define a few globally available paths */
 define('DOC_ROOT', realpath(__DIR__ . '/../'));
