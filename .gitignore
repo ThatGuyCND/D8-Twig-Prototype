@@ -4,3 +4,4 @@ _cache/*
 prototypes.yml
 composer.lock
 app/vendor/*
+app/bin/*

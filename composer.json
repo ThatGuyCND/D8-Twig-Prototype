@@ -8,11 +8,14 @@
 		"kriswallsmith/assetic" : "1.*",
 		"mheap/Silex-Assetic": "*",
 		"leafo/lessphp" : "0.*",
-		"leafo/scssphp" : "0.*"
+		"leafo/scssphp" : "0.*",
+    "behat/mink-extension": "*",
+    "behat/mink-goutte-driver": "*"
 	},
 	"minimum-stability": "dev",
 	"config": {
-		"vendor-dir": "app/vendor"
+		"vendor-dir": "app/vendor",
+		"bin-dir": "app/bin"
 	},
 	"autoload": {
 		"psr-0": {
