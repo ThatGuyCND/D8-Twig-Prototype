@@ -31,11 +31,12 @@ class Prototype implements ServiceProviderInterface
 
         $app['prototypes'] = $config['prototypes'];
 
-        // identify current prototype
-
         $host = $_SERVER['HTTP_HOST'];
 
+        // set default prototype
         $current = $app['prototypes']['default'];
+
+        // identify current prototype
         foreach ($app['prototypes'] as $key => $prototype) {
             if ($prototype['domain'] == $host) {
                 $current = $prototype;
