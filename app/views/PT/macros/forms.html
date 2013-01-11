@@ -9,7 +9,7 @@
 
 
 {% macro label( label, opts ) %}
-<label{% if opts.id %} for="{{ opts.id }}"{% endif %} class="control-label">{{ label|default('Input label') }}</label>
+<label{% if opts.id %} for="{{ opts.id }}"{% endif %} class="pt-control-label">{{ label|default('Input label') }}</label>
 {% endmacro %}
 
 
@@ -34,7 +34,7 @@
 
 
 {% macro button( text, class ) %}
-<button type="submit" class="btn {{ class }}">{{ text|default('Submit') }}</button>
+<button type="submit" class="btn {{ class }}">{{ text|default('Submit')|raw }}</button>
 {% endmacro %}
 
 
@@ -65,7 +65,7 @@
 
 {% macro labeled_control( type, label, attrs, opts ) %}
 
-<div class="control-group pt-type-{{ type|default('text') }}">
+<div class="pt-control-group pt-type-{{ type|default('text') }}">
 
 {% if label is empty %}
 
@@ -78,7 +78,7 @@
 	
 {% if type == 'checkbox' or type == 'radio'  %}
 	
-	<div class="controls">
+	<div class="pt-controls">
 		<label{% if opts.id %} for="{{ opts.id }}"{% endif %} class="{{ type }}">
 		{{ _self.control(type, label, attrs, opts) }}
 		{{ opts.label|default('Input label') }}
@@ -88,7 +88,7 @@
 {% else %}
 	
 	{{ _self.label(label, attrs) }}
-	<div class="controls">
+	<div class="pt-controls">
 	{{ _self.control(type, label, attrs, opts) }}
 	</div>
 	

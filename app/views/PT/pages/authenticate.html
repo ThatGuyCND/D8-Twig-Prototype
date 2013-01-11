@@ -5,14 +5,14 @@
 
 {% block content %}
 
-<form action="{{ auth_path }}" method="POST" class="form-horizontal">
+<form action="{{ auth_path }}" method="POST" id="pt-login-form">
 	
 	{% if session.flashbag.get('error') %}
-	<div class="alert alert-error">
+	<div class="alert alert--error">
 		<strong>Your username or password was incorrect.</strong> Please try again.
 	</div>
 	{% else %}
-	<div class="alert alert-info">
+	<div class="alert alert--info">
 		<strong>You must be logged in to access this content.</strong>
 	</div>
 	{% endif %}
@@ -22,7 +22,7 @@
 	{{ form.labeled_control('password', 'Password', { name : 'password', id : 'password' }) }}
 	
 	<div class="form-actions">
-		{{ form.button('Log in', 'btn-primary') }}
+		{{ form.button('Log in &rarr;', 'btn-primary') }}
 	</div>
 
 </form>
