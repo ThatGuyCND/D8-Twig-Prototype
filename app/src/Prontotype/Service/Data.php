@@ -224,7 +224,7 @@ class Data {
             throw new Exception('Yaml data format error in ' . $path);
 		}
 	}
-	
+
 	protected function parse_xml( $path )
 	{
 		try

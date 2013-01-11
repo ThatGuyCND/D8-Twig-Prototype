@@ -122,6 +122,7 @@ $app->before(function () use ($app) {
 		$app['uri']->generate('authenticate'),
 		$app['uri']->generate('de_authenticate')
 	);
+
 		
 	$ip_whitelist = $app['config']['authenticate']['ip_whitelist'];
 	if ( (is_array($ip_whitelist) && in_array($_SERVER['REMOTE_ADDR'], $ip_whitelist)) || is_string($ip_whitelist) && $_SERVER['REMOTE_ADDR'] ===  $ip_whitelist) {
