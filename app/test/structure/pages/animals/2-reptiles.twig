@@ -3,5 +3,10 @@
 {% block content %}
 <h1>Reptiles</h1>
 {% include "includes/footer.twig" %}
+
 <p id="user">{{user.name}}</p>
+
+{% import "macros/test.twig" as testmacros %}
+{{ testmacros.vcard("Johnny Card", "http://example.com/johnny") }}
+
 {% endblock content %}
