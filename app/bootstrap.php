@@ -113,6 +113,11 @@ $app['pt_request'] = $app->share(function() use ( $app ) {
     return new Prontotype\Service\Request($app);
 });
 
+// add user to twig env before dumping assets (which causes twig to init)
+if ( $user = $app['store']->get('user') ) {
+    $app['twig']->addGlobal('user', $user);
+}
+
 if ($app['assetic.options']['auto_dump_assets']){
     $dumper = $app['assetic.dumper'];
     if (isset($app['twig'])) {
