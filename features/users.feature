@@ -4,10 +4,10 @@ Feature: users
 
 Scenario Outline: login/logout
     Given I go to "/_login?user=<user>"
-    When I go to "/animals/reptiles"
+    When I go to "/users"
     Then the "#user" element should contain "<name>"
     Given I go to "/_logout"
-    When I go to "/animals/reptiles"
+    When I go to "/users"
     Then the "#user" element should not contain "<name>"
 
     Examples:

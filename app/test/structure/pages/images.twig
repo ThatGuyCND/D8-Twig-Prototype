@@ -1,27 +1,14 @@
-{% import "PT/macros/assets.twig" as assets %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
+{% extends "layouts/base.twig" %}
 
-    {{ assets.stylesheet('/app/assets/css/system.css') }}
-
-    <title>Prontotype - Test Prototype</title>
-</head>
-<body>
-
-    <div id="pt-content">
-    {% import 'PT/macros/images.twig' as images %}
-        <div id="dummyimage-container">
-        {{ images.dummyimage({ width:300, height:150, bgcolor:"000000", fgcolor: "E66F05", format: "png", text: "hello world"}, {id:"dummyimage"}) }}
-        </div>
-        <div id="placeholdit-container">
-        {{ images.placeholdit({ width:300, height:150, bgcolor:"000000", fgcolor: "E66F05", format: "png", text: "hello world"}, {id:"placeholdit"}) }}
-        </div>
-        <div id="lorempixel-container">
-        {{ images.lorempixel({ width:300, height:150, cat: "people", text: "hello world"}, {id:"lorempixel", class: "lorempixel"}) }}
-        </div>
-    </div>
-
-</body>
-</html>
+{% block content %}
+{% import 'PT/macros/images.twig' as images %}
+<div id="dummyimage-container">
+{{ images.dummyimage({ width:300, height:150, bgcolor:"000000", fgcolor: "E66F05", format: "png", text: "hello world"}, {id:"dummyimage"}) }}
+</div>
+<div id="placeholdit-container">
+{{ images.placeholdit({ width:300, height:150, bgcolor:"000000", fgcolor: "E66F05", format: "png", text: "hello world"}, {id:"placeholdit"}) }}
+</div>
+<div id="lorempixel-container">
+{{ images.lorempixel({ width:300, height:150, cat: "people", text: "hello world"}, {id:"lorempixel", class: "lorempixel"}) }}
+</div>
+{% endblock content %}

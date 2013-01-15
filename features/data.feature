@@ -4,7 +4,7 @@ Feature: data
     To easily manage and render structured data in my prototype
 
 Scenario Outline: Accessing data in templates
-    When I am on "/animals/birds"
+    When I am on "/data-test"
     Then the "#<type>" element should contain "<surname>"
 
     Examples:
