@@ -20,6 +20,10 @@
     {{ nav.page_tree({depth: 1}) }}
 </div>
 
+<div id="navigation-sub">
+    {{ nav.page_tree({start_from: '/sub'}) }}
+</div>
+
 <h1>sitemap</h1>
 <div id="sitemap-default">
     {{ nav.sitemap() }}
@@ -35,6 +39,10 @@
 
 <div id="sitemap-depth-1">
     {{ nav.sitemap({depth: 1}) }}
+</div>
+
+<div id="sitemap-sub">
+    {{ nav.sitemap({start_from: '/sub'}) }}
 </div>
 
 {% endblock content %}

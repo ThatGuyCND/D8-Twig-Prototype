@@ -45,6 +45,17 @@ Scenario Outline: navigation of depth 1
         | another |
         | overview |
 
+Scenario Outline: navigation start from sub
+    Given I am on "/navigation"
+    Then the "#navigation-sub" element should contain "<word>"
+
+    Examples:
+        | word |
+        | yet |
+        | another |
+        | page |
+        | overview |
+
 Scenario Outline: default sitemap
     Given I am on "/navigation"
     Then the "#sitemap-default" element should contain "<word>"
@@ -88,3 +99,13 @@ Scenario Outline: sitemap of depth 1
         | another |
         | overview |
 
+Scenario Outline: sitemap start from sub
+    Given I am on "/navigation"
+    Then the "#sitemap-sub" element should contain "<word>"
+
+    Examples:
+        | word |
+        | yet |
+        | another |
+        | page |
+        | overview |
