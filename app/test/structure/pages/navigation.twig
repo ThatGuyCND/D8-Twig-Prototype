@@ -3,6 +3,7 @@
 {% block content %}
 {% import 'PT/macros/navigation.twig' as nav %}
 
+<h1>menu</h1>
 <div id="navigation-default">
     {{ nav.page_tree() }}
 </div>
@@ -19,7 +20,21 @@
     {{ nav.page_tree({depth: 1}) }}
 </div>
 
-<div id="navigation-sub-mammals">
-    {{ nav.page_tree({start_from: 'animals/mammals'}) }}
+<h1>sitemap</h1>
+<div id="sitemap-default">
+    {{ nav.sitemap() }}
 </div>
+
+<div id="sitemap-id">
+    {{ nav.sitemap({id: 'navid'}) }}
+</div>
+
+<div id="sitemap-hide-index">
+    {{ nav.sitemap({hide_index: true}) }}
+</div>
+
+<div id="sitemap-depth-1">
+    {{ nav.sitemap({depth: 1}) }}
+</div>
+
 {% endblock content %}
