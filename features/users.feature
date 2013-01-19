@@ -3,11 +3,11 @@ Feature: users
     I benefit from users/login mechanisms
 
 Scenario Outline: login/logout
-    Given I go to "/_login?user=<user>"
-    When I go to "/users"
+    Given I go to "http://prontotype-foo.lo/_login?user=<user>"
+    When I go to "http://prontotype-foo.lo/users"
     Then the "#user" element should contain "<name>"
-    Given I go to "/_logout"
-    When I go to "/users"
+    Given I go to "http://prontotype-foo.lo/_logout"
+    When I go to "http://prontotype-foo.lo/users"
     Then the "#user" element should not contain "<name>"
 
     Examples:

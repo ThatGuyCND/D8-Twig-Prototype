@@ -3,7 +3,7 @@ Feature: placeholder images helper
     I can insert placeholder images
 
 Scenario Outline: image URL generation
-    Given I am on "/images"
+    Given I am on "http://prontotype-foo.lo/images"
     Then the "#<service>-container" element should contain "<service>"
     And the "#<service>-container" element should contain "<url>"
     And the "#<service>-container" element should contain "hello world"

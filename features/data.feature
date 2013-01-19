@@ -4,7 +4,7 @@ Feature: data
     To easily manage and render structured data in my prototype
 
 Scenario Outline: Accessing data in templates
-    When I am on "/data-test"
+        When I am on "http://prontotype-foo.lo/data-test"
     Then the "#<type>" element should contain "<surname>"
 
     Examples:
@@ -15,7 +15,7 @@ Scenario Outline: Accessing data in templates
         | yaml   | yamal   |
 
 Scenario Outline: Serving data for AJAX requests
-    When I am on "/_data/<type>"
+    When I am on "http://prontotype-foo.lo/_data/<type>"
     Then I should see "<surname>"
 
     Examples:
@@ -26,7 +26,7 @@ Scenario Outline: Serving data for AJAX requests
         | yaml   | yamal   |
 
 Scenario Outline: drilling down structured data in AJAX
-    When I am on "/_data/<type>/people/pat"
+    When I am on "http://prontotype-foo.lo/_data/<type>/people/pat"
     Then I should see "Postman"
     And I should not see "<surname>"
 
@@ -37,7 +37,7 @@ Scenario Outline: drilling down structured data in AJAX
         | yaml   | yamal   |
 
 Scenario Outline: drilling down relational data in AJAX
-    When I am on "/_data/<type>/pat/last_name"
+    When I am on "http://prontotype-foo.lo/_data/<type>/pat/last_name"
     Then I should see "Postman"
     And I should not see "<surname>"
 

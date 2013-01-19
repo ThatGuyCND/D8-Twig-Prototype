@@ -4,6 +4,6 @@ Feature: extend-include
     To modularize my prototype
 
 Scenario: include prototype component
-    Given I am on "/include"
+    Given I am on "http://prontotype-foo.lo/include"
     Then the ".test-include" element should contain "content included"
 
