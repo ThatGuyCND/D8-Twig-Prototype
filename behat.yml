@@ -2,5 +2,5 @@
 default:
   extensions:
     Behat\MinkExtension\Extension:
-      base_url:  'http://prontotype-test.lo'
+      #base_url:  'http://prontotype-foo.lo'
       goutte:    ~
