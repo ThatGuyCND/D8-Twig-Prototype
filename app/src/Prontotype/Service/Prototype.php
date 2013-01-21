@@ -20,7 +20,13 @@ class Prototype implements ServiceProviderInterface
         $filename = DOC_ROOT . "/prototypes.yml";
 
         if (!file_exists($filename)) {
-            throw new \InvalidArgumentException(sprintf("The config file '%s' does not exist.", $filename));
+            // default to base prototype
+            $app['prototype'] = array(
+                'domain' => 'default',
+                'base_path' => '.',
+            );
+
+            return;
         }
 
         $config = Yaml::parse($filename);
