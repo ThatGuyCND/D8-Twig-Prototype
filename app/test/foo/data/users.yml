@@ -1,0 +1,9 @@
+user1:
+  name: Edward Xample
+  email: ed@xample.com
+  role: user
+
+user2:
+  name: Ellie Xample
+  email: ellie@xample.com
+  role: admin

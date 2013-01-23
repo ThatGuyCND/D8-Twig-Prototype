@@ -1,0 +1,6 @@
+{% extends "layouts/base.twig" %}
+
+{% block content %}
+{% import "macros/test-macro.twig" as testmacros %}
+{{ testmacros.vcard("Johnny Card", "http://example.com/johnny") }}
+{% endblock content %}

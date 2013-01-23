@@ -82,8 +82,9 @@ Class Cache {
 	
 	protected function makePath( $type, $key )
 	{
-		$key = $this->encodeKey( $key );	
-		return $this->cache_path . '/' . $type . '/' . $key . '.cache';
+        $prototype = $this->app['prototype']['domain'];
+		$key = $this->encodeKey( $key );
+		return $this->cache_path . '/' . $prototype . '/' . $type . '/' . $key . '.cache';
 	}
 	
 	protected function encodeKey( $key )

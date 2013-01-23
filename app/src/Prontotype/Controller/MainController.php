@@ -140,10 +140,6 @@ class MainController implements ControllerProviderInterface
 				$app->abort(404);
 			}
 				
-			if ( $user = $app['store']->get('user') ) {
-				$app['twig']->addGlobal('user', $user);
-			}
-				
 			try {
 				return $app['twig']->render($page->fs_path, array());
 			} catch ( \Exception $e ) {

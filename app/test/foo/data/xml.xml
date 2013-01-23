@@ -1,0 +1,26 @@
+<data>
+    <people>
+        <bob>
+            <first_name>Bob</first_name>
+            <surname>Xamilo</surname>
+            <last_name>Builder</last_name>
+            <email>bob@thebuilder.com</email>
+        </bob>
+        <pat>
+            <first_name>Pat</first_name>
+            <surname>Prince</surname>
+            <last_name>Postman</last_name>
+            <email>pat@thepostman.com</email>
+        </pat>
+    </people>
+    <links>
+        <link>
+            <url>http://example.com</url>
+            <text>An example</text>
+        </link>
+        <link>
+            <url>http://test.com</url>
+            <text>A test link</text>
+        </link>
+    </links>
+</data>

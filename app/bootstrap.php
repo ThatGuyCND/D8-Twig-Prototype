@@ -3,26 +3,31 @@
 define('DS', '/');
 define('VERSION', '2.0');
 
-/* Define a few globally available paths */
-define('DOC_ROOT', realpath(__DIR__ . '/../'));
+/* Define globally available application paths */
+define('DOC_ROOT', realpath(__DIR__ . '/..'));
 define('APP_PATH', DOC_ROOT . '/app');
-define('TEMPLATES_PATH', DOC_ROOT . '/structure');
-define('PAGES_PATH', TEMPLATES_PATH . '/pages');
-define('APP_TEMPLATES_PATH', APP_PATH . '/views');
 define('VENDOR_PATH', APP_PATH . '/vendor');
-define('DATA_PATH', DOC_ROOT . '/data');
+
+define('APP_TEMPLATES_PATH', APP_PATH . '/views');
 
 require_once APP_PATH . '/vendor/autoload.php';
 
-use Symfony\Component\Translation\Loader\YamlFileLoader;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 $app = new Silex\Application();
 
+/* Identify the prototype */
+$app->register(new Prontotype\Service\Prototype($app));
+
+/* Define globally available prototype paths */
+define('BASE_PATH', DOC_ROOT . '/' . $app['prototype']['base_path']);
+define('TEMPLATES_PATH', BASE_PATH . '/structure');
+define('PAGES_PATH', TEMPLATES_PATH . '/pages');
+define('DATA_PATH', BASE_PATH . '/data');
+
+$app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silextend\Config\YamlConfig(array(
-	APP_PATH . "/config.yml",
-	DOC_ROOT . "/config.yml"
+	APP_PATH  . "/config.yml",
+	BASE_PATH . "/config.yml"
 )));
 
 date_default_timezone_set($app['config']['timezone']);
@@ -46,7 +51,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' 		=> array( TEMPLATES_PATH.'/', APP_TEMPLATES_PATH.'/' ),
 	'twig.options' 		=> array(
 		'strict_variables' 	=> false,
-		'cache'				=> CACHE_PATH ? CACHE_PATH . '/twig' : false,
+		'cache'				=> CACHE_PATH ? CACHE_PATH . '/' . $app['prototype']['domain'] . '/twig' : false,
 		'auto_reload'		=> true,
         'debug'             => $app['config']['debug']
 	)
@@ -108,6 +113,11 @@ $app['pt_request'] = $app->share(function() use ( $app ) {
     return new Prontotype\Service\Request($app);
 });
 
+// add user to twig env before dumping assets (which causes twig to init)
+if ( $user = $app['store']->get('user') ) {
+    $app['twig']->addGlobal('user', $user);
+}
+
 if ($app['assetic.options']['auto_dump_assets']){
     $dumper = $app['assetic.dumper'];
     if (isset($app['twig'])) {
@@ -163,7 +173,7 @@ $app->error(function (\Exception $e, $code) use ($app) {
 			break;
 	}
 	
-	return new Response( $app['twig']->render($template, array(
+	return new Symfony\Component\HttpFoundation\Response( $app['twig']->render($template, array(
 		'message' => $e->getMessage()
 	)), $code );
 });
