@@ -14,7 +14,7 @@ class Data {
 		'yml'  => 'yml',
 		'yaml' => 'yml',
 		'json' => 'json',
-		'xml' => 'xml',
+		'xml'  => 'xml',
 	);
 	    
     public function __construct( $app )
@@ -234,9 +234,8 @@ class Data {
 			} else {
 				$data = file_get_contents($path);
 			}
-
-            $data = (array) simplexml_load_string($data);
-
+            $data = simplexml_load_string($data);
+            $data = json_decode(json_encode($data),TRUE);
 			return $data;
 		}
 		catch( \Exception $e )

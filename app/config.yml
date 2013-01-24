@@ -6,7 +6,21 @@
 index: index.php
 
 #==================
-# cache_path
+# Timezone
+# -----------------
+# Timezone used for date functions
+#==================
+timezone: Europe/London
+
+#==================
+# Debugging
+# -----------------
+# Whether or not to enable debug mode (more error reporting etc)
+#==================
+debug: false
+
+#==================
+# cache
 # -----------------
 # Specify a path to a writeable directory (relative to the Prontotype root directory)
 # to enable caching of templates and data
@@ -22,6 +36,7 @@ request_cache_expiry: 5 # in minutes
 authenticate:
   username: 
   password:
+  ip_whitelist:
 
 #==================
 # prefix
@@ -46,7 +61,6 @@ triggers:
   login: _login
   logout: _logout
   data: _data
-  assets: _assets
   shorturl: _p
 
 #==================
@@ -70,14 +84,6 @@ data:
     enclosure: '"'
     escape: '\'
     id_header: id
-    
-#==================
-# less_import_paths
-# -----------------
-# Specify an array of paths relative to the Prontotype root directory)
-# to look for less files in when parsing @import statements during compilation
-#==================
-less_import_paths:
   
 #==================
 # routing
@@ -85,12 +91,3 @@ less_import_paths:
 # Add custom routes here
 #==================
 routes:
-
-#==================
-# debug
-# -----------------
-# enable/disable Twig debug mode.
-# notably gives access to dump(var) function for dumping data
-# http://twig.sensiolabs.org/doc/functions/dump.html
-#==================
-debug: false

@@ -9,12 +9,12 @@ Class Store {
 	protected $cookie_prefix = '';
 	
 	protected $app;
-	    
-    public function __construct( $app )
-    {
+
+	public function __construct( $app )
+	{
 		$this->app = $app;
-        $this->cookie_prefix = $app['config']['prefix'];
-    }
+		$this->cookie_prefix = $app['config']['prefix'];
+	}
 	
 	public function set( $key, $value )
 	{

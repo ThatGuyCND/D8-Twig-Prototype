@@ -1,0 +1,8 @@
+{% macro stylesheet( path, media ) %}
+	<link rel="stylesheet" href="{{ path }}" type="text/css" media="{{ media|default('all') }}">
+{% endmacro %}
+
+{% macro js( path ) %}
+    <script src="{{ path }}"></script>
+{% endmacro %}
+

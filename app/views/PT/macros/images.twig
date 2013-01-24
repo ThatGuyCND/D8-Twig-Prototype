@@ -1,0 +1,18 @@
+{% macro dummyimage( opts, attrs ) %}
+    {% set src = "http://dummyimage.com/" ~ opts.width|default(200) ~ "x" ~ opts.height|default(200) ~ "/" ~ opts.bgcolor ~ "/" ~ opts.fgcolor ~ "." ~ opts.format ~ "&text=" ~ opts.text %}
+    {{ _self.image( src, attrs ) }}
+{% endmacro %}
+
+{% macro lorempixel( opts, attrs ) %}
+    {% set src = "http://lorempixel.com/" ~ opts.width|default(200) ~ "/" ~ opts.height|default(200) ~ "/" ~ opts.cat|default('people') ~ "/" ~ opts.text %}
+    {{ _self.image( src, attrs ) }}
+{% endmacro %}
+
+{% macro placeholdit( opts, attrs ) %}
+    {% set src = "http://placehold.it/" ~ opts.width|default(200) ~ "x" ~ opts.height|default(200) ~ "/" ~ opts.bgcolor ~ "/" ~ opts.fgcolor ~ "." ~ opts.format ~ "&text=" ~ opts.text %}
+    {{ _self.image( src, attrs ) }}
+{% endmacro %}
+
+{% macro image( src, attrs ) %}
+<img {% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %} src="{{src}}"/>
+{% endmacro %}

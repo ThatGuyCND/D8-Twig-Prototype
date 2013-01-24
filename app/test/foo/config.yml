@@ -1,0 +1,93 @@
+#==================
+# index
+# -----------------
+# Set to an empty string if using mod_rewrite or the nginx equivalent
+#==================
+index:
+
+#==================
+# Timezone
+# -----------------
+# Timezone used for date functions
+#==================
+timezone: Europe/London
+
+#==================
+# Debugging
+# -----------------
+# Whether or not to enable debug mode (more error reporting etc)
+#==================
+debug: true
+
+#==================
+# cache
+# -----------------
+# Specify a path to a writeable directory (relative to the Prontotype root directory)
+# to enable caching of templates and data
+#==================
+cache_path: _cache
+request_cache_expiry: 5 # in minutes
+
+#==================
+# authenticate
+# -----------------
+# Provide a username and password pair to enable password-protection of the prototype
+#==================
+authenticate:
+  username: 
+  password:
+  ip_whitelist:
+
+#==================
+# prefix
+# -----------------
+# The string to use when prefixing cookie names, classes etc.
+#==================
+prefix: prontotype-
+  
+#==================
+# cookie_lifetime
+# -----------------
+# How long cookies set by prontotype should persist for.
+#==================
+cookie_lifetime: 604800 # 1 week
+
+#==================
+# triggers
+# -----------------
+# URL segments that trigger specific behaviour
+#==================
+triggers:
+  login: _login
+  logout: _logout
+  data: _data
+  shorturl: _p
+
+#==================
+# nice_names
+# -----------------
+# A few short text strings that should be used in auto-generated navigation macros
+#==================
+nice_names:
+  index: Overview     # what to label the index pages as
+  home: Home          # what to label the home page as
+
+#==================
+# data
+# -----------------
+# Tweak to match the style of different data files.
+#==================
+data:
+  csv:
+    headers: true
+    delimiter: ','
+    enclosure: '"'
+    escape: '\'
+    id_header: id
+  
+#==================
+# routing
+# -----------------
+# Add custom routes here
+#==================
+routes:

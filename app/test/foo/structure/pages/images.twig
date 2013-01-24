@@ -1,0 +1,14 @@
+{% extends "layouts/base.twig" %}
+
+{% block content %}
+{% import 'PT/macros/images.twig' as images %}
+<div id="dummyimage-container">
+{{ images.dummyimage({ width:300, height:150, bgcolor:"000000", fgcolor: "E66F05", format: "png", text: "hello world"}, {id:"dummyimage"}) }}
+</div>
+<div id="placeholdit-container">
+{{ images.placeholdit({ width:300, height:150, bgcolor:"000000", fgcolor: "E66F05", format: "png", text: "hello world"}, {id:"placeholdit"}) }}
+</div>
+<div id="lorempixel-container">
+{{ images.lorempixel({ width:300, height:150, cat: "people", text: "hello world"}, {id:"lorempixel", class: "lorempixel"}) }}
+</div>
+{% endblock content %}

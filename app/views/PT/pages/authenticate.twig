@@ -1,0 +1,30 @@
+{% extends "PT/layouts/system.twig" %}
+{% import "PT/macros/forms.twig" as form %}
+
+{% set title = 'You must be logged in to access this content' %}
+
+{% block content %}
+
+<form action="{{ auth_path }}" method="POST" id="pt-login-form">
+	
+	{% if session.flashbag.get('error') %}
+	<div class="alert alert--error">
+		<strong>Your username or password was incorrect.</strong> Please try again.
+	</div>
+	{% else %}
+	<div class="alert alert--info">
+		<strong>You must be logged in to access this content.</strong>
+	</div>
+	{% endif %}
+	
+	{{ form.labeled_control('text', 'Username', { name : 'username', id : 'username' }) }}
+	
+	{{ form.labeled_control('password', 'Password', { name : 'password', id : 'password' }) }}
+	
+	<div class="form-actions">
+		{{ form.button('Log in &rarr;', 'btn-primary') }}
+	</div>
+
+</form>
+
+{% endblock content %}
