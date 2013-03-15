@@ -15,6 +15,8 @@ class Data {
 		'yaml' => 'yml',
 		'json' => 'json',
 		'xml'  => 'xml',
+        'md'   => 'md',
+        'markdown'   => 'md',
 	);
 	    
     public function __construct( $app )
@@ -259,6 +261,27 @@ class Data {
 		catch( \Exception $e )
 		{
             throw new Exception('JSON data format error in ' . $path);
+		}
+	}
+    
+	protected function parse_md( $path )
+	{
+		try
+		{
+			if ( strpos($path, 'http') === 0 ) {
+				$data = $this->make_external_request($path);
+			} else {
+				$data = file_get_contents($path);        
+			}
+			$data = array(
+                'raw' => $data,
+                'html' => @$this->app['markdown']->transform($data)
+			);
+			return $data;
+		}
+		catch( \Exception $e )
+		{        
+            throw new Exception('MArkdown data format error in ' . $path);
 		}
 	}
     
