@@ -25,7 +25,7 @@ debug: false
 # Specify a path to a writeable directory (relative to the Prontotype root directory)
 # to enable caching of templates and data
 #==================
-cache_path: _cache
+cache_path: 
 request_cache_expiry: 5 # in minutes
 
 #==================
