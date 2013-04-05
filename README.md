@@ -21,8 +21,6 @@ Prontotype lets you:
 * Auto-generate navigation, forms and more using in-built macros
 * And plenty more!
 
-
-
 What you'll need to run Prontotype:
 --------------------
 
@@ -44,7 +42,10 @@ Prontotype is still very young! The following is a list of things (in no particu
 * **Coffeescript compiliation** to work in a similar way to the LESS compilation does.
 * **Unit tests** to make sure everything is working ok!
 
+Contributors (many thanks!)
+---------------------------
 
+* [Benoît Pointet](https://github.com/benoitpointet)
 
 
 
