@@ -82,7 +82,7 @@ data:
 # Configuration for LESS/SASS generation
 #==================
 assets:
-  auto_generate: true   # whether to auto-dump css files on page load. Can slow things down!
+  auto_generate: false   # whether to auto-dump css files on page load. Can slow things down!
   
 #==================
 # routing
