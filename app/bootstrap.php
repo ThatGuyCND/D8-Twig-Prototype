@@ -53,27 +53,30 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 		'strict_variables' 	=> false,
 		'cache'				=> CACHE_PATH ? CACHE_PATH . '/' . $app['prototype']['domain'] . '/twig' : false,
 		'auto_reload'		=> true,
-		'debug'		=> $app['config']['debug'],
+		'debug'             => $app['config']['debug'],
 		'autoescape'		=> false
 	)
 ));
 
-$app->register(new SilexAssetic\AsseticExtension(), array(
-    'assetic.path_to_web' => DOC_ROOT,
-    'assetic.options' => array(
-        'auto_dump_assets' => true,
-        'debug' => $app['config']['debug']
-    ),
-	'assetic.filters' => $app->protect(function($fm) {
-		$fm->set('less', new Assetic\Filter\LessphpFilter(
-			VENDOR_PATH . '/leafo/lessphp/lessc.inc.php'
-		));
-		$fm->set('scss', new Assetic\Filter\ScssphpFilter(
-			VENDOR_PATH . '/leafo/scssphp/scss.inc.php'
-		));
-	})
-));
-    
+// set up Assetic
+$app->register(new SilexAssetic\AsseticServiceProvider());
+$app['assetic.path_to_web'] = DOC_ROOT;
+$app['assetic.options'] = array(
+    'auto_dump_assets' => $app['config']['assets']['auto_generate'],
+    'debug'            => $app['config']['debug']
+);
+$app['assetic.filter_manager'] = $app['assetic.filter_manager'] = $app->share(
+    $app->extend('assetic.filter_manager', function($fm, $app) {
+        $fm->set('less', new Assetic\Filter\LessphpFilter(
+            VENDOR_PATH . '/leafo/lessphp/lessc.inc.php'
+        ));
+        $fm->set('scss', new Assetic\Filter\ScssphpFilter(
+           VENDOR_PATH . '/leafo/scssphp/scss.inc.php'
+       ));
+       return $fm;
+    })
+);
+
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     $twig->addExtension(new Twig_Extension_Debug());
     $twig->addExtension(new Prontotype\Twig\HelperExtension($app));
