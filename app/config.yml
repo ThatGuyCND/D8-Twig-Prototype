@@ -99,3 +99,11 @@ assets:
 # Add custom routes here
 #==================
 routes:
+
+#==================
+# Extensions
+# -----------------
+# list extensions (located in the /extensions dir) to enable in the prototype
+#==================
+extensions:
+  # example: ExampleExtension.php

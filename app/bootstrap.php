@@ -26,6 +26,7 @@ define('BASE_PATH', DOC_ROOT . '/' . $app['prototype']['base_path']);
 define('TEMPLATES_PATH', BASE_PATH . '/structure');
 define('PAGES_PATH', TEMPLATES_PATH . '/pages');
 define('DATA_PATH', BASE_PATH . '/data');
+define('EXTENSIONS_PATH', BASE_PATH . '/extensions');
 
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
@@ -125,6 +126,11 @@ $app['pt_request'] = $app->share(function() use ( $app ) {
     return new Prontotype\Service\Request($app);
 });
 
+// deal with extensions...
+
+$extensionManager = new Prontotype\Extension\Manager(EXTENSIONS_PATH, $app);
+$extensionManager->loadExtensions($app['config']['extensions']);
+
 // add user to twig env before dumping assets (which causes twig to init)
 if ( $user = $app['store']->get('user') ) {
     $app['twig']->addGlobal('user', $user);
@@ -138,13 +144,13 @@ if ($app['assetic.options']['auto_dump_assets']){
     $dumper->dumpAssets();
 }
 
-$app->before(function () use ($app) {
+$app->before(function () use ($app, $extensionManager) {
 	
 	$authPage = array(
 		$app['uri']->generate('authenticate'),
 		$app['uri']->generate('de_authenticate')
 	);
-
+    
 	$ip_whitelist = $app['config']['authenticate']['ip_whitelist'];
 	if ( (is_array($ip_whitelist) && in_array($_SERVER['REMOTE_ADDR'], $ip_whitelist)) || is_string($ip_whitelist) && $_SERVER['REMOTE_ADDR'] ===  $ip_whitelist) {
 		$authRequired = false;
@@ -170,6 +176,14 @@ $app->before(function () use ($app) {
 		// redirect visits to the auth pages to the homepage if no auth is required.	
 		return $app->redirect('/');
 	}
+    
+    $extensionManager->before();
+
+});
+
+$app->after(function () use ($app, $extensionManager) {
+	
+    $extensionManager->after();
 
 });
 

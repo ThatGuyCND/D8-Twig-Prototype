@@ -10,6 +10,11 @@ class Request {
     {
         $this->app = $app;
     }
+    
+    public function method()
+    {
+        return $this->app['request']->getMethod();
+    }
 	
 	public function query()
 	{
