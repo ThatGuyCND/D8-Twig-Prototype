@@ -10,6 +10,10 @@ define('VENDOR_PATH', APP_PATH . '/vendor');
 
 define('APP_TEMPLATES_PATH', APP_PATH . '/views');
 
+if ( ! file_exists(APP_PATH . '/vendor/autoload.php') ) {
+    throw new Exception("You need to install and run <a href=\"http://getcomposer.org\">Composer</a> before Prontoype will work. <a href=\"http://prontotype.allmarkedup.com/#setup\">Read the documentation for more details &rarr;</a>");
+}
+
 require_once APP_PATH . '/vendor/autoload.php';
 
 $app = new Silex\Application();
