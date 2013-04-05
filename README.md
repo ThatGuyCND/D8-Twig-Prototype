@@ -36,11 +36,9 @@ Prontotype is still very young! The following is a list of things (in no particu
 
 * An **example site** to better show off all the features of Prontotype.
 * **Export to static HTML** for easier sharing
-* **Extension system** to allow you to model more complex behaviours that need server-side logic.
 * The ability to **specify contextual notes** and have their display state toggled easily on and off.
 * **WURFL (or similar)**  integration to allow for prototyping of server-side device detection.
 * **Coffeescript compiliation** to work in a similar way to the LESS compilation does.
-* **Unit tests** to make sure everything is working ok!
 
 Contributors (many thanks!)
 ---------------------------

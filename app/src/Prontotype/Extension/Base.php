@@ -2,7 +2,8 @@
 
 namespace Prontotype\Extension;
 
-class Base {
+class Base
+{
     
     public function __construct( $app )
     {

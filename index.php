@@ -22,7 +22,6 @@ try {
 <head>
 	<meta charset="utf-8">
 	
-	<link rel="stylesheet" href="/app/assets/css/bootstrap.min.css" type="text/css" media="all">
 	<link rel="stylesheet" href="/app/assets/css/system.css" type="text/css" media="all">
 
 	<title>An error has occurred.</title>

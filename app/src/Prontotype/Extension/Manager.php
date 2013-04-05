@@ -2,7 +2,8 @@
 
 namespace Prontotype\Extension;
 
-class Manager {
+class Manager
+{
     
     public function __construct($extpath, $app)
     {
