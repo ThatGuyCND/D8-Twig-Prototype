@@ -24,6 +24,7 @@ class HelperExtension extends \Twig_Extension
             'session' => $this->app['session'],
             'cache' => $this->app['cache'],
             'pages' => $this->app['pages'],
+            'scrap' => $this->app['scrap'],
             'store' => $this->app['store'],
             'config' => $this->app['config'],
             'utils' => $this->app['utils'],

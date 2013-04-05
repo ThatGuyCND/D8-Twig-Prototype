@@ -1,0 +1,10 @@
+{% extends "layouts/base.twig" %}
+
+{% block content %}
+
+
+{% set injection %}
+<span style="color:red">injected </span>
+{% endset %}
+{{ scrap.get('http://prontotype-foo.lo/scraper_source').filter('#to-scrap').insert('p.to-inject', injection) }}
+{% endblock content %}

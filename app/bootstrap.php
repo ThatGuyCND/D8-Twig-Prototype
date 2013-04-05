@@ -53,7 +53,8 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 		'strict_variables' 	=> false,
 		'cache'				=> CACHE_PATH ? CACHE_PATH . '/' . $app['prototype']['domain'] . '/twig' : false,
 		'auto_reload'		=> true,
-        'debug'             => $app['config']['debug']
+		'debug'		=> $app['config']['debug'],
+		'autoescape'		=> false
 	)
 ));
 
@@ -87,6 +88,10 @@ $app['cache'] = $app->share(function( $app ) {
 
 $app['data'] = $app->share(function( $app ) {
     return new Prontotype\Service\Data( $app );
+});
+
+$app['scrap'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Scraper\Scraper( $app );
 });
 
 $app['pages'] = $app->share(function( $app ) {
@@ -133,7 +138,6 @@ $app->before(function () use ($app) {
 		$app['uri']->generate('de_authenticate')
 	);
 
-		
 	$ip_whitelist = $app['config']['authenticate']['ip_whitelist'];
 	if ( (is_array($ip_whitelist) && in_array($_SERVER['REMOTE_ADDR'], $ip_whitelist)) || is_string($ip_whitelist) && $_SERVER['REMOTE_ADDR'] ===  $ip_whitelist) {
 		$authRequired = false;
