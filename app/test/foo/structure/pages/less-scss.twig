@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    {% stylesheets 'app/test/foo/assets/less-test.less' filter='less' output='_cache/foo/assets/' %}
+    {% stylesheets 'app/test/foo/assets/less-test.less' filter='less' output='_cache/prontotype-foo/assets/' %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet">
     {% endstylesheets %}
 
-    {% stylesheets 'app/test/foo/assets/scss-test.scss' filter='less' output='_cache/foo/assets/' %}
+    {% stylesheets 'app/test/foo/assets/scss-test.scss' filter='scss' output='_cache/prontotype-foo/assets/' %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet">
     {% endstylesheets %}
 </head>
