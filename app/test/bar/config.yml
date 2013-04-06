@@ -20,15 +20,6 @@ timezone: Europe/London
 debug: true
 
 #==================
-# cache
-# -----------------
-# Specify a path to a writeable directory (relative to the Prontotype root directory)
-# to enable caching of templates and data
-#==================
-cache_path: _cache
-request_cache_expiry: 5 # in minutes
-
-#==================
 # authenticate
 # -----------------
 # Provide a username and password pair to enable password-protection of the prototype
@@ -84,6 +75,14 @@ data:
     enclosure: '"'
     escape: '\'
     id_header: id
+
+#==================
+# Assets
+# -----------------
+# Configuration for LESS/SASS generation
+#==================
+assets:
+  auto_generate: false   # whether to auto-dump css files on page load. Can slow things down!
   
 #==================
 # routing
@@ -91,3 +90,12 @@ data:
 # Add custom routes here
 #==================
 routes:
+
+#==================
+# Extensions
+# -----------------
+# list extensions (located in the /extensions dir) to enable in the prototype
+#==================
+extensions:
+  # example: ExampleExtension.php
+  
