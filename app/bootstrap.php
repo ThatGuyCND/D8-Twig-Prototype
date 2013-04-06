@@ -32,7 +32,7 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silextend\Config\YamlConfig(array(
     APP_PATH  . "/config.yml",
-    BASE_PATH . "/config.yml"
+    BASE_PATH . "/" . $app['prototype']['config_file'],
 )));
 
 date_default_timezone_set($app['config']['timezone']);
