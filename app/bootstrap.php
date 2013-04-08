@@ -153,7 +153,7 @@ foreach( glob(APP_PATH . '/views/PT/macros/*.twig') as $path ) {
 // import all prototype macros
 if ( file_exists(TEMPLATES_PATH . '/macros') ) {
     foreach( glob(TEMPLATES_PATH . '/macros/*.twig') as $path ) {
-        $pathinfo = pathinfo($path);p
+        $pathinfo = pathinfo($path);
         $app['twig']->addGlobal($pathinfo['filename'], $app['twig']->loadTemplate('/macros/' . $pathinfo['basename']));
     }
 }
