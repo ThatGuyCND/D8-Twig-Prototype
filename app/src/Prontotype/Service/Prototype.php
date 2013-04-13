@@ -19,12 +19,14 @@ class Prototype implements ServiceProviderInterface
 
         $filename = DOC_ROOT . "/prototypes.yml";
 
+        $default_prototype = array(
+            'domain' => 'default',
+            'base_path' => '.',
+            'config_file' => 'config.yml',
+        );
+
         if (!file_exists($filename)) {
-            // default to base prototype
-            $app['prototype'] = array(
-                'domain' => 'default',
-                'base_path' => '.',
-            );
+            $app['prototype'] = $default_prototype;
 
             return;
         }
@@ -50,9 +52,10 @@ class Prototype implements ServiceProviderInterface
             }
         }
 
-        foreach (array('domain', 'base_path') as $param) {
-            if (!isset($current[$param])) {
-                throw new \InvalidArgumentException(sprintf("The configuration of prototype '%s' in file '%s' misses '%s' key.", $current['key'], $filename, $param));
+        // complete current prototype config with default keys if missing
+        foreach (array_keys($default_prototype) as $key) {
+            if (!isset($current[$key])) {
+                $current[$key] = $default_prototype[$key];
             }
         }
 

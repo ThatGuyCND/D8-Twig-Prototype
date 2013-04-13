@@ -19,9 +19,10 @@
     {% endfor %}
 {% endmacro %}
 
-{% macro google_search_page( request, items ) %}
+{% macro google_search_page( request, items, root_url ) %}
 {% set params = request.query.all %}
 {% set querystring = '' %}
+{% set root_url = root_url ? root_url : 'http://www.google.com/' %}
 {% for key in params|keys %}
     {% set querystring = querystring ~ key ~ '=' ~ params[key] ~ '&' %}
 {% endfor %}
@@ -29,6 +30,6 @@
     {% set querystring = 'search?' ~ querystring %}
 {% endif %}
 {% set items = _self.google_results(items) %}
-{{ scrap.get('http://www.google.ch/' ~ querystring).insert('#search ol', items)|raw }}
+{{ scrap.get(root_url ~ querystring).insert('#search ol', items)|raw }}
 {% endmacro %}
 

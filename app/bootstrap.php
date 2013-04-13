@@ -32,7 +32,7 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silextend\Config\YamlConfig(array(
     APP_PATH  . "/config.yml",
-    BASE_PATH . "/config.yml"
+    BASE_PATH . "/" . $app['prototype']['config_file'],
 )));
 
 date_default_timezone_set($app['config']['timezone']);
@@ -142,6 +142,20 @@ if ($app['assetic.options']['auto_dump_assets']){
         $dumper->addTwigAssets();
     }
     $dumper->dumpAssets();
+}
+
+// import all PT macros
+foreach( glob(APP_PATH . '/views/PT/macros/*.twig') as $path ) {
+    $pathinfo = pathinfo($path);
+    $app['twig']->addGlobal($pathinfo['filename'], $app['twig']->loadTemplate('PT/macros/' . $pathinfo['basename']));
+}
+
+// import all prototype macros
+if ( file_exists(TEMPLATES_PATH . '/macros') ) {
+    foreach( glob(TEMPLATES_PATH . '/macros/*.twig') as $path ) {
+        $pathinfo = pathinfo($path);
+        $app['twig']->addGlobal($pathinfo['filename'], $app['twig']->loadTemplate('/macros/' . $pathinfo['basename']));
+    }
 }
 
 $app->before(function () use ($app, $extensionManager) {
