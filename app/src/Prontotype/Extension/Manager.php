@@ -13,23 +13,19 @@ class Manager
     }
         
     public function loadExtensions($extensions)
-    {
+    {   
         if ( count($extensions) ) {
-            $allGlobals = array();
             foreach( $extensions as $extensionKey => $extensionFile ) {
-                $extPath =  $this->path . '/' . $extensionFile;
+                $extPath = $this->path . '/' . $extensionFile;
                 if ( file_exists($extPath) ) {
                     require_once $extPath;
                     $pathInfo = pathinfo($extPath);
                     $extName = $pathInfo['filename'];
                     $extension = new $extName($this->app);
-                    $globals = $extension->globals();
-                    if ( $globals || is_array($globals) && count($globals) ) {
-                        $this->app['twig']->addGlobal($extensionKey, $globals);
-                    }
-                    $this->extensions[] = $extension;
+                    $this->extensions[$extensionKey] = $extension;
                 }
             }
+            $this->app['twig']->addGlobal('ext', $this->extensions);
         }
     }
     
