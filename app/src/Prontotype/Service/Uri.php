@@ -104,7 +104,7 @@ Class Uri {
                 }  
                 list($uri) = explode('?',$uri);
             } else {
-                throw new Exception('The URI cannot be detected.');
+                throw new \Exception('The URI cannot be detected.');
             }
         }
             

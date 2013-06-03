@@ -170,7 +170,7 @@ class Data
             }
             return $data_array;
         } catch( \Exception $e ) {           
-            throw new Exception('CSV data format error in ' . $path);
+            throw new \Exception('CSV data format error in ' . $path);
         }
     }
     
@@ -186,7 +186,7 @@ class Data
             $data = $yaml->parse($data);
             return $data;
         } catch( \Exception $e ) {
-            throw new Exception('Yaml data format error in ' . $path);
+            throw new \Exception('Yaml data format error in ' . $path);
         }
     }
 
@@ -202,7 +202,7 @@ class Data
             $data = json_decode(json_encode($data),TRUE);
             return $data;
         } catch( \Exception $e ) {
-            throw new Exception('Xml data format error in ' . $path);
+            throw new \Exception('Xml data format error in ' . $path);
         }
     }
 
@@ -217,7 +217,7 @@ class Data
             $data = json_decode($data, true);
             return $data;
         } catch( \Exception $e ) {
-            throw new Exception('JSON data format error in ' . $path);
+            throw new \Exception('JSON data format error in ' . $path);
         }
     }
     
@@ -235,7 +235,7 @@ class Data
             );
             return $data;
         }  catch( \Exception $e ) {        
-            throw new Exception('MArkdown data format error in ' . $path);
+            throw new \Exception('MArkdown data format error in ' . $path);
         }
     }
     

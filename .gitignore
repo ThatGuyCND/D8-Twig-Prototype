@@ -5,3 +5,4 @@ prototypes.yml
 composer.lock
 app/vendor/*
 app/bin/*
+prototypes/*
