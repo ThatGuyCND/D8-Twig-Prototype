@@ -29,6 +29,7 @@ class HelperExtension extends \Twig_Extension
             'config' => $this->app['config'],
             'utils' => $this->app['utils'],
             'request' => $this->app['pt_request'],
+            'faker' => $this->app['faker'],
         );
     }
 }

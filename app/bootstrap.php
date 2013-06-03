@@ -126,6 +126,10 @@ $app['pt_request'] = $app->share(function() use ( $app ) {
     return new Prontotype\Service\Request($app);
 });
 
+$app['faker'] = $app->share(function() use ( $app ) {
+    return Faker\Factory::create();
+});
+
 // deal with extensions...
 
 $extensionManager = new Prontotype\Extension\Manager(EXTENSIONS_PATH, $app);
