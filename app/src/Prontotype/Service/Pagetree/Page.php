@@ -21,6 +21,8 @@ Class Page extends Base {
     protected $niceName = null;
     
     protected $cleanName = null;
+    
+    protected $depth = null;
         
     public function __construct( SPLFileInfo $file, $basePath, $app )
     {
@@ -53,6 +55,15 @@ Class Page extends Base {
             $this->urlPath = '/' . implode('/', $cleanSegments);
         }
         return $this->urlPath;
+    }
+    
+    public function getDepth()
+    {
+        if ( ! $this->depth ) {
+            $urlPath = $this->getUrlPath();        
+            $this->depth = count(explode('/',trim($urlPath,'/')));            
+        }
+        return $this->depth;
     }
     
     public function getNiceName()

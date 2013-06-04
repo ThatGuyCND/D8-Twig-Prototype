@@ -76,7 +76,7 @@ class MainController implements ControllerProviderInterface
             foreach ( $items as $item ) {
                 
                 echo '<pre>';
-                print_r($item->getNiceName());
+                print_r($item->getNiceName() . ' -> ' . $item->getDepth());
                 echo '</pre>';
                 
             }
