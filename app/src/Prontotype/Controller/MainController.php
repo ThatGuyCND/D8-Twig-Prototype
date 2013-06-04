@@ -65,6 +65,26 @@ class MainController implements ControllerProviderInterface
         ->assert('data_path', '.+')
         ->value('data_path', '')
         ->bind('get_json_data');
+        
+        
+        $controllers->get('/' . $triggers['export'], function () use ( $app ) {
+            
+            // $tree = new \Prontotype\Service\PageTree\Tree(new \SPLFileInfo(PAGES_PATH));
+            
+            $items = new \RecursiveIteratorIterator(new \Prontotype\Service\PageTree\Directory(new \SPLFileInfo(PAGES_PATH), PAGES_PATH, $app), \RecursiveIteratorIterator::LEAVES_ONLY);
+            
+            foreach ( $items as $item ) {
+                
+                echo '<pre>';
+                print_r($item->getNiceName());
+                echo '</pre>';
+                
+            }
+//         
+            return '';
+
+                    
+        })->bind('export');
                 
                 
         $controllers->get('/' . $triggers['shorturl']  . '/{page_id}', function ( $page_id ) use ( $app ) {

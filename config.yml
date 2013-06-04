@@ -53,6 +53,7 @@ triggers:
   logout: _logout
   data: _data
   shorturl: _p
+  export: _export
 
 #==================
 # nice_names
@@ -60,8 +61,10 @@ triggers:
 # A few short text strings that should be used in auto-generated navigation macros
 #==================
 nice_names:
-  index: Overview     # what to label the index pages as
-  home: Home          # what to label the home page as
+  default: Overview
+  specific:
+    '/example' : 'Example Page'
+    '/' : 'Home'
 
 #==================
 # data

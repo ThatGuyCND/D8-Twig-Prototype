@@ -22,7 +22,7 @@ $app = new Silex\Application();
 $app->register(new Prontotype\Service\Prototype($app));
 
 /* Define globally available prototype paths */
-define('BASE_PATH', DOC_ROOT . '/' . $app['prototype']['base_path']);
+define('BASE_PATH', realpath(DOC_ROOT . '/' . $app['prototype']['base_path']));
 define('TEMPLATES_PATH', BASE_PATH . '/structure');
 define('PAGES_PATH', TEMPLATES_PATH . '/pages');
 define('DATA_PATH', BASE_PATH . '/data');
@@ -128,6 +128,10 @@ $app['pt_request'] = $app->share(function() use ( $app ) {
 
 $app['faker'] = $app->share(function() use ( $app ) {
     return Faker\Factory::create();
+});
+
+$app['exporter'] = $app->share(function() use ( $app ) {
+    return new Prontotype\Service\Exporter($app);
 });
 
 // deal with extensions...
