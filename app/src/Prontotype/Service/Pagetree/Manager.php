@@ -8,6 +8,8 @@ Class Manager {
     
     protected $tree;
     
+    protected $treeArray = null;
+    
     protected $current = null;
     
     public function __construct( $app )
@@ -113,7 +115,10 @@ Class Manager {
     
     public function getAll()
     {
-        return $this->tree->toArray();
+        if ( $this->treeArray === null ) {
+            $this->treeArray = array($this->tree->toArray());
+        }
+        return $this->treeArray;
     }
     
     public function getChildrenById( $id )
@@ -128,7 +133,7 @@ Class Manager {
     {
         if ( $urlPath == '/' || $urlPath == '/index.php/' ) {
             $data = $this->getAll();
-            return isset($data['children']) ? $data['children'] : null;
+            return isset($data[0]['children']) ? $data[0]['children'] : null;
         }
         $fullTree = new \RecursiveIteratorIterator($this->tree, true);
         foreach( $fullTree as $item ) {

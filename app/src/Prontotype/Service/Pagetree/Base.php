@@ -10,6 +10,12 @@ Class Base implements \RecursiveIterator
 {
     protected $app;
     
+    protected $niceName = null;
+    
+    protected $cleanName = null;
+    
+    protected $depth = null;
+    
     protected $urlPath = null;
     
     protected $relPath = null;
@@ -78,6 +84,35 @@ Class Base implements \RecursiveIterator
         return $this->unPrefixUrl($this->getUrlPath()) == $this->unPrefixUrl($urlPath);
     }
     
+    public function getDepth()
+    {
+        if ( ! $this->depth ) {
+            $urlPath = $this->unPrefixUrl($this->getUrlPath());
+            if ( $urlPath == '/' ) {
+                $this->depth = 0;
+            } else {
+                $this->depth = count(explode('/',trim($urlPath,'/')));
+            }
+        }
+        return $this->depth;
+    }
+    
+    public function getNiceName()
+    {
+        if ( $this->niceName === null ) {
+            $this->makeNiceName();
+        }
+        return $this->niceName;
+    }
+    
+    public function getCleanName()
+    {
+        if ( $this->cleanName === null ) {
+            $this->parseFileName();
+        }
+        return $this->cleanName;
+    }
+    
     protected function prefixUrl( $url )
     {
         $prefix = '';
@@ -98,6 +133,43 @@ Class Base implements \RecursiveIterator
     protected function isValidFile( SPLFileInfo $item )
     {
         return ( ! $item->isLink() && ! $item->isDot() && strpos($item->getBasename(), '.') !== 0 );
+    }
+        
+    protected function parseFileName()
+    {
+        preg_match($this->nameFormatRegex, $this->pathInfo['filename'], $parts);
+        $this->id = ! empty($parts[5]) ? $parts[5] : '';
+        $this->position = ! empty($parts[2]) ? $parts[2] : 0;
+        $cleanName = empty($parts[3]) ? $parts[6] : $parts[3];
+        if ( $cleanName == 'index' ) {
+            $this->isIndex = true;
+            $segments = explode('/',trim($this->getUnPrefixedUrlPath(),'/'));
+            if ( isset($segments[count($segments)-1]) ) {
+                $cleanName = $segments[count($segments)-1];
+            }
+        }
+        $this->cleanName = $cleanName;
+    }
+    
+    protected function makeNiceName()
+    {
+        $cleanName = $this->getCleanName();
+        
+        $name = null;
+        if ( count($this->app['config']['name_overrides']) ) {
+            foreach( $this->app['config']['name_overrides'] as $path => $niceName ) {
+                if ($this->unPrefixUrl($path) == $this->unPrefixUrl($this->getUrlPath())) {
+                    $name = $niceName;
+                    break;
+                }
+            }
+        }
+        
+        if ( ! $name ) {
+            $name = $cleanName;
+        }
+        
+        $this->niceName = $this->titleCase($name);
     }
 
     public function getItems()
@@ -153,6 +225,14 @@ Class Base implements \RecursiveIterator
         }
         $newtitle = implode(' ', $words); 
         return $newtitle; 
+    }
+    
+    public function __get( $name )
+    {
+        $getter = 'get' . ucfirst($name);
+        if ( method_exists($this, $getter) ) {
+            return $this->$getter();
+        }
     }
     
 }

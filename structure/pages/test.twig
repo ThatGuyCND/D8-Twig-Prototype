@@ -1,1 +1,4 @@
-test
+{{ navigation.pageTree({
+    maxDepth : 0,
+    pages : pages.getChildrenByUrlPath('/')
+}) }}

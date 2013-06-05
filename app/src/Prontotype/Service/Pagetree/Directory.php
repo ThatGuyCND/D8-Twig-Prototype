@@ -37,10 +37,13 @@ Class Directory extends Base {
     {
         $children = array();
         $output = array(
-            "isPage" => false,
+            'depth'     => $this->getDepth(),
+            'niceName'  => $this->getNiceName(),
+            'name'      => $this->getCleanName(),
             "relPath" => $this->getRelPath(),
             "fullPath" => $this->getFullPath(),
-            'urlPath' => $this->getUrlPath()
+            'urlPath' => $this->getUrlPath(),
+            "isPage" => false,
         );
         $hasIndex = false;
         foreach( $this as $item ) {

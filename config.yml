@@ -17,7 +17,7 @@ timezone: Europe/London
 # -----------------
 # Whether or not to enable debug mode (more error reporting etc)
 #==================
-debug: false
+debug: true
 
 #==================
 # authenticate
@@ -60,10 +60,8 @@ triggers:
 # -----------------
 # A few short text strings that should be used in auto-generated navigation macros
 #==================
-nice_names:
-  default: Overview
-  specific:
-    '/' : 'Home'
+name_overrides:
+  '/' : 'Home'
 
 #==================
 # data

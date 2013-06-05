@@ -12,13 +12,9 @@ Class Page extends Base {
     
     protected $position = null;
     
-    protected $niceName = null;
-    
-    protected $cleanName = null;
-    
-    protected $depth = null;
-    
     protected $shortUrl = null;
+    
+    protected $isIndex = null;
         
     public function __construct( SPLFileInfo $file, $app )
     {
@@ -46,38 +42,12 @@ Class Page extends Base {
         return $this->shortUrl;
     }
     
-    public function getDepth()
-    {
-        if ( ! $this->depth ) {
-            $urlPath = $this->unPrefixUrl($this->getUrlPath());
-            if ( $urlPath == '/' ) {
-                $this->depth = 0;
-            } else {
-                $this->depth = count(explode('/',trim($urlPath,'/')));
-            }
-        }
-        return $this->depth;
-    }
-    
-    public function getNiceName()
-    {
-        if ( $this->niceName === null ) {
-            $this->makeNiceName();
-        }
-        return $this->niceName;
-    }
-    
-    public function getCleanName()
-    {
-        if ( $this->cleanName === null ) {
-            $this->parseFileName();
-        }
-        return $this->cleanName;
-    }
-    
     public function isIndex()
     {
-        return $this->getCleanName() == 'index';
+        if ( $this->isIndex === null ) {
+            $this->parseFileName();
+        }
+        return $this->isIndex;
     }
     
     public function isCurrent()
@@ -117,36 +87,5 @@ Class Page extends Base {
         );
     }
     
-    protected function parseFileName()
-    {
-        preg_match($this->nameFormatRegex, $this->pathInfo['filename'], $parts);
-        $this->id = ! empty($parts[5]) ? $parts[5] : '';
-        $this->position = ! empty($parts[2]) ? $parts[2] : 0;
-        $this->cleanName = empty($parts[3]) ? $parts[6] : $parts[3];
-    }
-    
-    protected function makeNiceName()
-    {
-        if ( $this->cleanName === null ) {
-            $this->parseFileName();
-        }
-        if ( $this->cleanName == 'index' ) {
-            $name = null;
-            if ( count($this->app['config']['nice_names']['specific']) ) {
-                foreach( $this->app['config']['nice_names']['specific'] as $path => $niceName ) {
-                    if (trim($path,'/') == trim($this->getUrlPath(),'/')) {
-                        $name = $niceName;
-                        break;
-                    }
-                }
-            }
-            if ( ! $name ) {
-                $name = $this->app['config']['nice_names']['default'];
-            }
-        } else {
-            $name = $this->cleanName;
-        }
-        $this->niceName = $this->titleCase($name);
-    }
-        
+
 }
