@@ -102,14 +102,6 @@ $app['scrap'] = $app->share(function( $app ) {
     return new Prontotype\Service\Scraper\Scraper( $app );
 });
 
-$app['pages'] = $app->share(function( $app ) {
-    return new Prontotype\Service\Pages( $app );
-});
-
-// $app['pagetree'] = $app->share(function( $app ) {
-//     return new Prontotype\Service\Pagetree\Parser( DOC_ROOT, PAGES_PATH, $app );
-// });
-
 $app['pagetree'] = $app->share(function( $app ) {
     return new Prontotype\Service\PageTree\Manager( $app );
 });
@@ -120,10 +112,6 @@ $app['store'] = $app->share(function( $app ) {
 
 $app['uri'] = $app->share(function( $app ) {
     return new Prontotype\Service\Uri( $app );
-});
-
-$app['utils'] = $app->share(function() {
-    return new Prontotype\Service\Utils();
 });
 
 $app['pt_request'] = $app->share(function() use ( $app ) {
