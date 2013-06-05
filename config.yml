@@ -3,7 +3,7 @@
 # -----------------
 # Set to an empty string if using mod_rewrite or the nginx equivalent
 #==================
-index: index.php
+clean_urls: false
 
 #==================
 # Timezone
@@ -92,6 +92,7 @@ assets:
 # Add custom routes here
 #==================
 routes:
+  # "example/(:all)" : "(:id=overview-example)"
 
 #==================
 # Extensions

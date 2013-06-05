@@ -69,114 +69,31 @@ class MainController implements ControllerProviderInterface
         
         $controllers->get('/' . $triggers['export'], function () use ( $app ) {
             
-            $page = $app['pagetree']->getById('test');
             
-            echo '<pre>';
-            print_r($page->isParentOfCurrent());
-            echo '</pre>';
-            
-            
-            $tree = $app['pagetree']->getAll();
-            echo '<pre>';
-            print_r($tree);
-            echo '</pre>';
-            
-            // foreach( $tree as $page ) {
-       //          echo '<pre>';
-       //          print_r($page->getUrlPath());
-       //          echo '</pre>';
-       //          if ( $page->hasChildren() ) {
-       //              echo '<pre>';
-       //              print_r('YES');
-       //              echo '</pre>';
-       //              
-       //          }
-       //      }
-            // echo '<pre>';
-//             print_r($page->getUrlPath());
-//             echo '</pre>';
-            
-         
-            return '';
-
-                    
+        
         })->bind('export');
                 
                 
         $controllers->get('/' . $triggers['shorturl']  . '/{page_id}', function ( $page_id ) use ( $app ) {
                     
-            if ( ! $page = $app['pagetree']->getPageById($page_id) ) {
+            if ( ! $page = $app['pagetree']->getById($page_id) ) {
                 $app->abort(404);
             }
                     
-            return $app->redirect($page->nice_url, 301);
+            return $app->redirect($page->getUrlPath(), 301);
                     
         })->bind('short_url');
                 
-                
+        
         // everything else...
         $controllers->match('/{route}', function ( $route ) use ( $app ) {
-                
-            // lets see if we need to do any checking of custom routes
-            $routes = $app['config']['routes'] ? $app['config']['routes'] : array();
-            $replacements = array();
-            if ( count($routes) ) {
-                foreach( $routes as $routeSpec => $endRoute ) {
-                    // see if there are any page ID placeholders that need parsing out
-                    $replacements = array();
-                    if ( preg_match('/\(:id=([^\)]*)\)/', $routeSpec, $matches) ) {
-                        if ( $routePage = $app['pagetree']->getPageById($matches[1]) ) {
-                            $replacements[] = trim(str_replace($app['config']['index'], '', $routePage->nice_url),'/');
-                            $routeSpec = str_replace(
-                                array($matches[0],$app['config']['index']),
-                                array($routePage->nice_url,''),
-                                $routeSpec
-                            );
-                        } else {
-                            continue;
-                        }
-                    }
-                    $routeSpec = trim($routeSpec,'/');
-                    // replace helper placeholders
-                    $routeSpec = str_replace(
-                        array('(:any)','(:num)','(:all)','/'),
-                        array('([^/]*)','(\d*)','(.*)','\/'),
-                        $routeSpec
-                    );
-                    $routeSpec = '/^' . $routeSpec . '$/';
-                    if ( preg_match( $routeSpec, $route, $matches ) ) {
-                        // we have a match!
-                        for( $i = 0; $i < count($matches); $i++ ) {
-                            if ( $i !== 0) {
-                                $replacements[] = $matches[$i];
-                            }
-                        }
-                        $route = $endRoute;
-                        break;
-                    }
-                }
-                    
-                // replace and reference tokens in the route
-                // '(:id=test)/hello': '$1'
-                $replacementTokens = array();
-                for ( $j = 0; $j < count($replacements); $j++ ) {
-                    $replacementTokens['$' . ($j+1)] = $replacements[$j];
-                }
-                $route = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $route);
-                
-                // replace any page ID placeholders in the route itself
-                if ( preg_match('/\(:id=(.*)\)/', $route, $matches) ) {
-                    $routePage = $app['pagetree']->getPageById($matches[1]);
-                    $route = str_replace(array($matches[0],$app['config']['index']), array($routePage->nice_url,''), $route);
-                }
-            }
-                
-            if ( ! $page = $app['pagetree']->getPage($route) ) {
+            
+            if ( ! $page = $app['pagetree']->getByRoute($route) ) {
                 $app->abort(404);
             }
-                
+                            
             try {
-                return $app['twig']->render($page->fs_path, array());
+                return $app['twig']->render($page->getTemplatePath(), array());
             } catch ( \Exception $e ) {
                 return $app['twig']->render('PT/pages/error.twig', array(
                     'message'=>$e->getMessage()

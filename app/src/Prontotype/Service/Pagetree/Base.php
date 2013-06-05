@@ -67,25 +67,30 @@ Class Base implements \RecursiveIterator
         return $this->urlPath;
     }
     
+    public function getUnPrefixedUrlPath()
+    {
+        return $this->unPrefixUrl($this->getUrlPath());
+    }
+    
     public function matchesUrlPath($urlPath)
     {
         $urlPath = '/' . trim($urlPath,'/');
-        return $this->getUrlPath() == $urlPath;
+        return $this->unPrefixUrl($this->getUrlPath()) == $this->unPrefixUrl($urlPath);
     }
     
     protected function prefixUrl( $url )
     {
         $prefix = '';
-        if ( ! empty($this->app['config']['index']) ) {
-            $prefix = '/' . $this->app['config']['index'];
+        if ( ! $this->app['config']['clean_urls'] ) {
+            $prefix = '/index.php';
         }
         return $prefix . $url;
     }
     
     protected function unPrefixUrl( $url )
     {
-        if ( ! empty($this->app['config']['index']) ) {
-            return str_replace('/' . $this->app['config']['index'], '', $url);
+        if ( ! $this->app['config']['clean_urls'] ) {
+            return str_replace('/index.php', '', $url);
         }
         return $url;
     }

@@ -89,10 +89,10 @@ Class Page extends Base {
     {
         $uriSegments = $this->app['uri']->segments();
         $urlPathSegments = explode('/', trim($this->unPrefixUrl($this->getUrlPath()),'/'));
-        if ( count($urlPathSegments) > count($uriSegments) ) {
+        if ( count($urlPathSegments) >= count($uriSegments) ) {
             return false;
         }
-        for ( $i = 0; $i < $urlPathSegments; $i++ ) {
+        for ( $i = 0; $i < count($urlPathSegments); $i++ ) {
             if ( $uriSegments[$i] !== $urlPathSegments[$i] ) {
                 return false;
             }

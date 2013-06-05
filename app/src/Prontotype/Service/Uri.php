@@ -117,8 +117,8 @@ Class Uri {
             throw new \Exception('No app provided');
         }
         $url = $this->app['url_generator']->generate($routeName);
-        if ( !empty($this->app['config']['index']) && strpos( $url, $this->app['config']['index'] ) === false ) {
-            $url = '/' . $this->app['config']['index'] . $url;
+        if ( ! $this->app['config']['clean_urls'] && strpos( $url, 'index.php' ) === false ) {
+            $url = '/index.php' . $url;
         }
         return $url;
     }
