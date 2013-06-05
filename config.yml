@@ -63,7 +63,6 @@ triggers:
 nice_names:
   default: Overview
   specific:
-    '/example' : 'Example Page'
     '/' : 'Home'
 
 #==================

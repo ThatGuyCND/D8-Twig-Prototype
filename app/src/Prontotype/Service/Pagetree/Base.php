@@ -8,20 +8,31 @@ use Exception;
 
 Class Base implements \RecursiveIterator
 {
-    protected $items = array();
-    protected $position = 0;
     protected $app;
     
-    public function __construct( SPLFileInfo $file, $basePath, $app )
+    protected $urlPath = null;
+    
+    protected $relPath = null;
+    
+    protected $fullPath = null;
+    
+    protected $pathInfo = null;
+    
+    protected $items = array();
+    
+    protected $position = 0;
+    
+    protected $nameFormatRegex = '/^((\d*)[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)$/';
+    
+    protected $nameExtension = 'twig';
+    
+    public function __construct( SPLFileInfo $file, $app )
     {
         $this->app = $app;
-        $basePath = '/' . trim($basePath, '/');
         $this->fullPath = $file->getPath() . '/' .  $file->getBasename();
-        $this->relPath = str_replace($basePath, '', $this->fullPath);
+        $this->relPath = str_replace(PAGES_PATH, '', $this->fullPath);
+        $this->templatePath = str_replace(TEMPLATES_PATH, '', $this->fullPath);
         $this->pathInfo = pathinfo($this->fullPath);
-        // echo '<pre>';
-        // print_r($this->pathInfo);
-        // echo '</pre>';
     }
     
     public function getFullPath()
@@ -32,6 +43,51 @@ Class Base implements \RecursiveIterator
     public function getRelPath()
     {
         return $this->relPath;
+    }
+    
+    public function getTemplatePath()
+    {
+        return $this->templatePath;
+    }
+    
+    public function getUrlPath()
+    {
+        if ( $this->urlPath === null ) {
+            $segments = explode('/', trim($this->getRelPath(),'/'));
+            $cleanSegments = array();
+            foreach( $segments as $segment ) {
+                preg_match($this->nameFormatRegex, str_replace('.' . $this->nameExtension, '', $segment), $segmentParts);
+                $cleanSegments[] = empty($segmentParts[3]) ? $segmentParts[6] : $segmentParts[3];
+            }
+            if ( $cleanSegments[count($cleanSegments)-1] == 'index' ) {
+                unset($cleanSegments[count($cleanSegments)-1]);
+            }
+            $this->urlPath = $this->prefixUrl('/' . implode('/', $cleanSegments));
+        }
+        return $this->urlPath;
+    }
+    
+    public function matchesUrlPath($urlPath)
+    {
+        $urlPath = '/' . trim($urlPath,'/');
+        return $this->getUrlPath() == $urlPath;
+    }
+    
+    protected function prefixUrl( $url )
+    {
+        $prefix = '';
+        if ( ! empty($this->app['config']['index']) ) {
+            $prefix = '/' . $this->app['config']['index'];
+        }
+        return $prefix . $url;
+    }
+    
+    protected function unPrefixUrl( $url )
+    {
+        if ( ! empty($this->app['config']['index']) ) {
+            return str_replace('/' . $this->app['config']['index'], '', $url);
+        }
+        return $url;
     }
 
     protected function isValidFile( SPLFileInfo $item )

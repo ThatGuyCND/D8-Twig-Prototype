@@ -7,29 +7,25 @@ use DirectoryIterator;
 use Exception;
 
 Class Page extends Base {
-    
-    protected $nameFormatRegex = '/^((\d*)[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)$/';
-    
-    protected $nameExtension = 'twig';
-    
+        
     protected $id = null;
     
     protected $position = null;
-    
-    protected $urlPath = null;
     
     protected $niceName = null;
     
     protected $cleanName = null;
     
     protected $depth = null;
+    
+    protected $shortUrl = null;
         
-    public function __construct( SPLFileInfo $file, $basePath, $app )
+    public function __construct( SPLFileInfo $file, $app )
     {
         if ( ! $file->isFile() ) {
             throw new \Exception('File is not a file');
         }
-        parent::__construct($file, $basePath, $app);
+        parent::__construct($file, $app);
     }
     
     public function getId()
@@ -40,28 +36,25 @@ Class Page extends Base {
         return empty($this->id) ? null : $this->id;
     }
     
-    public function getUrlPath()
+    public function getShortUrl()
     {
-        if ( $this->urlPath === null ) {
-            $segments = explode('/', trim($this->getRelPath(),'/'));
-            $cleanSegments = array();
-            foreach( $segments as $segment ) {
-                preg_match($this->nameFormatRegex, str_replace('.' . $this->nameExtension, '', $segment), $segmentParts);
-                $cleanSegments[] = empty($segmentParts[3]) ? $segmentParts[6] : $segmentParts[3];
-            }
-            if ( $cleanSegments[count($cleanSegments)-1] == 'index' ) {
-                unset($cleanSegments[count($cleanSegments)-1]);
-            }
-            $this->urlPath = '/' . implode('/', $cleanSegments);
+        if ( $id = $this->getId() ) {
+            $this->shortUrl = $this->prefixUrl('/' . $this->app['config']['triggers']['shorturl'] . '/' . $id);
+        } else {
+            $this->shortUrl = $this->getUrlPath();
         }
-        return $this->urlPath;
+        return $this->shortUrl;
     }
     
     public function getDepth()
     {
         if ( ! $this->depth ) {
-            $urlPath = $this->getUrlPath();        
-            $this->depth = count(explode('/',trim($urlPath,'/')));            
+            $urlPath = $this->unPrefixUrl($this->getUrlPath());
+            if ( $urlPath == '/' ) {
+                $this->depth = 0;
+            } else {
+                $this->depth = count(explode('/',trim($urlPath,'/')));
+            }
         }
         return $this->depth;
     }
@@ -72,6 +65,56 @@ Class Page extends Base {
             $this->makeNiceName();
         }
         return $this->niceName;
+    }
+    
+    public function getCleanName()
+    {
+        if ( $this->cleanName === null ) {
+            $this->parseFileName();
+        }
+        return $this->cleanName;
+    }
+    
+    public function isIndex()
+    {
+        return $this->getCleanName() == 'index';
+    }
+    
+    public function isCurrent()
+    {
+        return $this->matchesUrlPath($this->app['uri']->string());
+    }
+    
+    public function isParentOfCurrent()
+    {
+        $uriSegments = $this->app['uri']->segments();
+        $urlPathSegments = explode('/', trim($this->unPrefixUrl($this->getUrlPath()),'/'));
+        if ( count($urlPathSegments) > count($uriSegments) ) {
+            return false;
+        }
+        for ( $i = 0; $i < $urlPathSegments; $i++ ) {
+            if ( $uriSegments[$i] !== $urlPathSegments[$i] ) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public function toArray()
+    {
+        return array(
+            'id'        => $this->getId(),
+            'depth'     => $this->getDepth(),
+            'shortUrl'  => $this->getShortUrl(),
+            'niceName'  => $this->getNiceName(),
+            'name'      => $this->getCleanName(),
+            'urlPath'   => $this->getUrlPath(),
+            'relPath'   => $this->getRelPath(),
+            'fullPath'  => $this->getFullPath(),
+            'isCurrent' => $this->isCurrent(),
+            'isParentOfCurrent' => $this->isParentOfCurrent(),
+            'isPage'    => true,
+        );
     }
     
     protected function parseFileName()

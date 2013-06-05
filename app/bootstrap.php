@@ -106,8 +106,12 @@ $app['pages'] = $app->share(function( $app ) {
     return new Prontotype\Service\Pages( $app );
 });
 
+// $app['pagetree'] = $app->share(function( $app ) {
+//     return new Prontotype\Service\Pagetree\Parser( DOC_ROOT, PAGES_PATH, $app );
+// });
+
 $app['pagetree'] = $app->share(function( $app ) {
-    return new Prontotype\Service\Pagetree\Parser( DOC_ROOT, PAGES_PATH, $app );
+    return new Prontotype\Service\PageTree\Manager( $app );
 });
 
 $app['store'] = $app->share(function( $app ) {

@@ -69,18 +69,34 @@ class MainController implements ControllerProviderInterface
         
         $controllers->get('/' . $triggers['export'], function () use ( $app ) {
             
-            // $tree = new \Prontotype\Service\PageTree\Tree(new \SPLFileInfo(PAGES_PATH));
+            $page = $app['pagetree']->getById('test');
             
-            $items = new \RecursiveIteratorIterator(new \Prontotype\Service\PageTree\Directory(new \SPLFileInfo(PAGES_PATH), PAGES_PATH, $app), \RecursiveIteratorIterator::LEAVES_ONLY);
+            echo '<pre>';
+            print_r($page->isParentOfCurrent());
+            echo '</pre>';
             
-            foreach ( $items as $item ) {
-                
-                echo '<pre>';
-                print_r($item->getNiceName() . ' -> ' . $item->getDepth());
-                echo '</pre>';
-                
-            }
-//         
+            
+            $tree = $app['pagetree']->getAll();
+            echo '<pre>';
+            print_r($tree);
+            echo '</pre>';
+            
+            // foreach( $tree as $page ) {
+       //          echo '<pre>';
+       //          print_r($page->getUrlPath());
+       //          echo '</pre>';
+       //          if ( $page->hasChildren() ) {
+       //              echo '<pre>';
+       //              print_r('YES');
+       //              echo '</pre>';
+       //              
+       //          }
+       //      }
+            // echo '<pre>';
+//             print_r($page->getUrlPath());
+//             echo '</pre>';
+            
+         
             return '';
 
                     
