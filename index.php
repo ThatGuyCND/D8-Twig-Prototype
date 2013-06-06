@@ -4,9 +4,8 @@
  * Prontotype
  * A lightweight server-side framework to help you quickly build interactive, data-driven HTML prototypes. 
  */
- 
-define('PRONTOTYPE_VERSION', '1.0');
-$requiredVersion = '5.3.1';
+
+$requiredVersion = '5.3.3';
 
 try {
 	if ( strnatcmp(phpversion(), $requiredVersion) < 0 ) {

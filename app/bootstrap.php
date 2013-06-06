@@ -18,6 +18,11 @@ require_once APP_PATH . '/vendor/autoload.php';
 
 $app = new Silex\Application();
 
+$app->register(new Prontotype\Service\Prototype($app));
+
+
+return $app;
+
 /* Identify the prototype */
 $app->register(new Prontotype\Service\Prototype($app));
 

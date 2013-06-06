@@ -16,3 +16,13 @@
 {% macro image( src, attrs ) %}
 <img {% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %} src="{{src}}"/>
 {% endmacro %}
+
+{% macro placeholder( type, opts, attrs ) %}
+    {% if type == 'dummyimage' %}
+    {{ _self.dummyimage( opts, attrs ) }}
+    {% elseif type == 'lorempixel' %}
+    {{ _self.lorempixel( opts, attrs ) }}
+    {% elseif type == 'placeholdit' %}
+    {{ _self.placeholdit( opts, attrs ) }}
+    {% endif %}
+{% endmacro %}

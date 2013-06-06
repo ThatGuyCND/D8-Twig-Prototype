@@ -1,6 +1,6 @@
 <?php
 
-namespace Prontotype\Service\PageTree;
+namespace Prontotype\PageTree;
 
 use SPLFileInfo;
 use DirectoryIterator;
