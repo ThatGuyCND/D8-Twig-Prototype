@@ -5,14 +5,14 @@ namespace Prontotype\Extension;
 class Manager
 {
     
-    public function __construct($extpath, $app)
+    public function __construct($app)
     {
         $this->app = $app;
-        $this->path = rtrim($extpath,'/');
+        $this->path = $app['pt.prototype.paths.extensions'];
         $this->extensions = array();
     }
         
-    public function loadExtensions($extensions)
+    public function load($extensions)
     {   
         if ( count($extensions) ) {
             foreach( $extensions as $extensionKey => $extensionFile ) {

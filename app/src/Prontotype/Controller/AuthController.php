@@ -14,9 +14,9 @@ class AuthController implements ControllerProviderInterface {
     {
         $controllers = $app['controllers_factory'];
         
-        $controllers->get('login', function () use ( $app ) {
+        $controllers->get('/login', function() use ($app) {
             
-            if ( $app['session']->has($app['config']['prefix'] . 'authed-user') ) {
+            if ( $app['pt.auth']->check() ) {
                 return $app->redirect('/');
             }
             
@@ -27,24 +27,20 @@ class AuthController implements ControllerProviderInterface {
         })->bind('authenticate');
         
         
-        $controllers->post('login', function () use ( $app ) {
-
-            if ( $app['request']->get('username') === $app['config']['authenticate']['username'] && $app['request']->get('password') === $app['config']['authenticate']['password'] ) {
-                $userHash = $userHash = sha1($app['config']['authenticate']['username'] . $app['config']['authenticate']['password']);
-                $currentUser = $app['session']->set( $app['config']['prefix'] . 'authed-user', $userHash );
+        $controllers->post('/login', function() use ($app) {
+            
+            if ( $app['pt.auth']->attemptLogin($app['request']->get('username'), $app['request']->get('password')) ) {
                 return $app->redirect('/');
             } else {
-                $app['session']->getFlashBag()->set('error', 'error');
-                $app['session']->remove( $app['config']['prefix'] . 'authed-user' );
                 return $app->redirect($app['pt.request']->generateUrlPath('authenticate'));
             }
-
+            
         })->bind('do_authenticate');
         
         
-        $controllers->get('logout', function ( $result ) use ( $app ) {
+        $controllers->get('/logout', function($result) use ($app) {
             
-            $app['session']->remove( $app['config']['prefix'] . 'authed-user' );
+            $app['pt.auth']->logout();
             return $app->redirect($app['pt.request']->generateUrlPath('authenticate'));
 
         })

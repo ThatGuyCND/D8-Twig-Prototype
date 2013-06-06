@@ -43,18 +43,54 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     return $twig;
 }));
 
-$app['pt.request'] = $app->share(function() use ( $app ) {
+$app['pt.request'] = $app->share(function() use ($app) {
     return new Prontotype\Request($app);
 });
 
-$app['pt.pagetree'] = $app->share(function( $app ) {
-    return new Prontotype\PageTree\Manager( $app );
+$app['pt.pagetree'] = $app->share(function($app) {
+    return new Prontotype\PageTree\Manager($app);
 });
 
-$app['pt.store'] = $app->share(function( $app ) {
-    return new Prontotype\Store( $app );
+$app['pt.store'] = $app->share(function($app) {
+    return new Prontotype\Store($app);
 });
 
+$app['pt.extensions'] = $app->share(function($app) {
+    $ext = new Prontotype\Extension\Manager($app);
+    $ext->load($app['config']['extensions']);
+    return $ext;
+});
+
+$app['pt.auth'] = $app->share(function($app) {
+    return new Prontotype\Auth( $app );
+});
+
+$app->before(function () use ($app) {
+    if ( ! $app['pt.auth']->check() ) {
+        return $app->redirect($app['pt.request']->generateUrlPath('authenticate')); // not logged in, redirect to auth page
+    }
+    $app['pt.extensions']->before();
+});
+
+$app->after(function() use ($app) {
+    $app['pt.extensions']->after();
+});
+
+$app->error(function(\Exception $e, $code) use ($app) {
+    
+    switch( $code ) {
+        case '404':
+            $template = 'PT/pages/404.twig';
+            break;
+        default:
+            $template = 'PT/pages/error.twig';
+            break;
+    }
+    
+    return new Symfony\Component\HttpFoundation\Response($app['twig']->render($template, array(
+        'message' => $e->getMessage()
+    )), $code);
+});
 
 $app->mount('/' . $app['config']['triggers']['auth'], new Prontotype\Controller\AuthController());
 $app->mount('/' . $app['config']['triggers']['shorturl'], new Prontotype\Controller\RedirectController());
@@ -80,28 +116,6 @@ return $app;
 
 
 
-// 
-// // set up Assetic
-// $app->register(new SilexAssetic\AsseticServiceProvider());
-// $app['assetic.path_to_web'] = DOC_ROOT;
-// $app['assetic.options'] = array(
-//     'auto_dump_assets' => $app['config']['assets']['auto_generate'],
-//     'debug'            => $app['config']['debug']
-// );
-// $app['assetic.filter_manager'] = $app['assetic.filter_manager'] = $app->share(
-//     $app->extend('assetic.filter_manager', function($fm, $app) {
-//         $fm->set('less', new Assetic\Filter\LessphpFilter(
-//             VENDOR_PATH . '/leafo/lessphp/lessc.inc.php'
-//         ));
-//         $fm->set('scss', new Assetic\Filter\ScssphpFilter(
-//            VENDOR_PATH . '/leafo/scssphp/scss.inc.php'
-//        ));
-//        return $fm;
-//     })
-// );
-
-
-    
 // // register services
 // 
 // $app['cache'] = $app->share(function( $app ) {
@@ -121,10 +135,7 @@ return $app;
 // $app['uri'] = $app->share(function( $app ) {
 //     return new Prontotype\Service\Uri( $app );
 // });
-// 
-// $app['pt_request'] = $app->share(function() use ( $app ) {
-//     return new Prontotype\Service\Request($app);
-// });
+
 // 
 // $app['faker'] = $app->share(function() use ( $app ) {
 //     return Faker\Factory::create();

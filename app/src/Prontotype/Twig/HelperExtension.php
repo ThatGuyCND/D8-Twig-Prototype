@@ -17,11 +17,15 @@ class HelperExtension extends \Twig_Extension
     public function getGlobals()
     {
         return array(
-            'config'  => $this->app['config'],
-            'session' => $this->app['session'],            
-            'request' => $this->app['pt.request'],
-            'pages'   => $this->app['pt.pagetree'],
-            'page'    => $this->app['pt.pagetree']->getCurrent(),
+            'pt' => array(
+                'config'  => $this->app['config'],
+                'session' => $this->app['session'],            
+                'request' => $this->app['pt.request'],
+                'pages'   => $this->app['pt.pagetree'],
+                'page'    => $this->app['pt.pagetree']->getCurrent(),
+                'user'    => $this->app['pt.store']->get('user'),
+            )
+
             // 'data'        => $this->app['data'],
             // 'scrap'       => $this->app['scrap'],
             // 'store'       => $this->app['store'],

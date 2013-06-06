@@ -28,20 +28,15 @@ authenticate:
   username: 
   password:
   ip_whitelist:
-
-#==================
-# prefix
-# -----------------
-# The string to use when prefixing cookie names, classes etc.
-#==================
-prefix: prontotype-
   
 #==================
-# cookie_lifetime
+# cookie
 # -----------------
-# How long cookies set by prontotype should persist for.
+# Cookie settings
 #==================
-cookie_lifetime: 604800 # 1 week
+cookie:
+  prefix: prototype-
+  lifetime: 604800 # 1 week
 
 #==================
 # triggers
@@ -54,6 +49,8 @@ triggers:
   data: _data
   shorturl: _p
   export: _export
+  auth: _auth
+  assets: _assets
 
 #==================
 # nice_names

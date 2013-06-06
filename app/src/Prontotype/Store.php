@@ -1,6 +1,6 @@
 <?php
 
-namespace Prontotype\Service;
+namespace Prontotype;
 
 Class Store {
     
@@ -11,8 +11,8 @@ Class Store {
     public function __construct( $app )
     {
         $this->app = $app;
-        $this->cookie_prefix = $app['config']['prefix'];
-        $this->cookie_lifetime = $app['config']['cookie_lifetime'];
+        $this->cookie_prefix = $app['config']['cookie']['prefix'];
+        $this->cookie_lifetime = $app['config']['cookie']['lifetime'];
     }
     
     public function set( $key, $value )
