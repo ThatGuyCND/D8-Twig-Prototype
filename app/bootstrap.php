@@ -22,8 +22,10 @@ $app->register(new Prontotype\Service\Prototype($app));
 date_default_timezone_set($app['config']['timezone']);
 $app['debug'] = $app['config']['debug'];
 
-$app->register(new Silex\Provider\SessionServiceProvider());
-$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+// TODO: implement cache
+$app['cache'] = $app->share(function( $app ) {
+    return new Prontotype\Service\Cache( $app );
+});
 
 // set up twig
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
@@ -65,6 +67,28 @@ $app['pt.auth'] = $app->share(function($app) {
     return new Prontotype\Auth( $app );
 });
 
+$app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+
+
+
+// $app['data'] = $app->share(function( $app ) {
+//     return new Prontotype\Service\Data( $app );
+// });
+
+// $app['scrap'] = $app->share(function( $app ) {
+//     return new Prontotype\Service\Scraper\Scraper( $app );
+// });
+
+// $app['faker'] = $app->share(function() use ( $app ) {
+//     return Faker\Factory::create();
+// });
+
+// $app['exporter'] = $app->share(function() use ( $app ) {
+//     return new Prontotype\Service\Exporter($app);
+// });
+
 $app->before(function () use ($app) {
     if ( ! $app['pt.auth']->check() ) {
         return $app->redirect($app['pt.request']->generateUrlPath('authenticate')); // not logged in, redirect to auth page
@@ -103,47 +127,11 @@ return $app;
 
 
 
-// if ( $app['config']['cache_path'] ) {
-//     $cache_path = DOC_ROOT . '/' . trim($app['config']['cache_path'],'/');
-//     if ( is_writable($cache_path) ) {
-//         define('CACHE_PATH', $cache_path );
-//     } else {
-//         throw new \Exception('The specified cache directory <strong>' . $cache_path . '</strong> could not be written to. Please check the directory permissions and refresh.');
-//     }
-// } else {
-//     define('CACHE_PATH', null );
-// }
-
 
 
 // // register services
 // 
-// $app['cache'] = $app->share(function( $app ) {
-//     return new Prontotype\Service\Cache( $app, CACHE_PATH );
-// });
-// 
-// $app['data'] = $app->share(function( $app ) {
-//     return new Prontotype\Service\Data( $app );
-// });
-// 
-// $app['scrap'] = $app->share(function( $app ) {
-//     return new Prontotype\Service\Scraper\Scraper( $app );
-// });
-// 
 
-// 
-// $app['uri'] = $app->share(function( $app ) {
-//     return new Prontotype\Service\Uri( $app );
-// });
-
-// 
-// $app['faker'] = $app->share(function() use ( $app ) {
-//     return Faker\Factory::create();
-// });
-// 
-// $app['exporter'] = $app->share(function() use ( $app ) {
-//     return new Prontotype\Service\Exporter($app);
-// });
 // 
 // // deal with extensions...
 // 
