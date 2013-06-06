@@ -6,12 +6,16 @@ Class Request {
     
     protected $app;
     
+    protected $request;
+    
     protected $urlSegments = null;
 
     public function __construct( $app )
     {
         $this->app = $app;
         $this->request = $app['request'];
+        $this->query = $this->request->query;
+        $this->post = $this->post->query;
     }
     
     public function getUrlPath()
@@ -59,13 +63,14 @@ Class Request {
         return http_build_query($qsArray);
     }
     
-    public function generateUrlPath($route)
+    public function getQueryParams()
     {
-        $url = $this->app['url_generator']->generate($route);
-        if ( ! $this->app['config']['clean_urls'] && strpos( $url, 'index.php' ) === false ) {
-            $url = '/index.php' . $url;
-        }
-        return $url;
+        return $this->request->query;
+    }
+    
+    public function getPostParams()
+    {
+        return $this->request->request;
     }
     
     public function __call($name, $args)

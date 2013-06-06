@@ -227,12 +227,12 @@ Class Base implements \RecursiveIterator
         return $newtitle; 
     }
     
-    public function __get($name)
-    {
-        $getter = 'get' . ucfirst($name);
-        if ( method_exists($this, $getter) ) {
-            return $this->$getter();
-        }
-    }
+    // public function __get($name)
+    // {
+    //     $getter = 'get' . ucfirst($name);
+    //     if ( method_exists($this, $getter) ) {
+    //         return $this->$getter();
+    //     }
+    // }
     
 }

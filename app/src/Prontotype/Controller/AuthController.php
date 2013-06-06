@@ -21,7 +21,7 @@ class AuthController implements ControllerProviderInterface {
             }
             
             return $app['twig']->render('PT/pages/authenticate.twig', array(
-                'auth_path' => $app['pt.request']->generateUrlPath('authenticate')
+                'auth_path' => $app['pt.utils']->generateUrlPath('authenticate')
             ));
             
         })->bind('authenticate');
@@ -32,7 +32,7 @@ class AuthController implements ControllerProviderInterface {
             if ( $app['pt.auth']->attemptLogin($app['request']->get('username'), $app['request']->get('password')) ) {
                 return $app->redirect('/');
             } else {
-                return $app->redirect($app['pt.request']->generateUrlPath('authenticate'));
+                return $app->redirect($app['pt.utils']->generateUrlPath('authenticate'));
             }
             
         })->bind('do_authenticate');
@@ -41,7 +41,7 @@ class AuthController implements ControllerProviderInterface {
         $controllers->get('/logout', function($result) use ($app) {
             
             $app['pt.auth']->logout();
-            return $app->redirect($app['pt.request']->generateUrlPath('authenticate'));
+            return $app->redirect($app['pt.utils']->generateUrlPath('authenticate'));
 
         })
         ->value('result', null)

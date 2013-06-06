@@ -28,7 +28,7 @@ Class Auth {
 //             } else {
 //                 $app['session']->getFlashBag()->set('error', 'error');
 //                 $app['session']->remove( $app['config']['prefix'] . 'authed-user' );
-//                 return $app->redirect($app['pt.request']->generateUrlPath('authenticate'));
+//                 return $app->redirect($app['pt.utils']->generateUrlPath('authenticate'));
 //             }
     }
     

@@ -31,6 +31,7 @@ $sharedServices = array(
     'pt.cache'    => 'Prontotype\Cache',
     'pt.data'     => 'Prontotype\Data',
     'pt.scraper'  => 'Prontotype\Scraper\Scraper',
+    'pt.utils'    => 'Prontotype\Utils',
 );
 
 foreach( $sharedServices as $serviceName => $serviceClass ) {
@@ -68,7 +69,7 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
 $app->before(function () use ($app) {
     if ( ! $app['pt.auth']->check() ) {
-        return $app->redirect($app['pt.request']->generateUrlPath('authenticate')); // not logged in, redirect to auth page
+        return $app->redirect($app['pt.utils']->generateUrlPath('authenticate')); // not logged in, redirect to auth page
     }
     $app['pt.extensions']->before();
 });

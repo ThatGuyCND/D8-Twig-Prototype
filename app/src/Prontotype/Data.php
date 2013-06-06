@@ -10,5 +10,15 @@ Class Data {
     {
         $this->app = $app;
     }
-
+    
+    public function load($path)
+    {
+        
+    }
+    
+    public function fetch($url)
+    {
+        
+    }
+    
 }
