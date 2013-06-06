@@ -24,13 +24,10 @@ class HelperExtension extends \Twig_Extension
                 'pages'   => $this->app['pt.pagetree'],
                 'page'    => $this->app['pt.pagetree']->getCurrent(),
                 'user'    => $this->app['pt.store']->get('user'),
+                'data'    => $this->app['pt.data'],
+                'store'   => $this->app['pt.store'],
+                'scraper' => $this->app['pt.scraper'],
             )
-
-            // 'data'        => $this->app['data'],
-            // 'scrap'       => $this->app['scrap'],
-            // 'store'       => $this->app['store'],
-            // 'faker'       => $this->app['faker'],
-            // 
         );
     }
 }

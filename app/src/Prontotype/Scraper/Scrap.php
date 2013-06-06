@@ -1,6 +1,6 @@
 <?php
 
-namespace Prontotype\Service\Scraper;
+namespace Prontotype\Scraper;
 
 use Symfony\Component\CssSelector\CssSelector;
 
