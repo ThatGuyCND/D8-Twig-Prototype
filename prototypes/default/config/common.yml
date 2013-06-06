@@ -1,70 +1,28 @@
-#==================
-# index
-# -----------------
-# Set to an empty string if using mod_rewrite or the nginx equivalent
-#==================
 clean_urls: false
 
-#==================
-# Timezone
-# -----------------
-# Timezone used for date functions
-#==================
 timezone: Europe/London
 
-#==================
-# Debugging
-# -----------------
-# Whether or not to enable debug mode (more error reporting etc)
-#==================
 debug: true
 
-#==================
-# authenticate
-# -----------------
-# Provide a username and password pair to enable password-protection of the prototype
-#==================
 authenticate:
-  username: 
-  password:
-  ip_whitelist:
+  password: 
+  ip_whitelist: # eg. 127.0.0.1
   
-#==================
-# cookie
-# -----------------
-# Cookie settings
-#==================
 cookie:
   prefix: prototype-
   lifetime: 604800 # 1 week
 
-#==================
-# triggers
-# -----------------
-# URL segments that trigger specific behaviour
-#==================
 triggers:
-  login: _login
-  logout: _logout
   data: _data
   shorturl: _p
   export: _export
   auth: _auth
   assets: _assets
+  user: _user
 
-#==================
-# nice_names
-# -----------------
-# A few short text strings that should be used in auto-generated navigation macros
-#==================
 name_overrides:
   '/' : 'Home'
 
-#==================
-# data
-# -----------------
-# Tweak to match the style of different data files.
-#==================
 data:
   csv:
     headers: true
@@ -73,19 +31,9 @@ data:
     escape: '\'
     id_header: id
   
-#==================
-# routing
-# -----------------
-# Add custom routes here
-#==================
 routes:
-  # "example/(:all)" : "(:id=overview-example)"
+  # "posts/(:all)" : "posts/post"
 
-#==================
-# Extensions
-# -----------------
-# list extensions (located in the /extensions dir) to enable in the prototype
-#==================
 extensions:
   # example: ExampleExtension.php
   

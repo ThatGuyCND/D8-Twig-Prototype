@@ -13,6 +13,7 @@ if ( ! file_exists(APP_PATH . '/vendor/autoload.php') ) {
     throw new Exception("You need to install and run <a href=\"http://getcomposer.org\">Composer</a> before Prontoype will work. <a href=\"http://prontotype.allmarkedup.com/#setup\">Read the documentation for more details &rarr;</a>");
 }
 
+
 require_once APP_PATH . '/vendor/autoload.php';
 
 $app = new Silex\Application();
@@ -69,7 +70,7 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
 $app->before(function () use ($app) {
     if ( ! $app['pt.auth']->check() ) {
-        return $app->redirect($app['pt.utils']->generateUrlPath('authenticate')); // not logged in, redirect to auth page
+        return $app->redirect($app['pt.utils']->generateUrlPath('auth.login')); // not logged in, redirect to auth page
     }
     $app['pt.extensions']->before();
 });
@@ -95,9 +96,10 @@ $app->error(function(\Exception $e, $code) use ($app) {
 });
 
 $app->mount('/' . $app['config']['triggers']['auth'], new Prontotype\Controller\AuthController());
-$app->mount('/' . $app['config']['triggers']['shorturl'], new Prontotype\Controller\RedirectController());
 $app->mount('/' . $app['config']['triggers']['data'], new Prontotype\Controller\DataController());
+$app->mount('/' . $app['config']['triggers']['user'], new Prontotype\Controller\UserController());
 $app->mount('/' . $app['config']['triggers']['assets'], new Prontotype\Controller\AssetController());
+$app->mount('/' . $app['config']['triggers']['shorturl'], new Prontotype\Controller\RedirectController());
 $app->mount('/', new Prontotype\Controller\MainController());
 
 return $app;

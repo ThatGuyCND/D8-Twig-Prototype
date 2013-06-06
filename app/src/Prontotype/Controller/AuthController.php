@@ -16,36 +16,36 @@ class AuthController implements ControllerProviderInterface {
         
         $controllers->get('/login', function() use ($app) {
             
-            if ( $app['pt.auth']->check() ) {
+            if ( $app['pt.auth']->isAuthed() ) {
                 return $app->redirect('/');
             }
             
             return $app['twig']->render('PT/pages/authenticate.twig', array(
-                'auth_path' => $app['pt.utils']->generateUrlPath('authenticate')
+                'auth_path' => $app['pt.utils']->generateUrlPath('auth.login')
             ));
             
-        })->bind('authenticate');
+        })->bind('auth.login');
         
         
         $controllers->post('/login', function() use ($app) {
             
-            if ( $app['pt.auth']->attemptLogin($app['request']->get('username'), $app['request']->get('password')) ) {
+            if ( $app['pt.auth']->attemptLogin($app['request']->get('password')) ) {
                 return $app->redirect('/');
             } else {
-                return $app->redirect($app['pt.utils']->generateUrlPath('authenticate'));
+                return $app->redirect($app['pt.utils']->generateUrlPath('auth.login'));
             }
             
-        })->bind('do_authenticate');
+        })->bind('auth.check');
         
         
         $controllers->get('/logout', function($result) use ($app) {
             
             $app['pt.auth']->logout();
-            return $app->redirect($app['pt.utils']->generateUrlPath('authenticate'));
+            return $app->redirect($app['pt.utils']->generateUrlPath('auth.login'));
 
         })
         ->value('result', null)
-        ->bind('de_authenticate');
+        ->bind('auth.logout');
         
         
         return $controllers;

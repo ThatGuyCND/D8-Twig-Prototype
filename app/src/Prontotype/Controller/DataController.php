@@ -28,7 +28,7 @@ class DataController implements ControllerProviderInterface
         })
         ->assert('data_path', '.+')
         ->value('data_path', '')
-        ->bind('get_json_data');
+        ->bind('data.view.json');
         
         return $controllers;
     }

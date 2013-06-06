@@ -20,8 +20,13 @@ Class Request {
     
     public function getUrlPath()
     {
+        return $this->unPrefixUrl($this->getRawUrlPath());
+    }
+    
+    public function getRawUrlPath()
+    {
         list($path) = explode('?', $this->getRequestUri());
-        return $this->unPrefixUrl($path);
+        return $path;
     }
     
     public function getUrlSegments()
