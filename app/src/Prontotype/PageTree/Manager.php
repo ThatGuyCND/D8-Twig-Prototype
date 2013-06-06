@@ -21,7 +21,7 @@ Class Manager {
     public function getCurrent()
     {
         if ( ! $this->current ) {
-            $this->current = $this->getByUrlPath($this->app['uri']->string());
+            $this->current = $this->getByUrlPath($this->app['pt.request']->getUrlPath());
         }
         return $this->current;
     }

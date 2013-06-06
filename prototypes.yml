@@ -1,11 +1,4 @@
 default:
+  matches: '*'
   prototype: default
-  env: live
-
-example.com
-  prototype: default
-  env: live
-
-foo.example.com
-  prototype: default
-  env: local
+  environment: live
