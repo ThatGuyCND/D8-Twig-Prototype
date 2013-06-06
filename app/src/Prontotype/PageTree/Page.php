@@ -52,13 +52,21 @@ Class Page extends Base {
     
     public function isCurrent()
     {
-        return $this->matchesUrlPath($this->app['uri']->string());
+        return $this->matchesUrlPath($this->app['pt.request']->getUrlPath());
     }
     
     public function isParentOfCurrent()
     {
-        $uriSegments = $this->app['uri']->segments();
-        $urlPathSegments = explode('/', trim($this->unPrefixUrl($this->getUrlPath()),'/'));
+        $uriSegments = $this->app['pt.request']->getUrlSegments();
+        if ( $urlPath = trim($this->unPrefixUrl($this->getUrlPath()),'/') ) {
+            $urlPathSegments = explode('/', $urlPath);            
+        } else {
+            $urlPathSegments = array();
+        }
+
+        if ( count($uriSegments) && count($urlPathSegments) == 0 ) {
+            return true;
+        }
         if ( count($urlPathSegments) >= count($uriSegments) ) {
             return false;
         }

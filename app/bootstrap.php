@@ -20,6 +20,7 @@ $app = new Silex\Application();
 $app->register(new Prontotype\Service\Prototype($app));
 
 date_default_timezone_set($app['config']['timezone']);
+$app['debug'] = $app['config']['debug'];
 
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
@@ -46,26 +47,38 @@ $app['pt.request'] = $app->share(function() use ( $app ) {
     return new Prontotype\Request($app);
 });
 
+$app['pt.pagetree'] = $app->share(function( $app ) {
+    return new Prontotype\PageTree\Manager( $app );
+});
 
 $app->get('/', function () use ( $app ) {
     
     echo '<pre>';
-    print_r($app['pt.request']->getUrlSegment(0));
+    print_r($app['pt.pagetree']->getAll());
     echo '</pre>';
     
+    // 
+    // echo '<pre>';
+    // print_r($app['pt.request']->getQueryString(array('hello'=>'asd')));
+    // echo '</pre>';
+    // 
+    
 
-    return 'asd';
-
-});
+    return 'asasdd';
+    
+})->assert('route', '.+');
 
 $app->get('/{route}', function () use ( $app ) {
     
-
-
     echo '<pre>';
-    print_r($app['pt.request']->getQueryString(array('hello'=>'asd')));
+    print_r($app['pt.pagetree']->getCurrent()->toArray());
     echo '</pre>';
     
+    // 
+    // echo '<pre>';
+    // print_r($app['pt.request']->getQueryString(array('hello'=>'asd')));
+    // echo '</pre>';
+    // 
     
 
     return 'asasdd';
