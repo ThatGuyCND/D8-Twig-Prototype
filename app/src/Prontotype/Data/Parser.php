@@ -1,8 +1,8 @@
 <?php
 
-namespace Prontotype;
+namespace Prontotype\Data;
 
-Class Data {
+Class Parser {
 
     protected $app;
 
@@ -11,12 +11,12 @@ Class Data {
         $this->app = $app;
     }
     
-    public function load($path)
+    public function getHandledExtensions()
     {
-        
+        return array();
     }
     
-    public function fetch($url)
+    public function parse($content)
     {
         
     }

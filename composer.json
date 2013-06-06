@@ -19,7 +19,8 @@
         "leafo/scssphp" : "0.*",
         "behat/mink-extension": "*",
         "behat/mink-goutte-driver": "*",
-        "fzaninotto/faker" : "1.1.*"
+        "fzaninotto/faker" : "1.1.*",
+        "mheap/Silex-Markdown": "*"
     },
     "minimum-stability": "dev",
     "config": {

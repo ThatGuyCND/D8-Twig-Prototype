@@ -30,7 +30,6 @@ $sharedServices = array(
     'pt.auth'     => 'Prontotype\Auth',
     'pt.exporter' => 'Prontotype\Exporter',
     'pt.cache'    => 'Prontotype\Cache',
-    'pt.data'     => 'Prontotype\Data',
     'pt.scraper'  => 'Prontotype\Scraper\Scraper',
     'pt.utils'    => 'Prontotype\Utils',
     'pt.user_manager'   => 'Prontotype\UserManager',
@@ -46,6 +45,15 @@ $app['pt.extensions'] = $app->share(function($app) {
     $ext = new Prontotype\Extension\Manager($app);
     $ext->load($app['config']['extensions']);
     return $ext;
+});
+
+$app['pt.data'] = $app->share(function($app) {
+    return new Prontotype\Data\Manager($app, array(
+        new Prontotype\Data\JsonParser($app),
+        new Prontotype\Data\YamlParser($app),
+        new Prontotype\Data\XmlParser($app),
+        new Prontotype\Data\CsvParser($app)
+    ));
 });
 
 $app->register(new Silex\Provider\SessionServiceProvider());
