@@ -23,7 +23,7 @@ class HelperExtension extends \Twig_Extension
                 'request' => $this->app['pt.request'],
                 'pages'   => $this->app['pt.pagetree'],
                 'page'    => $this->app['pt.pagetree']->getCurrent(),
-                'user'    => $this->app['pt.store']->get('user'),
+                'user'    => $this->app['pt.user_manager']->getCurrentUser(),
                 'data'    => $this->app['pt.data'],
                 'store'   => $this->app['pt.store'],
                 'scraper' => $this->app['pt.scraper'],

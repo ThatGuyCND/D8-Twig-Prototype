@@ -26,17 +26,17 @@ Class UserManager {
         
     }
     
+    public function getCurrentUser()
+    {
+        
+    }
+    
     public function getUserByUsername()
     {
         
     }
     
     public function getUserByEmail()
-    {
-        
-    }
-    
-    public function getCurrentUser()
     {
         
     }

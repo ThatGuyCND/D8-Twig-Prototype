@@ -33,6 +33,7 @@ $sharedServices = array(
     'pt.data'     => 'Prontotype\Data',
     'pt.scraper'  => 'Prontotype\Scraper\Scraper',
     'pt.utils'    => 'Prontotype\Utils',
+    'pt.user_manager'   => 'Prontotype\UserManager',
 );
 
 foreach( $sharedServices as $serviceName => $serviceClass ) {
@@ -61,7 +62,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
         'autoescape'        => false
     )
 ));
-        
+
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     $twig->addExtension(new Twig_Extension_Debug());
     $twig->addExtension(new Prontotype\Twig\HelperExtension($app));
