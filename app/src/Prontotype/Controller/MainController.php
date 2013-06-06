@@ -49,46 +49,12 @@ class MainController implements ControllerProviderInterface
             }
                 
         })->bind('do_logout');
-                
-                
-        $controllers->get('/' . $triggers['data'] . '/{data_path}', function ( $data_path ) use ( $app ) {
-            
-            $result = $app['data']->find(str_replace('/','.',$data_path));
-                    
-            if ( ! $result ) {
-                $app->abort(404);
-            } else {
-                return $app->json($result);
-            }
-                
-        })
-        ->assert('data_path', '.+')
-        ->value('data_path', '')
-        ->bind('get_json_data');
         
-        
-        $controllers->get('/' . $triggers['export'], function () use ( $app ) {
-            
-            
-        
-        })->bind('export');
-                
-                
-        $controllers->get('/' . $triggers['shorturl']  . '/{page_id}', function ( $page_id ) use ( $app ) {
-                    
-            if ( ! $page = $app['pagetree']->getById($page_id) ) {
-                $app->abort(404);
-            }
-                    
-            return $app->redirect($page->getUrlPath(), 301);
-                    
-        })->bind('short_url');
-                
         
         // everything else...
         $controllers->match('/{route}', function ( $route ) use ( $app ) {
             
-            if ( ! $page = $app['pagetree']->getByRoute($route) ) {
+            if ( ! $page = $app['pt.pagetree']->getByRoute($route) ) {
                 $app->abort(404);
             }
                             

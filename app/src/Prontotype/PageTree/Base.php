@@ -113,7 +113,7 @@ Class Base implements \RecursiveIterator
         return $this->cleanName;
     }
     
-    protected function prefixUrl( $url )
+    protected function prefixUrl($url)
     {
         $prefix = '';
         if ( ! $this->app['config']['clean_urls'] ) {
@@ -122,7 +122,7 @@ Class Base implements \RecursiveIterator
         return $prefix . $url;
     }
     
-    protected function unPrefixUrl( $url )
+    protected function unPrefixUrl($url)
     {
         if ( ! $this->app['config']['clean_urls'] ) {
             return str_replace('/index.php', '', $url);
@@ -130,7 +130,7 @@ Class Base implements \RecursiveIterator
         return $url;
     }
 
-    protected function isValidFile( SPLFileInfo $item )
+    protected function isValidFile(SPLFileInfo $item)
     {
         return ( ! $item->isLink() && ! $item->isDot() && strpos($item->getBasename(), '.') !== 0 );
     }
@@ -214,7 +214,7 @@ Class Base implements \RecursiveIterator
         return $this->position;
     }
     
-    public function titleCase( $title )
+    public function titleCase($title)
     { 
         $smallwordsarray = array('of','a','the','and','an','or','nor','but','is','if','then','else','when','at','from','by','on','off','for','in','out','over','to','into','with');
         $words = explode(' ', $title); 
@@ -227,7 +227,7 @@ Class Base implements \RecursiveIterator
         return $newtitle; 
     }
     
-    public function __get( $name )
+    public function __get($name)
     {
         $getter = 'get' . ucfirst($name);
         if ( method_exists($this, $getter) ) {

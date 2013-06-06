@@ -75,14 +75,6 @@ data:
     enclosure: '"'
     escape: '\'
     id_header: id
-
-#==================
-# Assets
-# -----------------
-# Configuration for LESS/SASS generation
-#==================
-assets:
-  auto_generate: false   # whether to auto-dump css files on page load. Can slow things down!
   
 #==================
 # routing

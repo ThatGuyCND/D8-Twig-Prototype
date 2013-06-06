@@ -17,9 +17,9 @@ class HelperExtension extends \Twig_Extension
     public function getGlobals()
     {
         return array(
-            'request' => $this->app['pt.request'],
             'config'  => $this->app['config'],
-            'session' => $this->app['session'],
+            'session' => $this->app['session'],            
+            'request' => $this->app['pt.request'],
             'pages'   => $this->app['pt.pagetree'],
             'page'    => $this->app['pt.pagetree']->getCurrent(),
             // 'data'        => $this->app['data'],

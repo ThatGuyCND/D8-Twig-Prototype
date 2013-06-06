@@ -16,7 +16,7 @@ Class Page extends Base {
     
     protected $isIndex = null;
         
-    public function __construct( SPLFileInfo $file, $app )
+    public function __construct(SPLFileInfo $file, $app)
     {
         if ( ! $file->isFile() ) {
             throw new \Exception('File is not a file');

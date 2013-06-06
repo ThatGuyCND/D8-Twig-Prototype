@@ -51,43 +51,16 @@ $app['pt.pagetree'] = $app->share(function( $app ) {
     return new Prontotype\PageTree\Manager( $app );
 });
 
-$app->get('/', function () use ( $app ) {
-    
-    echo '<pre>';
-    print_r($app['pt.pagetree']->getAll());
-    echo '</pre>';
-    
-    // 
-    // echo '<pre>';
-    // print_r($app['pt.request']->getQueryString(array('hello'=>'asd')));
-    // echo '</pre>';
-    // 
-    
-
-    return 'asasdd';
-    
-})->assert('route', '.+');
-
-$app->get('/{route}', function () use ( $app ) {
-    
-    echo '<pre>';
-    print_r($app['pt.pagetree']->getCurrent()->toArray());
-    echo '</pre>';
-    
-    // 
-    // echo '<pre>';
-    // print_r($app['pt.request']->getQueryString(array('hello'=>'asd')));
-    // echo '</pre>';
-    // 
-    
-
-    return 'asasdd';
-    
-})->assert('route', '.+');
+$app['pt.store'] = $app->share(function( $app ) {
+    return new Prontotype\Store( $app );
+});
 
 
-
-
+$app->mount('/' . $app['config']['triggers']['auth'], new Prontotype\Controller\AuthController());
+$app->mount('/' . $app['config']['triggers']['shorturl'], new Prontotype\Controller\RedirectController());
+$app->mount('/' . $app['config']['triggers']['data'], new Prontotype\Controller\DataController());
+$app->mount('/' . $app['config']['triggers']['assets'], new Prontotype\Controller\AssetController());
+$app->mount('/', new Prontotype\Controller\MainController());
 
 return $app;
 
@@ -143,13 +116,7 @@ return $app;
 //     return new Prontotype\Service\Scraper\Scraper( $app );
 // });
 // 
-// $app['pagetree'] = $app->share(function( $app ) {
-//     return new Prontotype\Service\PageTree\Manager( $app );
-// });
-// 
-// $app['store'] = $app->share(function( $app ) {
-//     return new Prontotype\Service\Store( $app );
-// });
+
 // 
 // $app['uri'] = $app->share(function( $app ) {
 //     return new Prontotype\Service\Uri( $app );

@@ -10,7 +10,7 @@ Class Directory extends Base {
     
     protected $urlPath;
     
-    public function __construct( SPLFileInfo $directory, $app )
+    public function __construct(SPLFileInfo $directory, $app)
     {
         if ( ! $directory->isDir() ) {
             throw new Exception('Not a directory');

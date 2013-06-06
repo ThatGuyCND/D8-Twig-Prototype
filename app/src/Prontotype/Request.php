@@ -59,6 +59,15 @@ Class Request {
         return http_build_query($qsArray);
     }
     
+    public function generateUrlPath($route)
+    {
+        $url = $this->app['url_generator']->generate($route);
+        if ( ! $this->app['config']['clean_urls'] && strpos( $url, 'index.php' ) === false ) {
+            $url = '/index.php' . $url;
+        }
+        return $url;
+    }
+    
     public function __call($name, $args)
     {
         if ( method_exists( $this->request, $name ) ) {
@@ -66,9 +75,14 @@ Class Request {
         }
     }
     
-    protected function unPrefixUrl( $url )
+    public function __toString()
+    {
+        return $this->getUrlPath();
+    }
+    
+    protected function unPrefixUrl($url)
     {
         return str_replace('/index.php', '', $url);
     }
-        
+    
 }

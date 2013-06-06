@@ -58,9 +58,11 @@ cookie_lifetime: 604800 # 1 week
 # URL segments that trigger specific behaviour
 #==================
 triggers:
+  auth: _auth
   login: _login
   logout: _logout
   data: _data
+  assets: _assets
   shorturl: _p
 
 #==================

@@ -12,7 +12,7 @@ Class Manager {
     
     protected $current = null;
     
-    public function __construct( $app )
+    public function __construct($app)
     {
         $this->app = $app;
         $this->tree = new Directory(new \SPLFileInfo($app['pt.prototype.paths.pages']), $app);
@@ -26,7 +26,7 @@ Class Manager {
         return $this->current;
     }
     
-    public function getById( $id )
+    public function getById($id)
     {
         foreach( $this->getRecursivePagesIterator() as $page ) {
             if ( $page->getId() == $id ) {
@@ -36,7 +36,7 @@ Class Manager {
         return null;
     }
     
-    public function getByUrlPath( $path )
+    public function getByUrlPath($path)
     {
         foreach( $this->getRecursivePagesIterator() as $page ) {
             if ( $page->matchesUrlPath($path) ) {
@@ -46,7 +46,7 @@ Class Manager {
         return null;
     }
     
-    public function getByRoute( $route )
+    public function getByRoute($route)
     {
         // lets see if we need to do any checking of custom routes
         $routes = $this->app['config']['routes'] ? $this->app['config']['routes'] : array();
@@ -105,7 +105,7 @@ Class Manager {
         return $this->getByUrlPath(str_replace('//', '/', $route));
     }
     
-    public function getUrlById( $id )
+    public function getUrlById($id)
     {
         if ( $page = $this->getById($id) ) {
             return $page->getUrlPath();
@@ -121,7 +121,7 @@ Class Manager {
         return $this->treeArray;
     }
     
-    public function getChildrenById( $id )
+    public function getChildrenById($id)
     {
         if ( $page = $this->getById($id) ) {
             return $this->getAllUnderUrlPath($page->getUrlPath());
@@ -129,7 +129,7 @@ Class Manager {
         return null;
     }
     
-    public function getChildrenByUrlPath( $urlPath )
+    public function getChildrenByUrlPath($urlPath)
     {
         if ( $urlPath == '/' || $urlPath == '/index.php/' ) {
             $data = $this->getAll();
