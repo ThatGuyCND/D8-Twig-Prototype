@@ -4,7 +4,7 @@ define('VERSION', '3.0');
 
 /* Define globally available application paths */
 define('DOC_ROOT', realpath(__DIR__ . '/..'));
-define('APP_PATH', DOC_ROOT . '/app');
+define('APP_PATH', DOC_ROOT . '/' . $appDir);
 define('VENDOR_PATH', APP_PATH . '/vendor');
 define('PROTOYPES_PATH', DOC_ROOT . '/prototypes');
 define('APP_TEMPLATES_PATH', APP_PATH . '/views');

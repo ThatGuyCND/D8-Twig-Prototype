@@ -5,13 +5,10 @@
  * A lightweight server-side framework to help you quickly build interactive, data-driven HTML prototypes. 
  */
 
-$requiredVersion = '5.3.3';
+$appDir = 'app';
 
 try {
-	if ( strnatcmp(phpversion(), $requiredVersion) < 0 ) {
-		throw new Exception("Sorry, you need to be running PHP <strong>{$requiredVersion}</strong> or greater to run Prontotype.");
-	}
-	$app = require __DIR__ . '/app/bootstrap.php';
+	$app = require __DIR__ . '/' . $appDir . '/bootstrap.php';
 	$app->run();
 } catch ( \Exception $e ) {
 	$error = $e->getMessage();
