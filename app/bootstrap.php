@@ -27,6 +27,7 @@ $sharedServices = array(
     'pt.pagetree' => 'Prontotype\PageTree\Manager',
     'pt.store'    => 'Prontotype\Store',
     'pt.auth'     => 'Prontotype\Auth',
+    'pt.notifications' => 'Prontotype\Notifications',
     'pt.exporter' => 'Prontotype\Exporter',
     'pt.cache'    => 'Prontotype\Cache',
     'pt.scraper'  => 'Prontotype\Scraper\Scraper',

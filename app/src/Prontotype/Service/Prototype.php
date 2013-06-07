@@ -68,9 +68,12 @@ class Prototype implements ServiceProviderInterface {
         $app['pt.prototype.paths.extensions'] = $app['pt.prototype.paths.root'] . '/extensions';
         
         $config = array(
-            APP_PATH . '/config.yml',
-            $app['pt.prototype.paths.config'] . '/common.yml',    
+            APP_PATH . '/config.yml'    
         );
+        $commonConfig = $app['pt.prototype.paths.config'] . '/common.yml';
+        if ( file_exists($commonConfig) ) {
+            $config[] = $commonConfig;
+        }
         $envConfig = $app['pt.prototype.paths.config'] . '/' . $app['pt.prototype.environment'] . '.yml';
         if ( file_exists( $envConfig ) ) {
             $config[] = $envConfig;

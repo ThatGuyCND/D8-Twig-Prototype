@@ -45,7 +45,7 @@ Class UserManager {
                 return true;
             }
         }
-        $this->app['session']->getFlashBag()->set('error', $this->app['pt.config']['user']['login']['error']);
+        $this->app['pt.notifications']->setFlash('error', $this->app['pt.config']['user']['login']['error']);
         return false;
     }
     

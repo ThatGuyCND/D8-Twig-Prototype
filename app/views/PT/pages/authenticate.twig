@@ -2,7 +2,7 @@
 {% import "PT/macros/forms.twig" as form %}
 
 {% set title = 'You must be logged in to access this content' %}
-{% set error = session.flashbag.get('error') %}
+{% set error = pt.notifications.get('error') %}
 
 {% block content %}
 

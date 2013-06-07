@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	
-	{{ assets.stylesheet('/app/assets/css/system.css') }}
-	
-	<title>Prontotype</title>
+    <meta charset="utf-8">
+    
+    {{ assets.stylesheet('/app/assets/css/system.css') }}
+    
+    <title>Prontotype</title>
 </head>
 <body>
-	
-	<div id="pt-content">
-	    
-		<h1>Prontotype is up and running.</h1>
-		
-		<p>If this is your first time using Prontotype then you'll probably a want to check out the <a href="http://prontotype.allmarkedup.com/">Prontotype documentation</a> to help you get started.</p>
-		
-		<p><strong>Happy prototyping!</strong></p>
+    
+    <div id="pt-content">
         
-	</div>
-	
-</body>	
+        <h1>Prontotype is up and running.</h1>
+        
+        <p>If this is your first time using Prontotype then you'll probably a want to check out the <a href="http://prontotype.allmarkedup.com/">Prontotype documentation</a> to help you get started.</p>
+        
+        <p><strong>Happy prototyping!</strong></p>
+        
+        <form action="{{ pt.urls.user.login }}" method="post" accept-charset="utf-8">
+            
+            {% set error = pt.notifications.get('error') %}
+            {% if error %}<p>{{ error }}</p>{% endif %}
+            
+            <label>username:</label><input type="text" name="username" value=""><br>
+            <label>password:</label><input type="text" name="password" value="">
+        
+            <p><input type="submit" value="Continue &rarr;"></p>
+        </form>
+        
+    </div>
+    
+</body> 
 </html>

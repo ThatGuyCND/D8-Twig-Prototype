@@ -37,7 +37,7 @@ Class Auth {
             return true;
         }
         
-        $this->app['session']->getFlashBag()->set('error', 'Your password was incorrect');
+        $this->app['pt.notifications']->setFlash('error', $this->app['pt.config']['authenticate']['error']);
         $this->logout();
         
         return false;
