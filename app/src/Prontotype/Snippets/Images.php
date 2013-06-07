@@ -19,7 +19,6 @@ Class Images extends Base {
         $opts = $this->mergeOpts(array(
             'width'    => $this->config['placeholder']['width'],
             'height'   => $this->config['placeholder']['height'],
-            'category' => $this->config['placeholder']['category'],
             'service'  => $this->config['placeholder']['service'],
         ), $opts);
         
