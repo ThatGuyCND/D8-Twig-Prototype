@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     
-    {{ assets.stylesheet('/app/assets/css/system.css') }}
+    {{ pt.assets.stylesheet('/app/assets/css/system.css') }}
     
     <title>Prontotype</title>
 </head>
@@ -16,6 +16,10 @@
         <p>If this is your first time using Prontotype then you'll probably a want to check out the <a href="http://prontotype.allmarkedup.com/">Prontotype documentation</a> to help you get started.</p>
         
         <p><strong>Happy prototyping!</strong></p>
+        
+        {{ pt.snippets.images.placeholder() }}
+        
+        {{ pt.snippets.navigation.pageTree() }}
         
     </div>
     

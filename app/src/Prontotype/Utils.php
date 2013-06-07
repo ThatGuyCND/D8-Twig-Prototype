@@ -35,4 +35,9 @@ Class Utils {
         curl_close($ch);
         return $info;
     }
+    
+    public function templateExists($templatePath)
+    {
+        return file_exists($this->app['pt.prototype.paths.templates'] . '/' . $templatePath);
+    }
 }

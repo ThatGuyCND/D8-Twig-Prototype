@@ -139,10 +139,10 @@ Class Manager {
         foreach( $fullTree as $item ) {
             if ( $item instanceof Directory && $item->matchesUrlPath($urlPath) ) {
                 $data = $item->toArray();
-                return $data['children'];
+                return $data['children'] ? $data['children'] : array();
             }
         }
-        return null;
+        return array();
     }
     
     protected function getRecursivePagesIterator()

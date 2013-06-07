@@ -47,3 +47,10 @@ routes:
 extensions:
   # example: ExampleExtension.php
   
+snippets:
+  images:
+    placeholder:
+      service: dummyimage
+      width: 200
+      height: 200
+      category: people

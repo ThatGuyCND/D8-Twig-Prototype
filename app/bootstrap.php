@@ -23,16 +23,17 @@ date_default_timezone_set($app['pt.config']['timezone']);
 $app['debug'] = $app['pt.config']['debug'];
 
 $sharedServices = array(
-    'pt.request'  => 'Prontotype\Request',
-    'pt.pagetree' => 'Prontotype\PageTree\Manager',
-    'pt.store'    => 'Prontotype\Store',
-    'pt.auth'     => 'Prontotype\Auth',
+    'pt.request'       => 'Prontotype\Request',
+    'pt.pagetree'      => 'Prontotype\PageTree\Manager',
+    'pt.store'         => 'Prontotype\Store',
+    'pt.auth'          => 'Prontotype\Auth',
     'pt.notifications' => 'Prontotype\Notifications',
-    'pt.exporter' => 'Prontotype\Exporter',
-    'pt.cache'    => 'Prontotype\Cache',
-    'pt.scraper'  => 'Prontotype\Scraper\Scraper',
-    'pt.utils'    => 'Prontotype\Utils',
-    'pt.user_manager'   => 'Prontotype\UserManager',
+    'pt.exporter'      => 'Prontotype\Exporter',
+    'pt.cache'         => 'Prontotype\Cache',
+    'pt.scraper'       => 'Prontotype\Scraper\Scraper',
+    'pt.utils'         => 'Prontotype\Utils',
+    'pt.user_manager'  => 'Prontotype\UserManager',
+    'pt.snippets'      => 'Prontotype\Snippets\Manager',
 );
 
 foreach( $sharedServices as $serviceName => $serviceClass ) {
@@ -77,6 +78,12 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     return $twig;
 }));
 
+$app['twig.stringloader'] = $app->share(function($app) {
+    $loader = new Twig_Loader_String();
+    return new Twig_Environment($loader);
+});
+
+
 $app->before(function () use ($app) {
     if ( ! $app['pt.auth']->check() ) {
         return $app->redirect($app['pt.utils']->generateUrlPath('auth.login')); // not logged in, redirect to auth page
@@ -92,10 +99,10 @@ $app->error(function(\Exception $e, $code) use ($app) {
     
     switch( $code ) {
         case '404':
-            $template = 'PT/pages/404.twig';
+            $template = 'pt/pages/404.twig';
             break;
         default:
-            $template = 'PT/pages/error.twig';
+            $template = 'pt/pages/error.twig';
             break;
     }
     
@@ -116,9 +123,9 @@ return $app;
 
 // 
 // // import all PT macros
-// foreach( glob(APP_PATH . '/views/PT/macros/*.twig') as $path ) {
+// foreach( glob(APP_PATH . '/views/pt/macros/*.twig') as $path ) {
 //     $pathinfo = pathinfo($path);
-//     $app['twig']->addGlobal($pathinfo['filename'], $app['twig']->loadTemplate('PT/macros/' . $pathinfo['basename']));
+//     $app['twig']->addGlobal($pathinfo['filename'], $app['twig']->loadTemplate('pt/macros/' . $pathinfo['basename']));
 // }
 // 
 // // import all prototype macros

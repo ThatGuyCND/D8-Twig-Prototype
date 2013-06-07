@@ -23,7 +23,7 @@ class MainController implements ControllerProviderInterface
             try {
                 return $app['twig']->render($page->getTemplatePath(), array());
             } catch ( \Exception $e ) {
-                return $app['twig']->render('PT/pages/error.twig', array(
+                return $app['twig']->render('pt/pages/error.twig', array(
                     'message'=>$e->getMessage()
                 ));
             }
