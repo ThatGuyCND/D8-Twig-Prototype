@@ -15,7 +15,7 @@ Class Request {
         $this->app = $app;
         $this->request = $app['request'];
         $this->query = $this->request->query;
-        $this->post = $this->post->query;
+        $this->post = $this->request->request;
     }
     
     public function getUrlPath()

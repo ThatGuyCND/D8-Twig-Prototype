@@ -7,6 +7,8 @@ Class Manager {
     protected $app;
     
     protected $parsers = array();
+    
+    protected $parsed = array();
 
     public function __construct($app, $parsers = array())
     {
@@ -16,40 +18,63 @@ Class Manager {
         }
     }
     
-    public function load($filePath, $dataPath = null)
-    {
-        $filePath = $this->app['pt.prototype.paths.data'] . '/'. trim($filePath,'/');
-        $data = array();
-        $dataFiles = glob( $filePath . '.*' );
-        
-        if ( count( $dataFiles ) ) {
-            foreach( $dataFiles as $file ) {
-                $parts = pathinfo($file);
-                $extension = strtolower($parts['extension']);
-                $contents = file_get_contents($path);
-                try {
-                    $newData = $this->parse($contents, $extension);
-                    $data = $this->merge($data, $newData);                    
-                } catch ( \Exception $e ) {
-                    throw new \Exception(sprintf('Error parsing data file %s', $filePath));
-                }
-            }
-        }  else {
-            $data = null;
+    public function get($location, $dataPath = null, $type = null) {
+        if ( strpos($location, 'http') !== 0 ) {
+            return $this->load($location, $dataPath, $type);
+        } else {
+            return $this->fetch($location, $dataPath, $type);
         }
-        
+    }
+    
+    public function load($filePath, $dataPath = null, $type = null)
+    {
+        if ( isset($this->parsed[$filePath]) ) {
+            $data = $this->parsed[$filePath];
+        } else {
+            $filePath = $this->app['pt.prototype.paths.data'] . '/'. trim($filePath,'/');
+            if ( file_exists($filePath) ) {
+                $dataFiles = array($filePath);
+            } else {
+                $dataFiles = glob( $filePath . '.*' );
+            }
+            $data = array();
+            if ( count( $dataFiles ) ) {
+                foreach( $dataFiles as $file ) {
+                    $parts = pathinfo($file);
+                    $extension = ! $type ? $parts['extension'] : $type;
+                    $contents = file_get_contents($file);
+                    try {
+                        $newData = $this->parse($contents, $extension);
+                        $data = $this->merge($data, $newData);                    
+                    } catch ( \Exception $e ) {
+                        throw new \Exception(sprintf('Error parsing data file %s', $filePath));
+                    }
+                }
+            }  else {
+                $data = null;
+            }
+            $this->parsed[$filePath] = $data;
+        }
         return $this->find($data, $dataPath);
     }
     
     public function fetch($url, $dataPath = null, $type = null)
     {
-        $data = $this->app['pt.utils']->fetchFromUrl($url);
-        if ( !empty($data['body']) ) {
-            if ( ! $type ) {
-                $type = $this->getExtensionFromMimeType($data['mime']);
+        if ( isset($this->parsed[$url]) ) {
+            $data = $this->parsed[$url];
+        } else {
+            $data = $this->app['pt.utils']->fetchFromUrl($url);
+            if ( !empty($data['body']) ) {
+                if ( ! $type ) {
+                    $type = $this->getExtensionFromMimeType($data['mime']);
+                }
+                $data = $this->parse($data['body'], $type);
+            } else {
+                $data = null;
             }
-            return $this->find($this->parse($data['body'], $type), $dataPath);
+            $this->parsed[$url] = $data;
         }
+        return $this->find($data, $dataPath);
     }
         
     public function registerParser(Parser $parser)
@@ -87,6 +112,7 @@ Class Manager {
     
     protected function parse($contents, $extension)
     {
+        $extension = strtolower($extension);
         if ( ! isset($this->parsers[$extension]) ) {
             return $contents;
         }

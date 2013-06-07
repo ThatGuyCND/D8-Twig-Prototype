@@ -12,63 +12,84 @@ Class UserManager {
     
     protected $authBy;
     
+    protected $currentUser = null;
+    
     protected $userCookieName = 'user';
 
     public function __construct($app)
     {
         $this->app = $app;
         $this->users = $this->app['pt.data']->load('users');
-        // $this->identify = $this->app['pt.config']['']
+        $this->identifyBy = $this->app['pt.config']['user']['identify'];
+        $this->authBy = ! empty($this->app['pt.config']['user']['auth']) ? $this->app['pt.config']['user']['auth'] : null;
     }
     
     public function userIsLoggedIn()
     {
-        if ( ! $user = $this->app['pt.store']->get($this->userCookieName) ) {
+        if ( ! $user = $this->getCurrentUser() ) {
             return false;
         }
-        foreach( $this->users as $userData ) {
-            
+        if ( $userData = $this->getUserBy($this->identifyBy, $user[$this->identifyBy]) ) {
+            if ( ! $this->authBy || @$user[$this->authBy] == @$userData[$this->authBy] ) {
+                return true;
+            }
         }
+        return false;
     }
     
-    public function attemptLogin($params)
+    public function attemptLogin($identity, $auth = null)
     {
-        
+        if ( $userData = $this->getUserBy($this->identifyBy, $identity) ) {
+            if ( ! $this->authBy || $auth == @$userData[$this->authBy] ) {
+                $this->app['pt.store']->set($this->userCookieName, $userData);
+                return true;
+            }
+        }
+        $this->app['session']->getFlashBag()->set('error', $this->app['pt.config']['user']['login']['error']);
+        return false;
     }
     
     public function logoutUser()
     {
+        $this->currentUser = null;
         $this->app['pt.store']->clear($this->userCookieName);
     }
     
     public function getCurrentUser()
     {
-        return $this->app['pt.store']->get($this->userCookieName);
+        if ( $this->currentUser === null ) {
+            $this->currentUser = $this->app['pt.store']->get($this->userCookieName);
+        }
+        return $this->currentUser;
     }
     
     public function getUserBy($key, $val)
     {
-        
+        foreach( $this->users as $userData ) {
+            if ( @$userData[$key] == $val ) {
+                return $userData;
+            }
+        }
+        return null;
+    }
+    
+    public function getLoginRedirectUrlPath($override = null)
+    {
+        if ( $override ) {
+            return $override;
+        }
+        return ! empty($this->app['pt.config']['user']['login']['redirect']) ? $this->app['pt.config']['user']['login']['redirect'] : '/';
+    }
+    
+    public function getLogoutRedirectUrlPath($override = null)
+    {
+        if ( $override ) {
+            return $override;
+        }
+        return ! empty($this->app['pt.config']['user']['logout']['redirect']) ? $this->app['pt.config']['user']['logout']['redirect'] : '/';
     }
     
 }
-
-
-// $user_id = $request->get('user');
-// if ( ! $user_id ) {
-//     $user = true;
-// } else {
-//     $user = $app['data']->find('users.' . $user_id);
-//     $user = $user ? $user : true;
-// }
-//         
-// $app['store']->set('user', $user);
-//         
-// if ( $request->get('redirect') ) {
-//     return $app->redirect($request->get('redirect'));
-// } else {
-//     return $app->redirect('/'); // redirect to homepage
-// }
 
 
 

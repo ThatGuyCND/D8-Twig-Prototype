@@ -14,19 +14,26 @@ class UserController implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
         
-        $controllers->match('/login', function (Request $request) use ($app) {
-                    
-           
-                    
-        })
-        ->method('GET|POST')
-        ->bind('user.login');
+        
+        $controllers->post('/login', function (Request $request) use ($app) {
+            
+            $identifyBy = $this->app['pt.config']['user']['identify'];
+            $authBy = $this->app['pt.config']['user']['auth'];
+            
+            if ( $app['pt.user_manager']->attemptLogin($app['request']->get($identifyBy), $app['request']->get($authBy)) ) {
+                return $app->redirect($app['pt.user_manager']->getLoginRedirectUrlPath($request->get('redirect')));
+            } else {
+                return $app->redirect($request->headers->get('referer'));
+            }
+            
+        })->bind('user.login');
         
                 
         $controllers->get('/logout', function (Request $request) use ($app) {
             
-    
-                
+            $app['pt.user_manager']->logoutUser();
+            $app->redirect($app['pt.user_manager']->getLogoutRedirectUrlPath($request->get('redirect')));
+            
         })->bind('user.logout');
         
     
