@@ -1,4 +1,6 @@
-user:
+default:
   name: Edward Xample
+  username: example
+  password: test
   email: ed@xample.com
   role: user

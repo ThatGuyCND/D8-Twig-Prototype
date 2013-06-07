@@ -14,8 +14,8 @@ Class Cache {
 }
 
 
-// if ( $app['config']['cache_path'] ) {
-//     $cache_path = DOC_ROOT . '/' . trim($app['config']['cache_path'],'/');
+// if ( $app['pt.config']['cache_path'] ) {
+//     $cache_path = DOC_ROOT . '/' . trim($app['pt.config']['cache_path'],'/');
 //     if ( is_writable($cache_path) ) {
 //         define('CACHE_PATH', $cache_path );
 //     } else {

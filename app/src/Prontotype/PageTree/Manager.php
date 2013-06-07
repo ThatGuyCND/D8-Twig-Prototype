@@ -49,7 +49,7 @@ Class Manager {
     public function getByRoute($route)
     {
         // lets see if we need to do any checking of custom routes
-        $routes = $this->app['config']['routes'] ? $this->app['config']['routes'] : array();
+        $routes = $this->app['pt.config']['routes'] ? $this->app['pt.config']['routes'] : array();
         $replacements = array();
         if ( count($routes) ) {
             foreach( $routes as $routeSpec => $endRoute ) {

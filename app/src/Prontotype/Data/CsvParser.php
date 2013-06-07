@@ -23,7 +23,7 @@ Class CsvParser extends Parser {
         if ( ! is_string($content) ) {
             throw new \Exception('CSV data format error');
         }
-        $config = $this->app['config']['data']['csv'];
+        $config = $this->app['pt.config']['data']['csv'];
         $data = $this->csvToArray($content, $config['escape'], $config['enclosure'],  $config['delimiter']);
         if ( $data && $config['headers'] ) {
             $indexedData = array();
@@ -107,7 +107,7 @@ Class CsvParser extends Parser {
     
     // protected function parse_csv( $path )
  //    {
- //        $config = $this->app['config']['data']['csv'];
+ //        $config = $this->app['pt.config']['data']['csv'];
  //        try {
  //            $row = 1;
  //            $data_array = array();

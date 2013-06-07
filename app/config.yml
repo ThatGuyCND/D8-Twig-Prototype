@@ -20,6 +20,10 @@ triggers:
   assets: _assets
   user: _user
 
+user:
+  identify: username
+  auth: password
+
 name_overrides:
   '/' : 'Home'
 

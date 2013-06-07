@@ -19,8 +19,8 @@ $app = new Silex\Application();
 
 $app->register(new Prontotype\Service\Prototype($app));
 
-date_default_timezone_set($app['config']['timezone']);
-$app['debug'] = $app['config']['debug'];
+date_default_timezone_set($app['pt.config']['timezone']);
+$app['debug'] = $app['pt.config']['debug'];
 
 $sharedServices = array(
     'pt.request'  => 'Prontotype\Request',
@@ -42,7 +42,7 @@ foreach( $sharedServices as $serviceName => $serviceClass ) {
 
 $app['pt.extensions'] = $app->share(function($app) {
     $ext = new Prontotype\Extension\Manager($app);
-    $ext->load($app['config']['extensions']);
+    $ext->load($app['pt.config']['extensions']);
     return $ext;
 });
 
@@ -65,7 +65,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
         'strict_variables'  => false,
         'cache'             => false, // TODO Enable caching
         'auto_reload'       => true,
-        'debug'             => $app['config']['debug'],
+        'debug'             => $app['pt.config']['debug'],
         'autoescape'        => false
     )
 ));
@@ -103,11 +103,11 @@ $app->error(function(\Exception $e, $code) use ($app) {
     )), $code);
 });
 
-$app->mount('/' . $app['config']['triggers']['auth'], new Prontotype\Controller\AuthController());
-$app->mount('/' . $app['config']['triggers']['data'], new Prontotype\Controller\DataController());
-$app->mount('/' . $app['config']['triggers']['user'], new Prontotype\Controller\UserController());
-$app->mount('/' . $app['config']['triggers']['assets'], new Prontotype\Controller\AssetController());
-$app->mount('/' . $app['config']['triggers']['shorturl'], new Prontotype\Controller\RedirectController());
+$app->mount('/' . $app['pt.config']['triggers']['auth'], new Prontotype\Controller\AuthController());
+$app->mount('/' . $app['pt.config']['triggers']['data'], new Prontotype\Controller\DataController());
+$app->mount('/' . $app['pt.config']['triggers']['user'], new Prontotype\Controller\UserController());
+$app->mount('/' . $app['pt.config']['triggers']['assets'], new Prontotype\Controller\AssetController());
+$app->mount('/' . $app['pt.config']['triggers']['shorturl'], new Prontotype\Controller\RedirectController());
 $app->mount('/', new Prontotype\Controller\MainController());
 
 return $app;

@@ -13,8 +13,8 @@ Class Store {
     public function __construct( $app )
     {
         $this->app = $app;
-        $this->cookiePrefix = $app['config']['cookie']['prefix'];
-        $this->cookieLifetime = $app['config']['cookie']['lifetime'];
+        $this->cookiePrefix = $app['pt.config']['cookie']['prefix'];
+        $this->cookieLifetime = $app['pt.config']['cookie']['lifetime'];
     }
     
     public function set( $key, $value )

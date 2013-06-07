@@ -124,7 +124,7 @@ class Data
 
     protected function parse_csv( $path )
     {
-        $config = $this->app['config']['data']['csv'];
+        $config = $this->app['pt.config']['data']['csv'];
         try {
             $row = 1;
             $data_array = array();
@@ -241,7 +241,7 @@ class Data
     
     protected function make_external_request( $url )
     {
-        if ( $cachedData = $this->app['cache']->get( 'data', $url, strtotime('- ' . $this->app['config']['request_cache_expiry'] . ' minutes') ) ) {
+        if ( $cachedData = $this->app['cache']->get( 'data', $url, strtotime('- ' . $this->app['pt.config']['request_cache_expiry'] . ' minutes') ) ) {
             return $cachedData;
         }
         

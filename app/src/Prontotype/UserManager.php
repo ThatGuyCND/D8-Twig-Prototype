@@ -5,38 +5,48 @@ namespace Prontotype;
 Class UserManager {
 
     protected $app;
+    
+    protected $users;
+    
+    protected $identifyBy;
+    
+    protected $authBy;
+    
+    protected $userCookieName = 'user';
 
     public function __construct($app)
     {
         $this->app = $app;
+        $this->users = $this->app['pt.data']->load('users');
+        // $this->identify = $this->app['pt.config']['']
     }
     
     public function userIsLoggedIn()
     {
-        
+        if ( ! $user = $this->app['pt.store']->get($this->userCookieName) ) {
+            return false;
+        }
+        foreach( $this->users as $userData ) {
+            
+        }
     }
     
-    public function attemptLogin()
+    public function attemptLogin($params)
     {
         
     }
     
     public function logoutUser()
     {
-        
+        $this->app['pt.store']->clear($this->userCookieName);
     }
     
     public function getCurrentUser()
     {
-        
+        return $this->app['pt.store']->get($this->userCookieName);
     }
     
-    public function getUserByUsername()
-    {
-        
-    }
-    
-    public function getUserByEmail()
+    public function getUserBy($key, $val)
     {
         
     }

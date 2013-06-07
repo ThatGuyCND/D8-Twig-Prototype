@@ -35,7 +35,7 @@ Class Page extends Base {
     public function getShortUrl()
     {
         if ( $id = $this->getId() ) {
-            $this->shortUrl = $this->prefixUrl('/' . $this->app['config']['triggers']['shorturl'] . '/' . $id);
+            $this->shortUrl = $this->prefixUrl('/' . $this->app['pt.config']['triggers']['shorturl'] . '/' . $id);
         } else {
             $this->shortUrl = $this->getUrlPath();
         }

@@ -18,7 +18,7 @@ class HelperExtension extends \Twig_Extension
     {
         return array(
             'pt' => array(
-                'config'  => $this->app['config'],
+                'config'  => $this->app['pt.config'],
                 'session' => $this->app['session'],            
                 'request' => $this->app['pt.request'],
                 'pages'   => $this->app['pt.pagetree'],

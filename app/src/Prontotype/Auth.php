@@ -8,7 +8,7 @@ Class Auth {
     
     protected $excludePaths = array();
     
-    protected $authSessionName;
+    protected $authSessionName = 'authed';
 
     public function __construct( $app )
     {
@@ -18,7 +18,7 @@ Class Auth {
             $app['pt.utils']->generateUrlPath('auth.check'),
             $app['pt.utils']->generateUrlPath('auth.logout')
         );
-        $this->authSessionName = $this->app['config']['cookie']['prefix'] . 'authed';
+        $this->authSessionName = $this->app['pt.config']['cookie']['prefix'] . $this->authSessionName;
     }
     
     public function check()
@@ -32,7 +32,7 @@ Class Auth {
     
     public function attemptLogin($password)
     {
-        if ( $this->app['request']->get('password') === $this->app['config']['authenticate']['password'] ) {
+        if ( $this->app['request']->get('password') === $this->app['pt.config']['authenticate']['password'] ) {
             $this->app['session']->set($this->authSessionName, $this->hashPassword());
             return true;
         }
@@ -62,17 +62,17 @@ Class Auth {
     
     protected function hashPassword()
     {
-        return sha1($this->app['config']['authenticate']['password']);
+        return sha1($this->app['pt.config']['authenticate']['password']);
     }
     
     protected function isAuthRequired()
     {
-        return ! empty($this->app['config']['authenticate']['password']);
+        return ! empty($this->app['pt.config']['authenticate']['password']);
     }
     
     protected function getWhitelistedIps()
     {
-        $ipWhitelist = $this->app['config']['authenticate']['ip_whitelist'];
+        $ipWhitelist = $this->app['pt.config']['authenticate']['ip_whitelist'];
         if ( is_array($ipWhitelist) ) {
             return $ipWhitelist;
         } elseif ( is_string($ipWhitelist) ) {

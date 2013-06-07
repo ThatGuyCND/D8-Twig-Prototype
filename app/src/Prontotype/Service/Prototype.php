@@ -76,6 +76,7 @@ class Prototype implements ServiceProviderInterface {
             $config[] = $envConfig;
         }
         $app->register(new \Silextend\Config\YamlConfig($config));
+        $app['pt.config'] = $app['config'];
     }
 
     public function boot ( Application $app ) {}
