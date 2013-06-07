@@ -4,34 +4,36 @@ namespace Prontotype;
 
 Class Store {
     
-    protected $cookie_prefix = '';
-    
     protected $app;
+    
+    protected $cookiePrefix = '';
+
+    protected $cookieLifetime = '';
 
     public function __construct( $app )
     {
         $this->app = $app;
-        $this->cookie_prefix = $app['config']['cookie']['prefix'];
-        $this->cookie_lifetime = $app['config']['cookie']['lifetime'];
+        $this->cookiePrefix = $app['config']['cookie']['prefix'];
+        $this->cookieLifetime = $app['config']['cookie']['lifetime'];
     }
     
     public function set( $key, $value )
     {
         // raw url encode and set raw cookie used here to prevent issues with spaces encoded as '+'
         $value = rawurlencode(json_encode($value));
-        setrawcookie( $this->cookie_prefix . $key, $value, time() + $this->cookie_lifetime, '/' );
-        $_COOKIE[$this->cookie_prefix . $key] = $value;
+        setrawcookie( $this->cookiePrefix . $key, $value, time() + $this->cookieLifetime, '/' );
+        $_COOKIE[$this->cookiePrefix . $key] = $value;
     }
     
     public function get( $key )
     {
-        return isset($_COOKIE[$this->cookie_prefix . $key]) ? json_decode(rawurldecode(stripslashes($_COOKIE[$this->cookie_prefix . $key]))) : NULL;
+        return isset($_COOKIE[$this->cookiePrefix . $key]) ? json_decode(rawurldecode(stripslashes($_COOKIE[$this->cookiePrefix . $key]))) : NULL;
     }
     
     public function clear( $key )
     {
-        setcookie( $this->cookie_prefix . $key, '', time() - 3600, '/' );
-        unset($_COOKIE[$this->cookie_prefix . $key]);
+        setcookie( $this->cookiePrefix . $key, '', time() - 3600, '/' );
+        unset($_COOKIE[$this->cookiePrefix . $key]);
     }
 
 }
