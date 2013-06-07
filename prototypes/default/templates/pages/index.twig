@@ -17,6 +17,20 @@
         
         <p><strong>Happy prototyping!</strong></p>
         
+        {{ pt.snippets.forms.open() }}
+        
+        {{ pt.snippets.forms.textarea('adasd') }}<br>
+        
+        {{ pt.snippets.forms.input('asdasd', 'val', 'password') }}<br>
+        
+        {{ pt.snippets.forms.input('asdasd', 'val', 'checkbox') }}<br>
+        
+        {{ pt.snippets.forms.select('asdasd', 'test', {'hello':'Hello', 'test':'Test' }) }}<br>
+        
+        {{ pt.snippets.forms.button() }}
+        
+        {{ pt.snippets.forms.close() }}
+        
         {{ pt.snippets.images.placeholder() }}
         
         {{ pt.snippets.navigation.pageTree() }}
