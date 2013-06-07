@@ -29,12 +29,7 @@ Class UserManager {
         if ( ! $user = $this->getCurrentUser() ) {
             return false;
         }
-        if ( $userData = $this->getUserBy($this->identifyBy, $user[$this->identifyBy]) ) {
-            if ( ! $this->authBy || @$user[$this->authBy] == @$userData[$this->authBy] ) {
-                return true;
-            }
-        }
-        return false;
+        return $this->loggedInUserIsValid($user);
     }
     
     public function attemptLogin($identity, $auth = null)
@@ -60,7 +55,22 @@ Class UserManager {
         if ( $this->currentUser === null ) {
             $this->currentUser = $this->app['pt.store']->get($this->userCookieName);
         }
-        return $this->currentUser;
+        if ( $this->loggedInUserIsValid($this->currentUser) ) {
+            return $this->currentUser;    
+        } else {
+            $this->logoutUser();
+            return null;
+        }
+    }
+    
+    public function loggedInUserIsValid($user)
+    {
+        if ( $userData = $this->getUserBy($this->identifyBy, $user[$this->identifyBy]) ) {
+            if ( ! $this->authBy || @$user[$this->authBy] == @$userData[$this->authBy] ) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public function getUserBy($key, $val)

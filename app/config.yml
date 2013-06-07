@@ -2,7 +2,7 @@ clean_urls: false
 
 timezone: Europe/London
 
-debug: true
+debug: false
 
 authenticate:
   password: 

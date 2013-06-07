@@ -17,17 +17,6 @@
         
         <p><strong>Happy prototyping!</strong></p>
         
-        <form action="{{ pt.urls.user.login }}" method="post" accept-charset="utf-8">
-            
-            {% set error = pt.notifications.get('error') %}
-            {% if error %}<p>{{ error }}</p>{% endif %}
-            
-            <label>username:</label><input type="text" name="username" value=""><br>
-            <label>password:</label><input type="text" name="password" value="">
-        
-            <p><input type="submit" value="Continue &rarr;"></p>
-        </form>
-        
     </div>
     
 </body> 

@@ -32,7 +32,7 @@ class UserController implements ControllerProviderInterface
         $controllers->get('/logout', function (Request $request) use ($app) {
             
             $app['pt.user_manager']->logoutUser();
-            $app->redirect($app['pt.user_manager']->getLogoutRedirectUrlPath($request->get('redirect')));
+            return $app->redirect($app['pt.user_manager']->getLogoutRedirectUrlPath($request->get('redirect')));
             
         })->bind('user.logout');
         

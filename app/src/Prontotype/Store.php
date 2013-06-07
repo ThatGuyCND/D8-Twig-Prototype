@@ -27,7 +27,7 @@ Class Store {
     
     public function get( $key )
     {
-        return isset($_COOKIE[$this->cookiePrefix . $key]) ? json_decode(rawurldecode(stripslashes($_COOKIE[$this->cookiePrefix . $key]))) : NULL;
+        return isset($_COOKIE[$this->cookiePrefix . $key]) ? json_decode(rawurldecode(stripslashes($_COOKIE[$this->cookiePrefix . $key])), true) : NULL;
     }
     
     public function clear( $key )
