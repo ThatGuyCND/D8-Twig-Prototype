@@ -10,5 +10,12 @@ Class Exporter {
     {
         $this->app = $app;
     }
-
+    
+    public function run($startPages = array())
+    {
+        
+    }
+    
+    
+    
 }

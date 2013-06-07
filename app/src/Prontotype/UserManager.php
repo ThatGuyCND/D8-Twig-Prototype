@@ -100,14 +100,3 @@ Class UserManager {
     }
     
 }
-
-
-
-
-// $app['store']->clear('user');
-//         
-// if ( $request->get('redirect') ) {
-//     return $app->redirect($request->get('redirect'));
-// } else {
-//     return $app->redirect('/'); // redirect to homepage
-// }
