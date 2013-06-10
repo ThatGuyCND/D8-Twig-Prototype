@@ -1,8 +1,8 @@
 {
-    "name": "allmarkedup/prontotype",
+    "name": "prontotype/prontotype",
     "description": "A server-side framework to help you quickly build interactive, data-driven HTML prototypes",
     "keywords": ["prototyping","prototype server","framework"],
-    "homepage": "http://prontotype.allmarkedup.com",
+    "homepage": "http://github.com/prontotype/prontotype",
     "license": "BSD-3",
     "authors": [
         {
@@ -12,24 +12,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "silex/silex": "1.0.*",
-        "symfony/twig-bridge": "~2.3",
-        "allmarkedup/silextend": "*",
-        "leafo/lessphp" : "0.*",
-        "leafo/scssphp" : "0.*",
-        "behat/mink-extension": "*",
-        "behat/mink-goutte-driver": "*",
-        "fzaninotto/faker" : "1.1.*",
-        "mheap/Silex-Markdown": "*"
+        "prontotype/core": "3.0.*"
     },
-    "minimum-stability": "dev",
-    "config": {
-        "vendor-dir": "app/vendor",
-        "bin-dir": "app/bin"
-    },
-    "autoload": {
-        "psr-0": {
-            "Prontotype": "app/src/"
-        }
-    }
+    "minimum-stability": "dev"
 }

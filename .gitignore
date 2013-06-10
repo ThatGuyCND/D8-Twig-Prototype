@@ -1,5 +1,5 @@
 .DS_Store
 .htaccess
 composer.lock
-app/vendor/*
-app/bin/*
+cache/*
+!cache/.gitkeep

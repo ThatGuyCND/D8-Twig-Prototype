@@ -1,8 +1,0 @@
-# behat.yml
-default:
-    extensions:
-        Behat\MinkExtension\Extension:
-            goutte:    ~
-    paths:
-        features: features
-        bootstrap: %behat.paths.features%/bootstrap
