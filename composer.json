@@ -12,7 +12,13 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "prontotype/core": "3.0.*"
+        "prontotype/core": "master"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/prontotype/core"
+        }
+    ],
     "minimum-stability": "dev"
 }

@@ -1,37 +1,20 @@
 <?php
 
-/*
- * Prontotype
- * A lightweight server-side framework to help you quickly build interactive, data-driven HTML prototypes. 
- */
-
-$appDir = 'app';
-
 try {
-	$app = require __DIR__ . '/' . $appDir . '/bootstrap.php';
-	$app->run();
+    
+    require __DIR__ . '/vendor/autoload.php';
+    
+    $app = new Prontotype\Application(array(
+        'root'       => __DIR__,
+        'cache'      => __DIR__ . '/cache',
+        'prototypes' => __DIR__ . '/prototypes',
+        'vendor'     => __DIR__ . '/vendor',
+    ));
+    
+    $app->doHealthCheck();
+    $app->run();
+    
 } catch ( \Exception $e ) {
-	$error = $e->getMessage();
-	echo <<<EOD
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	
-	<link rel="stylesheet" href="/app/assets/css/system.css" type="text/css" media="all">
-
-	<title>An error has occurred.</title>
-</head>
-<body>
-	
-	<div id="pt-content">
-		<div class="alert">
-			<h4 class="alert-heading">An error has occurred.</h4>
-			{$error}
-		</div>	
-	</div>
-	
-</body>	
-</html>
-EOD;
+    echo '<h1>An error has occurred</h1>';
+    echo '<p>' . $e->getMessage() . '</p>';
 }
