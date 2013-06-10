@@ -11,7 +11,6 @@ try {
         'vendor'     => __DIR__ . '/vendor',
     ));
     
-    $app->doHealthCheck();
     $app->run();
     
 } catch ( \Exception $e ) {
