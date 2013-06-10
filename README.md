@@ -44,6 +44,3 @@ Contributors (many thanks!)
 ---------------------------
 
 * [Benoît Pointet](https://github.com/benoitpointet)
-
-
-
