@@ -4,5 +4,3 @@ composer.lock
 cache/*
 !cache/.gitkeep
 vendor/*
-prototypes/*
-!prototypes/default/*
