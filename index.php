@@ -9,6 +9,7 @@ try {
         'cache'      => __DIR__ . '/cache',
         'prototypes' => __DIR__ . '/prototypes',
         'vendor'     => __DIR__ . '/vendor',
+        'config'     => __DIR__ . '/config'
     ));
     
     $app->run();
