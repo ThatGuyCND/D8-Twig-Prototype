@@ -1,4 +1,4 @@
 default:
   domain: '*'
-  prototype: default
+  prototype: prototypes/default
   environment: live
