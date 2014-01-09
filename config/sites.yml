@@ -1,4 +1,4 @@
 default:
   domain: '*'
-  prototype: sites/default
+  location: sites/default
   environment: live
