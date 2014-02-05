@@ -1,15 +1,4 @@
 {
-    "name": "prontotype/prontotype",
-    "description": "A server-side framework to help you quickly build interactive, data-driven HTML prototypes",
-    "keywords": ["prototyping","prototype server","framework"],
-    "homepage": "http://github.com/prontotype/prontotype",
-    "license": "BSD-3",
-    "authors": [
-        {
-            "name": "Mark Perkins",
-            "email": "mark@allmarkedup.com"
-        }
-    ],
     "require": {
         "php": ">=5.3.3",
         "prontotype/core": "master"
