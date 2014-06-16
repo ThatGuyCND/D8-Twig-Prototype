@@ -1,0 +1,237 @@
+/* @file
+ * Custom sass mixins
+ *
+ * Define the custom mixins for your project here.
+ * http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html#defining_a_mixin
+ */
+@import "compass";
+@import "../variables/**/*";
+
+/**
+ * functions
+ */
+@function strip-unit($value) {
+  @return $value / ($value * 0 + 1);
+}
+
+
+@function pem($pxval, $base: 16) {
+  @return strip-unit($pxval) / $base * 1em;
+}
+
+@function emp($emval, $base: 16) {
+  @return (strip-unit($emval) * $base) + 0px;
+}
+
+/**
+ * Respond to mixin for use with susy grids and breakpoint
+ */
+@mixin respond-to($primary, $secondary:min-width, $nq:false, $nq-class:lt9) {
+  // Convert pixel values to ems
+  @if unit($primary) == 'px' {
+    $primary: pem($primary);
+  }
+   @if type-of($secondary) == number and unit($secondary) == 'px' {
+    $secondary: pem($secondary);
+  }
+
+  // Print out Media Queries
+  @if $secondary == max-width {
+    @media screen and (max-width: $primary - .001) { @content; }
+    @if $nq == true {
+      .#{$nq-value} &{
+        @content;
+      }
+    }
+  }
+  @else if $secondary == min-width {
+    @media screen and (min-width: $primary) { @content; }
+    @if $nq == true {
+      .#{$nq-value} &{
+        @content;
+      }
+    }
+  }
+  @else {
+    @media screen and (min-width: $primary) and (max-width: $secondary - .001) { @content; }
+    @if $nq == true {
+      .#{$nq-value} &{
+        @content;
+      }
+    }
+  }
+}
+
+/**
+ * Animation Mixins
+ */
+@mixin animation($animate) {
+  $max: length($animate);
+  $animations: '';
+
+  @for $i from 1 through $max {
+    $animations: #{$animations + nth($animate, $i)};
+
+    @if $i < $max {
+      $animations: #{$animations + ", "};
+    }
+  }
+  -webkit-animation: $animations;
+  -moz-animation:    $animations;
+  -o-animation:      $animations;
+  animation:         $animations;
+}
+
+@mixin keyframes($animationName) {
+  @-webkit-keyframes #{$animationName} {
+    @content;
+  }
+  @-moz-keyframes #{$animationName} {
+    @content;
+  }
+  @-o-keyframes #{$animationName} {
+    @content;
+  }
+  @keyframes #{$animationName} {
+    @content;
+  }
+}
+
+/**
+ * Utility Mixins
+ */
+@mixin hidden {
+  position: absolute;
+  overflow: hidden;
+  display: none !important;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px; 
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}
+
+@mixin clearfix {
+  &:before, &:after {
+      content: "\0020";
+      display: block;
+      height: 0;
+      overflow: hidden;
+  }
+  &:after {
+      clear: both;
+  }
+}
+
+@mixin rwdImage {
+  display: inline-block;
+  min-width: 100%;
+  width: 100%;
+  height: auto;
+  a > & {
+    display: inline-block;
+    vertical-align: bottom;
+  }
+}
+
+@mixin zebra($child) {
+  #{$child} {
+    background-color: darken($lightest-grey, 2.5%);
+    &:nth-child(odd) {
+      background-color: lighten($lightest-grey, 2.5%);
+    }
+  }
+}
+
+// Makes an element visually hidden, but accessible.
+// @see http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+@mixin element-invisible {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  @if $legacy-support-for-ie6 or $legacy-support-for-ie7 {
+    clip: rect(1px 1px 1px 1px); // IE6 and IE7 use the wrong syntax.
+  }
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+// Turns off the element-invisible effect.
+@mixin element-invisible-off {
+  position: static !important;
+  clip: auto;
+  height: auto;
+  width: auto;
+  overflow: auto;
+}
+
+// Makes an element visually hidden by default, but visible when focused.
+@mixin element-focusable {
+  @include element-invisible;
+
+  &:active,
+  &:focus {
+    @include element-invisible-off;
+  }
+}
+
+@mixin rwdImage {
+  display: inline-block;
+  min-width: 100%;
+  width: 100%;
+  max-width: auto;
+  height: auto;
+}
+
+@mixin vertical-align {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+// Extends
+%links--inline {
+  margin-top: 1em;
+  padding-left: 0;
+  
+  @include respond-to($medium) {
+    > li {
+      display: inline-block !important;
+      list-style: none outside none !important;
+      text-align: center;
+      
+      a {
+        display: inline-block;
+        line-height: 1;
+        margin-right: 0.625em;
+      }
+        
+      &:first-child a {
+        padding-left: 0;
+      }
+      
+      > ul {
+        display: none;
+      }
+    }
+  }
+}
+
+%links--inline__separated {
+  @extend %links--inline;
+  
+  @include respond-to($medium) {
+    > li {
+      a {
+        border-right: 1px solid $copy-color;
+      }
+      
+      &:last-child a {
+        border-right: medium none;
+      }
+    }
+  }
+}

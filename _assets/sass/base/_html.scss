@@ -1,0 +1,19 @@
+@include border-box-sizing;
+
+html {
+  background-color: $white;
+  color: $copy-color;
+  font-family: $copy-font-family;
+  font-size: $copy-font-size;
+  line-height: $copy-line-height;
+}
+
+html,
+body {
+  min-height: 100%;
+  height: auto;
+}
+
+.inner-wrapper {
+  background-color: $black;
+}

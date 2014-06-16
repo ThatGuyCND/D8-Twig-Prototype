@@ -1,0 +1,23 @@
+/**
+ * Splash Page Layout
+ */
+body {}
+
+.l-page {
+  @include transition(padding-bottom 300ms ease);
+  position: relative;
+  min-height: 100%;
+  padding-top: 50%;
+  padding-bottom: 5em;
+  z-index: 10;
+}
+
+.region {
+  @include container;
+  /* background-color: $black; */
+  
+  .region--inner {
+    @include span-columns($total-columns);
+    position: relative;
+  }
+}

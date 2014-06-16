@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7]><html class="no-js ie iem7" lang="en"><![endif]-->
+<!--[if lte IE 6]><html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en"><![endif]-->
+<!--[if (IE 7)&(!IEMobile)]><html class="no-js ie lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js ie lt-ie9" lang="en"><![endif]-->
+<!--[if (gte IE 9)|(gt IEMobile 7)]><html class="no-js ie" lang="en"><![endif]-->
+<!--[if !IE]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<html class="no-js" lang="en">
+  <head>
+    {% set site = pt.data.get('site.info.yml') %}
+    <title>{{ site.title }}</title>
+    {# Stylesheets #}
+    {{ pt.snippets.assets.stylesheet('css/twig.no-query.css', 'screen', {id:'css--no-query'}) }}
+    {{ pt.snippets.assets.stylesheet('css/twig.normalize.css', 'all') }}
+    {{ pt.snippets.assets.stylesheet('css/twig.styles.css', 'all') }}
+    {# DOM Scripts #}
+    {# DOM Styles #}
+    
+  </head>
+  <body class="{# {{ page.body.classes }} #}">
+    <a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
+    {% block body %}
+      <p>Stuff goes in here</p>
+    {% endblock body %}
+
+    {# jQuery Libraries #}
+  </body>
+</html>

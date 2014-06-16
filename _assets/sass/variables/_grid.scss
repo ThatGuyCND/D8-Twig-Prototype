@@ -1,0 +1,19 @@
+// Set consistent vertical and horizontal spacing units.
+$vert-spacing-unit: 20px;
+$horz-spacing-unit: 1em;
+
+$container-style: magic;
+$container-width: 64em;
+$total-columns  : 12;
+$column-width   : 5.3em;
+$gutter-width   : 1.2em;
+$grid-padding   : $gutter-width;
+
+
+// Breakpoints
+$small: 600px;
+$medium: 900px;
+$large: 1024px;
+$xLarge: 1280px;
+$xxLarge: 1600px;
+$hdtv: 1920px;

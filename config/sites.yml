@@ -1,3 +1,8 @@
+twig-prototype:
+  domain: twig.pt
+  location: sites/twig-pt
+  environment: local
+
 default:
   domain: '*'
   location: sites/default

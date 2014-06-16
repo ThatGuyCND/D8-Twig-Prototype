@@ -1,0 +1,61 @@
+$header-font-sizes: $h1-font-size, $h2-font-size, $h3-font-size, $h4-font-size, $h5-font-size, $h6-font-size;
+
+@for $i from 1 through length($header-font-sizes) {
+  h#{$i} {
+    font-size: nth($header-font-sizes, $i);
+    font-family: $header-font-family;
+    font-style:  $header-font-style;
+    color:       $header-font-color;
+    line-height: $header-line-height;
+    letter-spacing: $header-letter-spacing;
+    font-weight: $header-font-weight;
+    margin-top: $header-top-margin;
+    margin-bottom: $header-bottom-margin;
+    
+    a {
+      &:link,
+      &:visited {
+        color: $link--blue;
+      }
+      
+      &:link,
+      &:visited,
+      &:hover,
+      &:focus,
+      &:active,
+      &.active,
+      &.active-trail {
+        display: inline-block;
+        vertical-align: bottom;
+        font-family: $header-font-family;
+      }
+      
+      &:hover,
+      &:focus {
+        color: $link--light-blue;
+      }
+    }
+  }
+}
+
+a {
+  @include transition(all 300ms ease-in);
+  border-bottom: 0 dotted transparent;
+  color: $link--blue;
+  font-weight: 300;
+  text-decoration: none;
+  padding-bottom: 0;
+  
+  &:link,
+  &:visited {}
+  
+  &:hover,
+  &:focus {
+    border-bottom-color: $link--light-blue;
+    border-bottom-width: 1px;
+    color: $link--light-blue;
+    padding-bottom: 3px;
+  }
+  
+  &:active {}
+}

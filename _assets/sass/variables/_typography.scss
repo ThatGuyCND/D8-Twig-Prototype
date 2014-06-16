@@ -1,0 +1,30 @@
+//Font Stacks
+$sans-serif: "Droid Sans", "Arial", "Helvetica", "Lucida Grande", "Verdana", "Gill Sans", sans-serif;
+$serif: "Droid Serif", "Georgia", "Times New Roman", "Palatino", "Hoefler Text", "Baskerville", serif; ;
+
+//Typography
+$copy-color: $grey;
+$copy-font-family: $sans-serif;
+$copy-font-size: 16px;
+$copy-line-height: 1.625;
+
+$base-font-size: 16px;
+$base-line-height: 24px;
+
+$header-font-family: $serif;
+$header-font-weight: bold;
+$header-font-style: normal;
+$header-font-color: shade($grey, 20%);
+$header-line-height: 1.5;
+$header-letter-spacing: 0;
+
+$header-top-margin: .325em;
+$header-bottom-margin: .625em;
+$header-text-rendering: optimizeLegibility;
+
+$h1-font-size: pem(40px);
+$h2-font-size: pem(32px);
+$h3-font-size: pem(24px);
+$h4-font-size: pem(20px);
+$h5-font-size: pem(18px);
+$h6-font-size: 1em;
