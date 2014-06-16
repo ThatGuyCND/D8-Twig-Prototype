@@ -1,0 +1,14 @@
+{% set site = pt.data.get('site.info.yml') %}
+<title>{{ site.title }}</title>
+{# Stylesheets #}
+{{ pt.snippets.assets.stylesheet('css/twig.no-query.css', 'screen', {id:'css--no-query'}) }}
+{{ pt.snippets.assets.stylesheet('css/twig.normalize.css', 'all') }}
+{{ pt.snippets.assets.stylesheet('css/twig.styles.css', 'all') }}
+{# DOM Scripts #}
+{# DOM Styles #}
+
+{# @todo:
+    - Create page object for <body> attributes
+    {% set page = { body: [class: {'foo', 'bar', 'baz' }, id: pt.route] } %}
+  
+ #}

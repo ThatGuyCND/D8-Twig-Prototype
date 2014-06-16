@@ -7,15 +7,7 @@
 <!--[if !IE]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <html class="no-js" lang="en">
   <head>
-    {% set site = pt.data.get('site.info.yml') %}
-    <title>{{ site.title }}</title>
-    {# Stylesheets #}
-    {{ pt.snippets.assets.stylesheet('css/twig.no-query.css', 'screen', {id:'css--no-query'}) }}
-    {{ pt.snippets.assets.stylesheet('css/twig.normalize.css', 'all') }}
-    {{ pt.snippets.assets.stylesheet('css/twig.styles.css', 'all') }}
-    {# DOM Scripts #}
-    {# DOM Styles #}
-    
+    {% include "_base/head.html.twig" %}
   </head>
   <body class="{# {{ page.body.classes }} #}">
     <a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
@@ -23,6 +15,6 @@
       <p>Stuff goes in here</p>
     {% endblock body %}
 
-    {# jQuery Libraries #}
+    {% include "_base/closure.html.twig" %}
   </body>
 </html>
