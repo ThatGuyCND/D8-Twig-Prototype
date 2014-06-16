@@ -4,6 +4,11 @@
 {# {{ dump(projects) }} #}
 
 {% for project in projects %}
+  {% for i in project %}
+    <p><span class="customer">Customer #{{loop.index}}: {{ i.customer.given }} {{ i.customer.family }}</span></p>
+  {% endfor %}
+  
   {# {{ dump(project) }} #}
-  <p><code>{{ project.title.0.value }}</code> is of entity type <code>{{ project.type.0.target_id }}</code>.</p>
+  
+  {# <p><code>{{ project.title.0.value }}</code> is of entity type <code>{{ project.type.0.target_id }}</code>.</p> #}
 {% endfor %}
