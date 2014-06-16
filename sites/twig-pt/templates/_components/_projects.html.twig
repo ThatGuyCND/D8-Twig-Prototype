@@ -1,0 +1,9 @@
+{% set projects = pt.data.get('projects.yml') %}
+{# {% set projects = pt.data.get('http://twig.dev/rest/view/front', null, 'json') %} #}
+
+{# {{ dump(projects) }} #}
+
+{% for project in projects %}
+  {# {{ dump(project) }} #}
+  <p><code>{{ project.title.0.value }}</code> is of entity type <code>{{ project.type.0.target_id }}</code>.</p>
+{% endfor %}
