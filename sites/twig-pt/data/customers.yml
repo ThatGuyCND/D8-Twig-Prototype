@@ -1,0 +1,45 @@
+customers:
+  - 
+    account: Oz-Ware
+    date:
+      start: 2012-08-06
+      end: 2012-12-18
+    customer:
+      given:   Dorothy
+      family:  Gale
+
+    bill-to:  &id001
+        street: |
+                123 Surfing Alley
+                Suite 16
+        city:   Bondi Beach
+        state:  New South Whales
+        country: AU
+
+    ship-to:  *id001
+
+    specialDelivery:  >
+      Follow the Yellow Brick Road to the Emerald City.
+      Pay no attention to the man behind the curtain.
+  - 
+    account: K-Ware
+    date:
+      start: 2013-04-01
+      end: 2013-06-21
+    customer:
+      given:   Park
+      family:  Jae-sang
+
+    bill-to:  &id001
+        street: |
+                1482 Race Horse Lane
+                Stall 42
+        city:   Gangnam
+        state:  Seoul
+        country: ROK
+
+    ship-to:  *id001
+
+    specialDelivery:  >
+      A guy who goes completely crazy when the right time comes.
+      A guy who has bulging ideas rather than muscles.

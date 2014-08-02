@@ -1,0 +1,20 @@
+{% set customers = pt.data.get('customers.yml') %}
+{# {% set nodes = pt.data.get('http://twig.dev/rest/view/front', null, 'json') %} #}
+
+{# {{ dump(customers) }} #}
+
+{% for customer in customers %}
+  {% for i in customer %}
+    <p><span class="customer">Customer #{{loop.index}}: {{ i.customer.given }} {{ i.customer.family }}</span></p>
+  {% endfor %}
+  
+  {{ dump(customer) }}
+{% endfor %}
+
+{#
+{% for node in nodes %}
+  <p><code>{{ node.title.0.value }}</code> is of entity type <code>{{ node.type.0.target_id }}</code>.</p>
+  
+  {{ dump(node) }}
+{% endfor %}
+#}
