@@ -1,0 +1,15 @@
+{% set customers = pt.data.get('customers.yml') %}
+
+<code>
+  <pre>{{ dump(customers) }}</pre>
+</code>
+
+{% for customer in customers %}
+  {% for i in customer %}
+    <h2><span class="customer">Customer #{{loop.index}}: {{ i.customer.given }} {{ i.customer.family }}</span></h2>
+  {% endfor %}
+  
+  <code>
+    <pre>{{ dump(customer) }}</pre>
+  </code>
+{% endfor %}

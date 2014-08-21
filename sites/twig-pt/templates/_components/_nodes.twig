@@ -1,0 +1,13 @@
+{% set nodes = pt.data.get('http://twig.dev/view/front', null, 'json') %}
+
+  <code>
+    <pre>{{ dump(nodes) }}</pre>
+  </code>
+
+{% for node in nodes %}
+  <h2><code>{{ node.title.0.value }}</code> is of entity type <code>{{ node.type.0.target_id }}</code>.</h2>
+  
+  <code>
+    <pre>{{ dump(node) }}</pre>
+  </code>
+{% endfor %}
