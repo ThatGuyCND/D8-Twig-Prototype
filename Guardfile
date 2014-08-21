@@ -12,6 +12,8 @@ group :development do
       watch(%r{.+\.s[ac]ss$})
     end
   end
+  
+  gem 'guard-livereload', require: false
 
   # https://github.com/guard/guard-livereload.
   # Ignore *.normalize.scss to prevent flashing content when re-rendering.
@@ -19,4 +21,8 @@ group :development do
     watch(%r{^((?!\.normalize\.).)*\.(css|js)$})
   end
 
+end
+
+guard 'livereload', notify: true, host: 'twig.pt' do
+  watch(%r{^((?!\.normalize\.).)*\.(css|js)$})
 end
