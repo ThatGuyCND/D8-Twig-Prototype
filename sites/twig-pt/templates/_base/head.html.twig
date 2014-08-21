@@ -4,8 +4,9 @@
 {{ pt.snippets.assets.stylesheet('css/twig.no-query.css', 'screen', {id:'css--no-query'}) }}
 {{ pt.snippets.assets.stylesheet('css/twig.normalize.css', 'all') }}
 {{ pt.snippets.assets.stylesheet('css/twig.styles.css', 'all') }}
-{# DOM Scripts #}
 {# DOM Styles #}
+{# DOM Scripts #}
+{{ pt.snippets.assets.js('js/vendor/modernizr.js', {type:'text/javascript'}) }}
 
 {# @todo:
     - Create page object for <body> attributes
